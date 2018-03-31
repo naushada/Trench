@@ -29,9 +29,4 @@ typedef struct {
 
 }acc_ctx_t;
 
-int32_t acc_update_dns(uint8_t *host_name, uint8_t *ip_str);
-
-int32_t acc_resolve_dns(uint8_t *host_name);
-
-int32_t acc_get_hostname(uint8_t *table_name);
 #endif /* __ACC_H__ */

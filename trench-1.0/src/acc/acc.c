@@ -84,27 +84,9 @@ int32_t acc_register_signal(uint32_t sig) {
  *
  *  @return upon success returns 0 else < 0
  */
-int32_t acc_preinit(uint8_t *server_ip, 
-                    uint8_t *server_port, 
-                    uint8_t *db_name, 
-                    uint8_t *user_id, 
-                    uint8_t *password) {
+int32_t acc_preinit(uint8_t *db_name) {
 
-  uint8_t *db_info[] = {server_ip, 
-                        db_name, 
-                        user_id, 
-                        password, 
-                        server_port};
-
-  if(!db_init(db_info)) {
-    /*connecting to mysql server*/
-    if(db_connect()) {
-      fprintf(stderr, "\n%s:%dconnection to DB failed\n",
-                      __FILE__,
-                      __LINE__);
-      exit(0);
-    }
-  }
+  db_init(db_name);
 
   return(0);
 }/*acc_preinit*/
@@ -203,14 +185,14 @@ int32_t acc_init_conf(int32_t row, uint8_t (*record)[16][32]) {
  *
  *  @return upon success it returns 0 else < 0
  */
-int32_t acc_init(uint8_t *argv[]) {
+int32_t acc_init(char *argv[]) {
 
   uint8_t sql_query[64];
   int32_t row;
   int32_t col;
   uint8_t record[40][16][32];
 
-  acc_preinit(argv[0], argv[1], argv[2], argv[3], argv[4]);
+  acc_preinit(argv[0]);
 
   snprintf(sql_query,
            sizeof(sql_query),
@@ -242,11 +224,10 @@ int32_t acc_main(char *argv[]) {
 
   acc_ctx_t *pAccCtx = &acc_ctx_g;
 
-  uint8_t *db_conf[] = {argv[0], argv[1], argv[2], argv[3], argv[4]};
   /*Registering the SIGNAL*/
   acc_register_signal(SIGINT);
 
-  acc_init(db_conf);
+  acc_init(argv);
 
   dhcp_init(pAccCtx->eth_name,
             pAccCtx->ip_addr,
@@ -375,91 +356,6 @@ int32_t acc_main(char *argv[]) {
  
 }/*acc_main*/
 
-int32_t acc_update_dns(uint8_t *host_name, uint8_t *ip_str) {
-
-  uint8_t sql_query[128];
-  
-  memset((void *)sql_query, 0, sizeof(sql_query));
-  snprintf(sql_query,
-            sizeof(sql_query),
-            "%s%s%s%s%s"
-            "%s%s",
-            "UPDATE ",
-            ACC_DNS_TABLE,
-            " SET host_ip=\'",
-            ip_str,
-            "\' WHERE host_name=\'",
-            host_name,
-            "\'");
-  
-  if(db_exec_query(sql_query)) {
-    fprintf(stderr, "\n%s:%d Execution of DB query failed\n", __FILE__, __LINE__);
-    return(1);
-  }
-
-  return(0);
-}/*acc_update_dns*/
-
-int32_t acc_resolve_dns(uint8_t *host_name) {
-
-  uint8_t ip_str[32];
-  struct hostent *he;
-  struct in_addr **addr_list;
-  uint32_t i;
-  /**/
-  memset((void *)ip_str, 0, sizeof(ip_str));
-  if((he = gethostbyname(host_name))) {
-    addr_list = (struct in_addr **) he->h_addr_list;
-
-    for(i = 0; addr_list[i] != NULL; i++) {
-      strcpy(ip_str ,inet_ntoa(*addr_list[i]));
-      fprintf(stderr, "\n%s:%d ip address %s\n", __FILE__, __LINE__, ip_str);
-      acc_update_dns(host_name, ip_str);
-      break;
-    }
-
-  } else {
-    return(1);
-  }
-
-  return(0); 
-}/*acc_resolve_dns*/
-
-int32_t acc_get_hostname(uint8_t *table_name) {
-  uint8_t sql_query[32];
-  int32_t ret = -1;
-  int32_t row;
-  int32_t col;
-  uint8_t idx = 0;
-  uint8_t record[8][16][32];
-
-  memset((void *)sql_query, 0, sizeof(sql_query));
-  snprintf(sql_query,
-           sizeof(sql_query),
-           "%s%s",
-           "SELECT * FROM ",
-           table_name);
-
-  if(!db_exec_query(sql_query)) {
-    memset((void *)record, 0, sizeof(record));
-    row = 0, col = 0;
-    if(!db_process_query_result(&row, &col, (uint8_t (*)[16][32])record)) {
-      if(row) {
-        for(idx = 0; idx < row; idx++) {
-          if(acc_resolve_dns(record[idx][0])) {
-            return(1);
-          }
-        }
-      } else {
-        fprintf(stderr, "\n%s:%d No record found %s\n", __FILE__, __LINE__, sql_query);
-        return(2);
-      }
-    }
-  } 
-
-  return(0); 
-}/*acc_get_hostname*/
-
 /** @brief This function is the main function for executable 
  *         which spawns several threads.
  *  @param argv pointer to char for command line arguments
@@ -470,9 +366,8 @@ int main(int32_t argc, char *argv[]) {
   uint16_t idx;
   acc_ctx_t *pAccCtx = &acc_ctx_g;
   void *tret_id;
-  acc_main((char **)&argv[1]);  
 
-  //acc_get_hostname(ACC_DNS_TABLE);
+  acc_main(argv);  
 
   for(idx = 0; idx < 7; idx++ ) {
     pthread_join(pAccCtx->tid[idx], &tret_id);
