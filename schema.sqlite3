@@ -1,0 +1,62 @@
+
+CREATE TABLE IF NOT EXISTS dhcp_conf_table (interface_name TEXT, ip_address TEXT, CIDR TEXT, host_name TEXT, network_id TEXT, host_id_start TEXT, host_id_end);
+
+CREATE TABLE IF NOT EXISTS dhcp_generic_param_table (domain_name TEXT, dns1 TEXT, dns2 TEXT, ns1 TEXT, ns2 TEXT, router_ip_address TEXT, router_subnet_mask TEXT, timer_server_ip TEXT, NTP_server_ip TEXT, lease TEXT, mtu TEXT);
+
+CREATE TABLE IF NOT EXISTS dhcp_ip_allocation (host_name TEXT, mac_address TEXT, network_id TEXT, host_id TEXT, ip_allocation_status TEXT);
+
+CREATE TABLE IF NOT EXISTS dhcp_subscriber_stats (ip_address TEXT, mac_address TEXT, ip_allocation_ts TEXT, ip_released_ts TEXT);
+
+CREATE TABLE IF NOT EXISTS nat_cache_table (src_ip TEXT, src_mac TEXT, src_port TEXT, dest_ip TEXT, dest_port TEXT);
+
+CREATE TABLE IF NOT EXISTS subscriber_authentication_table (ip_address TEXT, dest_port TEXT, uri TEXT, auth_state TEXT);
+
+CREATE TABLE IF NOT EXISTS service_conf_table (ip_address TEXT, port TEXT, service_type TEXT);
+
+CREATE TABLE IF NOT EXISTS conn_auth_status (ip_address TEXT, mac_address TEXT, uri TEXT, host_name TEXT, auth_state TEXT, src_port TEXT);
+
+CREATE TABLE IF NOT EXISTS acc_conf (param_name TEXT, param_value TEXT);
+
+CREATE TABLE IF NOT EXISTS dhcp_ip_allocation (host_name TEXT, mac_address TEXT, network_id TEXT, host_id TEXT, ip_allocation_status TEXT);
+
+
+INSERT INTO dhcp_conf_table (interface_name, ip_address, CIDR, host_name, network_id, host_id_start, host_id_end) VALUES ('eth0', '10.100.16.1', '20', '', '10.100.16', '2', '');
+
+INSERT INTO dhcp_generic_param_table (domain_name, dns1, dns2, ns1, ns2, router_ip_address, router_subnet_mask, timer_server_ip, NTP_server_ip, lease, mtu) VALUES ('balaagh.com', '8.8.8.8', '8.8.4.4', '10.100.16.1', '', '10.100.16.1', '255.255.240.0', '', '', '7', '1500');
+
+
+INSERT INTO service_conf_table (ip_address, port, service_type) VALUES ('10.100.16.1', '8080', 'UAM_SERVER');
+INSERT INTO service_conf_table (ip_address, port, service_type) VALUES ('10.100.16.1', '8080', 'RADIUS_SERVER');
+
+
+
+
+
+CREATE TABLE "acc_ip_allocation" (host_name TEXT, mac_address TEXT, network_id TEXT, host_id TEXT, ip_allocation_status TEXT);
+
+CREATE TABLE "acc_cache" (src_ip TEXT, src_mac TEXT, src_port TEXT, dest_ip TEXT, dest_port TEXT);
+CREATE TABLE acc_conf (param_name TEXT, param_value TEXT);
+CREATE TABLE "acc_conn_auth_status" (ip_address TEXT, mac_address TEXT, uri TEXT, host_name TEXT, auth_state TEXT, src_port TEXT);
+CREATE TABLE "acc_conn_auth_status" (ip_address TEXT, auth_state TEXT);
+
+
+INSERT INTO acc_conf (param_name, param_value) VALUES ('ip_addr', '10.100.16.1');
+INSERT INTO acc_conf (param_name, param_value) VALUES ('lan_interface', 'eth0');
+INSERT INTO acc_conf (param_name, param_value) VALUES ('network_id', '10.100.16');
+INSERT INTO acc_conf (param_name, param_value) VALUES ('host_id', '2');
+INSERT INTO acc_conf (param_name, param_value) VALUES ('max_host_id', '4096');
+INSERT INTO acc_conf (param_name, param_value) VALUES ('cidr', '20');
+INSERT INTO acc_conf (param_name, param_value) VALUES ('domain_name', 'balaagh.com');
+INSERT INTO acc_conf (param_name, param_value) VALUES ('mtu', '1500');
+INSERT INTO acc_conf (param_name, param_value) VALUES ('lease', '7');
+INSERT INTO acc_conf (param_name, param_value) VALUES ('dns1', '8.8.8.8');
+INSERT INTO acc_conf (param_name, param_value) VALUES ('dns2', '8.8.4.4');
+INSERT INTO acc_conf (param_name, param_value) VALUES ('ntp_server', '216.239.35.0');
+INSERT INTO acc_conf (param_name, param_value) VALUES ('time_server', '216.239.35.0');
+INSERT INTO acc_conf (param_name, param_value) VALUES ('uamS_ip', '172.20.10.7');
+INSERT INTO acc_conf (param_name, param_value) VALUES ('uamS_port', '3990');
+INSERT INTO acc_conf (param_name, param_value) VALUES ('radiusC_ip', '10.100.16.1');
+INSERT INTO acc_conf (param_name, param_value) VALUES ('radiusC_port', '64770');
+INSERT INTO acc_conf (param_name, param_value) VALUES ('radiusS_ip', '172.20.10.7');
+INSERT INTO acc_conf (param_name, param_value) VALUES ('redir_port', '8080');
+INSERT INTO acc_conf (param_name, param_value) VALUES ('redir_ip', '10.100.16.1');
