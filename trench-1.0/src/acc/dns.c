@@ -4,6 +4,7 @@
 #include <type.h>
 #include <transport.h>
 #include <db.h>
+#include <subscriber.h>
 #include <dns.h>
 #include <utility.h>
 #include <tun.h>
@@ -181,20 +182,31 @@ uint32_t dns_perform_snat(int16_t fd,
   int32_t ret = -1;
   uint8_t buffer[1500];
   uint16_t buffer_length;
- 
-  memset((void *)buffer, 0, sizeof(buffer)) ;
+  struct iphdr *ip_ptr;
+  dns_ctx_t *pDnsCtx = &dns_ctx_g;
 
-  ret = nat_perform_snat(packet_ptr, 
-                         packet_length, 
-                         (uint8_t *)buffer, 
-                         &buffer_length); 
+  ip_ptr = (struct iphdr *)&packet_ptr[sizeof(struct eth)]; 
+  if(!subscriber_is_authenticated(ip_ptr->ip_src_ip)) {
+
+    memset((void *)pDnsCtx->host_ip, 0, sizeof(pDnsCtx->host_ip));
+    utility_ip_int_to_str(htonl(pDnsCtx->ns1_ip), pDnsCtx->host_ip);
+    dns_build_rr_reply(fd, packet_ptr, packet_length, 0);
+
+  } else { 
+
+    memset((void *)buffer, 0, sizeof(buffer)) ;
+    ret = nat_perform_snat(packet_ptr, 
+                           packet_length, 
+                           (uint8_t *)buffer, 
+                           &buffer_length); 
   
-  ret = tun_write(buffer, 
-                  buffer_length);
-  if(ret < 0) {
-    fprintf(stderr, "\n%s:%d write to tunnel failed\n", __FILE__, __LINE__);
-    perror("tun:");
-    return(-1);
+    ret = tun_write(buffer, 
+                    buffer_length);
+    if(ret < 0) {
+      fprintf(stderr, "\n%s:%d write to tunnel failed\n", __FILE__, __LINE__);
+      perror("tun:");
+      return(-1);
+    }
   }
 
   return (0);
@@ -378,7 +390,8 @@ uint32_t dns_build_walled_garden_reply(int32_t fd,
 
 uint32_t dns_build_rr_reply(int16_t fd, 
                             uint8_t *packet_ptr, 
-                            uint16_t packet_length) {
+                            uint16_t packet_length,
+                            uint32_t ttl) {
   uint8_t rr_reply[1500];
 
   uint8_t  *rsp_ptr    = rr_reply;
@@ -492,8 +505,6 @@ uint32_t dns_build_rr_reply(int16_t fd,
   /*This marks the end of qname RR*/
   rsp_ptr[offset++] = 0;
 
-  /*AN SECTION (1) - Answer Section of RR*/
-
   /*TYPE is A for Host Address*/
   rsp_ptr[offset++] = (A & 0xFF00) >> 8;
   rsp_ptr[offset++] = (A & 0x00FF);
@@ -503,10 +514,10 @@ uint32_t dns_build_rr_reply(int16_t fd,
   rsp_ptr[offset++] = (IN & 0x00FF);
 
   /*Type is TTl in seconds*/
-  rsp_ptr[offset++] = (0x0100 & 0xFF000000) >> 24;
-  rsp_ptr[offset++] = (0x0100 & 0x00FF0000) >> 16;
-  rsp_ptr[offset++] = (0x0100 & 0x0000FF00) >> 8;
-  rsp_ptr[offset++] = (0x0100 & 0x000000FF);
+  rsp_ptr[offset++] = (ttl & 0xFF000000) >> 24;
+  rsp_ptr[offset++] = (ttl & 0x00FF0000) >> 16;
+  rsp_ptr[offset++] = (ttl & 0x0000FF00) >> 8;
+  rsp_ptr[offset++] = (ttl & 0x000000FF);
 
   /*Type is RDLENGTH*/
   rsp_ptr[offset++] = (0x04 & 0xFF00) >> 8;
@@ -515,6 +526,7 @@ uint32_t dns_build_rr_reply(int16_t fd,
   /*Type is RDATA*/
   *((uint32_t *)&rsp_ptr[offset]) = htonl(utility_ip_str_to_int(pDnsCtx->host_ip));
   offset += 4;
+
   /*AN Section (2) */
   rsp_ptr[offset++] = strlen((const char *)pDnsCtx->ns1_name);
 
@@ -534,10 +546,10 @@ uint32_t dns_build_rr_reply(int16_t fd,
   rsp_ptr[offset++] = (IN & 0x00FF);
 
   /*Type is TTl in seconds*/
-  rsp_ptr[offset++] = (0x0100 & 0xFF000000) >> 24;
-  rsp_ptr[offset++] = (0x0100 & 0x00FF0000) >> 16;
-  rsp_ptr[offset++] = (0x0100 & 0x0000FF00) >> 8;
-  rsp_ptr[offset++] = (0x0100 & 0x000000FF);
+  rsp_ptr[offset++] = (ttl & 0xFF000000) >> 24;
+  rsp_ptr[offset++] = (ttl & 0x00FF0000) >> 16;
+  rsp_ptr[offset++] = (ttl & 0x0000FF00) >> 8;
+  rsp_ptr[offset++] = (ttl & 0x000000FF);
   
   rsp_ptr[offset++] = (0x04 & 0xFF00) >> 8;
   rsp_ptr[offset++] = (0x04 & 0x00FF);
@@ -578,10 +590,10 @@ uint32_t dns_build_rr_reply(int16_t fd,
   rsp_ptr[offset++] = (IN & 0x00FF);
 
   /*Type is TTl in seconds*/
-  rsp_ptr[offset++] = (0x0100 & 0xFF000000) >> 24;
-  rsp_ptr[offset++] = (0x0100 & 0x00FF0000) >> 16;
-  rsp_ptr[offset++] = (0x0100 & 0x0000FF00) >> 8;
-  rsp_ptr[offset++] = (0x0100 & 0x000000FF);
+  rsp_ptr[offset++] = (ttl & 0xFF000000) >> 24;
+  rsp_ptr[offset++] = (ttl & 0x00FF0000) >> 16;
+  rsp_ptr[offset++] = (ttl & 0x0000FF00) >> 8;
+  rsp_ptr[offset++] = (ttl & 0x000000FF);
 
   /*Type is RDLENGTH*/
   rsp_ptr[offset++] = (0x00 & 0xFF00) >> 8;
@@ -701,7 +713,7 @@ uint32_t dns_process_dns_query(int16_t fd,
                  strlen((const char *)pDnsCtx->qdata.qname[0].value));
 
           /*Prepare the RR (Resource Record for DNS Reply*/
-          dns_build_rr_reply(fd, packet_ptr, packet_length);
+          dns_build_rr_reply(fd, packet_ptr, packet_length, 256);
 
         } else {
           /*DNS Request for ns1*/
@@ -714,7 +726,7 @@ uint32_t dns_process_dns_query(int16_t fd,
               memset((void *)pDnsCtx->host_ip, 0, sizeof(pDnsCtx->host_ip));
               utility_ip_int_to_str(htonl(pDnsCtx->ns1_ip), pDnsCtx->host_ip);
               /*Prepare the RR (Resource Record for DNS Reply*/
-              dns_build_rr_reply(fd, packet_ptr, packet_length);
+              dns_build_rr_reply(fd, packet_ptr, packet_length, 256);
             } else {
               /*IP is not managed by this DHCP Server*/
               dns_perform_snat(fd, packet_ptr, packet_length);

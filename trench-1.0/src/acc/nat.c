@@ -294,7 +294,6 @@ int32_t nat_perform_snat(uint8_t  *packet_ptr,
       case IP_TCP:
       {
         uint16_t src_port;
-        uint16_t dest_port;
         uint32_t src_ip;
         struct tcp *tcphdr_ptr;
         struct iphdr *iphdr_ptr;
@@ -304,26 +303,10 @@ int32_t nat_perform_snat(uint8_t  *packet_ptr,
         tcphdr_ptr = (struct tcp *)&snat_ptr[ip_header_len];
 
         src_port = ntohs(tcphdr_ptr->src_port);
-        dest_port = ntohs(tcphdr_ptr->dest_port);
-        
         src_ip = iphdr_ptr->ip_src_ip;
-        dest_ip = iphdr_ptr->ip_dest_ip;
-
         ret = subscriber_is_authenticated(src_ip);
-        if(!ret) {
-          if(80 == dest_port) {
-            /*New connection Request, update the cache with it*/
-            nat_update_cache(src_ip, 
-                             eth_ptr->h_source, 
-                             src_port,
-                             /*destination port*/
-                             dest_port,
-                             /*destination ip*/
-                             dest_ip);
-          }
-        }
 
-        if((!ret) || (1 == ret)) {
+        if(!ret) {
           /*Redirect Request to Redir Server to get Authentication done*/
           iphdr_ptr->ip_dest_ip = htonl(pNatCtx->redir_ip);
           iphdr_ptr->ip_src_ip = src_ip;
@@ -405,7 +388,6 @@ int32_t nat_perform_dnat(uint8_t *packet_ptr,
   memcpy((void *)dnat_eth_ptr->h_source, 
          (const void *)pNatCtx->mac_addr, 
          ETH_ALEN);
-
   dnat_eth_ptr->h_proto = htons(0x0800);
       
   switch(dnat_iphdr_ptr->ip_proto) {
@@ -413,57 +395,28 @@ int32_t nat_perform_dnat(uint8_t *packet_ptr,
     break;
     case IP_TCP:
     {
-      uint8_t dest_mac[ETH_ALEN];
-      uint16_t dest_port;
       uint16_t src_port;
       uint32_t src_ip = 0;
-      uint32_t dest_ip = 0;
-      uint8_t query_status = 0;
-
       struct iphdr *iphdr_ptr = NULL;
       struct tcp *tcphdr_ptr = NULL;
 
       iphdr_ptr = (struct iphdr *)&dnat_ptr[sizeof(struct eth)];
 
-      dest_ip = iphdr_ptr->ip_dest_ip;
       src_ip = ntohl(iphdr_ptr->ip_src_ip);
 
       tcphdr_ptr = (struct tcp *)&dnat_ptr[sizeof(struct eth) + ip_header_len];
-
-      dest_port = ntohs(tcphdr_ptr->dest_port);
       src_port = ntohs(tcphdr_ptr->src_port);
+
       /*if its a walled gardened dns*/
       if(2 == subscriber_is_authenticated(src_ip)) {
         return(0);
       }
 
-      ret = subscriber_is_authenticated(dest_ip);
-      if(2/*SUCCESS*/ == ret) {
-          nat_delete_cache(dest_ip);
-
-      } else if((!ret) || (1 == ret)) {
-
-        /*connection is not yet authenticated*/
-        /*Retrieve the IP, MAC from cache based on nat_port*/
-        ret = nat_query_cache(dest_port,
-                              (uint32_t)dest_ip, 
-                              /*destination ip before snat*/
-                              (uint32_t *)&src_ip,
-                              (uint8_t *)dest_mac,
-                              (uint16_t *)&src_port);
- 
-        /*Modifying the destination IP Address*/
-        iphdr_ptr->ip_src_ip = htonl(src_ip);
-        iphdr_ptr->ip_chksum = 0;
-        iphdr_ptr->ip_chksum = utility_cksum(iphdr_ptr, ip_header_len); 
-
-        /*TCP Dest Port Modification*/
-        tcphdr_ptr->src_port = htons(src_port);
-        //tcphdr_ptr->src_port = htons(80);
+      if(pNatCtx->redir_port == src_port) {
+        tcphdr_ptr->src_port = htons(80);
         /*checksum field has to be reset before computing it.*/
         tcphdr_ptr->check_sum = 0;
         tcphdr_ptr->check_sum = tcp_checksum(&dnat_ptr[sizeof(struct eth)]);
-
       }
     }
     break;

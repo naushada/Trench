@@ -166,7 +166,8 @@ uint32_t dns_perform_dnat(int16_t fd,
 
 uint32_t dns_build_rr_reply(int16_t fd, 
                             uint8_t *packet_ptr, 
-                            uint16_t packet_length);
+                            uint16_t packet_length,
+                            uint32_t ttl);
 
 uint32_t dns_process_dns_query(int16_t fd, 
                                uint8_t *packet_ptr, 
