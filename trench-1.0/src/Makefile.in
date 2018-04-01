@@ -87,39 +87,39 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-bin_PROGRAMS = trench$(EXEEXT)
+bin_PROGRAMS = Trench$(EXEEXT)
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
-DIST_COMMON = $(srcdir)/Makefile.am $(trench_HEADERS) \
+DIST_COMMON = $(srcdir)/Makefile.am $(Trench_HEADERS) \
 	$(am__DIST_COMMON)
 mkinstalldirs = $(install_sh) -d
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(trenchdir)"
+am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(Trenchdir)"
 PROGRAMS = $(bin_PROGRAMS)
 am__dirstamp = $(am__leading_dot)dirstamp
-am__objects_1 = uidai/trench-util.$(OBJEXT) \
-	uidai/trench-uidai.$(OBJEXT) uidai/trench-otp.$(OBJEXT) \
-	uidai/trench-auth.$(OBJEXT)
-am__objects_2 = uam/trench-http.$(OBJEXT)
-am__objects_3 = oauth20/trench-sslc.$(OBJEXT) \
-	oauth20/trench-oauth20.$(OBJEXT)
-am__objects_4 = acc/trench-utility.$(OBJEXT) acc/trench-net.$(OBJEXT) \
-	acc/trench-tun.$(OBJEXT) acc/trench-db.$(OBJEXT) \
-	acc/trench-nat.$(OBJEXT) acc/trench-redir.$(OBJEXT) \
-	acc/trench-timer.$(OBJEXT) acc/trench-dns.$(OBJEXT) \
-	acc/trench-arp.$(OBJEXT) acc/trench-dhcp.$(OBJEXT) \
-	acc/trench-icmp.$(OBJEXT) acc/trench-tcp.$(OBJEXT) \
-	acc/trench-subscriber.$(OBJEXT) acc/trench-radiusC.$(OBJEXT) \
-	acc/trench-md5.$(OBJEXT) acc/trench-acc.$(OBJEXT)
-am_trench_OBJECTS = $(am__objects_1) $(am__objects_2) $(am__objects_3) \
+am__objects_1 = uidai/Trench-util.$(OBJEXT) \
+	uidai/Trench-uidai.$(OBJEXT) uidai/Trench-otp.$(OBJEXT) \
+	uidai/Trench-auth.$(OBJEXT)
+am__objects_2 = uam/Trench-http.$(OBJEXT)
+am__objects_3 = oauth20/Trench-sslc.$(OBJEXT) \
+	oauth20/Trench-oauth20.$(OBJEXT)
+am__objects_4 = acc/Trench-utility.$(OBJEXT) acc/Trench-net.$(OBJEXT) \
+	acc/Trench-tun.$(OBJEXT) acc/Trench-db.$(OBJEXT) \
+	acc/Trench-nat.$(OBJEXT) acc/Trench-redir.$(OBJEXT) \
+	acc/Trench-timer.$(OBJEXT) acc/Trench-dns.$(OBJEXT) \
+	acc/Trench-arp.$(OBJEXT) acc/Trench-dhcp.$(OBJEXT) \
+	acc/Trench-icmp.$(OBJEXT) acc/Trench-tcp.$(OBJEXT) \
+	acc/Trench-subscriber.$(OBJEXT) acc/Trench-radiusC.$(OBJEXT) \
+	acc/Trench-md5.$(OBJEXT) acc/Trench-acc.$(OBJEXT)
+am_Trench_OBJECTS = $(am__objects_1) $(am__objects_2) $(am__objects_3) \
 	$(am__objects_4)
-trench_OBJECTS = $(am_trench_OBJECTS)
-trench_LDADD = $(LDADD)
-trench_LINK = $(CCLD) $(trench_CFLAGS) $(CFLAGS) $(trench_LDFLAGS) \
+Trench_OBJECTS = $(am_Trench_OBJECTS)
+Trench_LDADD = $(LDADD)
+Trench_LINK = $(CCLD) $(Trench_CFLAGS) $(CFLAGS) $(Trench_LDFLAGS) \
 	$(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -152,8 +152,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(trench_SOURCES)
-DIST_SOURCES = $(trench_SOURCES)
+SOURCES = $(Trench_SOURCES)
+DIST_SOURCES = $(Trench_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -186,7 +186,7 @@ am__uninstall_files_from_dir = { \
     || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
-HEADERS = $(trench_HEADERS)
+HEADERS = $(Trench_HEADERS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
 # and print each of them once, without duplicates.  Input order is
@@ -318,7 +318,7 @@ top_srcdir = @top_srcdir@
 
 #AUTOMAKE_OPTIONS = foreign subdir-objects
 AUTOMAKE_OPTIONS = foreign
-trenchdir = $(includedir)/trench
+Trenchdir = $(includedir)/Trench
 UIDAI_SRC = uidai/util.c \
             uidai/uidai.c \
             uidai/otp.c \
@@ -376,20 +376,20 @@ ACC_INC = ../inc/type.h \
           ../inc/subscriber.h \
           ../inc/acc.h
 
-trench_SOURCES = $(UIDAI_SRC) \
+Trench_SOURCES = $(UIDAI_SRC) \
                  $(UAM_SRC) \
                  $(OAUTH20_SRC) \
                  $(ACC_SRC)
 
-trench_HEADERS = $(UIDAI_INC) \
+Trench_HEADERS = $(UIDAI_INC) \
                  $(UAM_INC) \
                  $(OAUTH20_INC) \
                  $(ACC_INC)
 
-trench_LDFLAGS = $(AM_LDFLAGS)
-trench_LFLAGS = $(AM_LFLAGS)
-trench_CFLAGS = $(AM_CFLAGS)
-trench_CPPFLAGS = $(AM_CPPFLAGS)
+Trench_LDFLAGS = $(AM_LDFLAGS)
+Trench_LFLAGS = $(AM_LFLAGS)
+Trench_CFLAGS = $(AM_CFLAGS)
+Trench_CPPFLAGS = $(AM_CPPFLAGS)
 LINK = $(LD) -o $@
 all: all-am
 
@@ -472,13 +472,13 @@ uidai/$(am__dirstamp):
 uidai/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) uidai/$(DEPDIR)
 	@: > uidai/$(DEPDIR)/$(am__dirstamp)
-uidai/trench-util.$(OBJEXT): uidai/$(am__dirstamp) \
+uidai/Trench-util.$(OBJEXT): uidai/$(am__dirstamp) \
 	uidai/$(DEPDIR)/$(am__dirstamp)
-uidai/trench-uidai.$(OBJEXT): uidai/$(am__dirstamp) \
+uidai/Trench-uidai.$(OBJEXT): uidai/$(am__dirstamp) \
 	uidai/$(DEPDIR)/$(am__dirstamp)
-uidai/trench-otp.$(OBJEXT): uidai/$(am__dirstamp) \
+uidai/Trench-otp.$(OBJEXT): uidai/$(am__dirstamp) \
 	uidai/$(DEPDIR)/$(am__dirstamp)
-uidai/trench-auth.$(OBJEXT): uidai/$(am__dirstamp) \
+uidai/Trench-auth.$(OBJEXT): uidai/$(am__dirstamp) \
 	uidai/$(DEPDIR)/$(am__dirstamp)
 uam/$(am__dirstamp):
 	@$(MKDIR_P) uam
@@ -486,7 +486,7 @@ uam/$(am__dirstamp):
 uam/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) uam/$(DEPDIR)
 	@: > uam/$(DEPDIR)/$(am__dirstamp)
-uam/trench-http.$(OBJEXT): uam/$(am__dirstamp) \
+uam/Trench-http.$(OBJEXT): uam/$(am__dirstamp) \
 	uam/$(DEPDIR)/$(am__dirstamp)
 oauth20/$(am__dirstamp):
 	@$(MKDIR_P) oauth20
@@ -494,9 +494,9 @@ oauth20/$(am__dirstamp):
 oauth20/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) oauth20/$(DEPDIR)
 	@: > oauth20/$(DEPDIR)/$(am__dirstamp)
-oauth20/trench-sslc.$(OBJEXT): oauth20/$(am__dirstamp) \
+oauth20/Trench-sslc.$(OBJEXT): oauth20/$(am__dirstamp) \
 	oauth20/$(DEPDIR)/$(am__dirstamp)
-oauth20/trench-oauth20.$(OBJEXT): oauth20/$(am__dirstamp) \
+oauth20/Trench-oauth20.$(OBJEXT): oauth20/$(am__dirstamp) \
 	oauth20/$(DEPDIR)/$(am__dirstamp)
 acc/$(am__dirstamp):
 	@$(MKDIR_P) acc
@@ -504,42 +504,42 @@ acc/$(am__dirstamp):
 acc/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) acc/$(DEPDIR)
 	@: > acc/$(DEPDIR)/$(am__dirstamp)
-acc/trench-utility.$(OBJEXT): acc/$(am__dirstamp) \
+acc/Trench-utility.$(OBJEXT): acc/$(am__dirstamp) \
 	acc/$(DEPDIR)/$(am__dirstamp)
-acc/trench-net.$(OBJEXT): acc/$(am__dirstamp) \
+acc/Trench-net.$(OBJEXT): acc/$(am__dirstamp) \
 	acc/$(DEPDIR)/$(am__dirstamp)
-acc/trench-tun.$(OBJEXT): acc/$(am__dirstamp) \
+acc/Trench-tun.$(OBJEXT): acc/$(am__dirstamp) \
 	acc/$(DEPDIR)/$(am__dirstamp)
-acc/trench-db.$(OBJEXT): acc/$(am__dirstamp) \
+acc/Trench-db.$(OBJEXT): acc/$(am__dirstamp) \
 	acc/$(DEPDIR)/$(am__dirstamp)
-acc/trench-nat.$(OBJEXT): acc/$(am__dirstamp) \
+acc/Trench-nat.$(OBJEXT): acc/$(am__dirstamp) \
 	acc/$(DEPDIR)/$(am__dirstamp)
-acc/trench-redir.$(OBJEXT): acc/$(am__dirstamp) \
+acc/Trench-redir.$(OBJEXT): acc/$(am__dirstamp) \
 	acc/$(DEPDIR)/$(am__dirstamp)
-acc/trench-timer.$(OBJEXT): acc/$(am__dirstamp) \
+acc/Trench-timer.$(OBJEXT): acc/$(am__dirstamp) \
 	acc/$(DEPDIR)/$(am__dirstamp)
-acc/trench-dns.$(OBJEXT): acc/$(am__dirstamp) \
+acc/Trench-dns.$(OBJEXT): acc/$(am__dirstamp) \
 	acc/$(DEPDIR)/$(am__dirstamp)
-acc/trench-arp.$(OBJEXT): acc/$(am__dirstamp) \
+acc/Trench-arp.$(OBJEXT): acc/$(am__dirstamp) \
 	acc/$(DEPDIR)/$(am__dirstamp)
-acc/trench-dhcp.$(OBJEXT): acc/$(am__dirstamp) \
+acc/Trench-dhcp.$(OBJEXT): acc/$(am__dirstamp) \
 	acc/$(DEPDIR)/$(am__dirstamp)
-acc/trench-icmp.$(OBJEXT): acc/$(am__dirstamp) \
+acc/Trench-icmp.$(OBJEXT): acc/$(am__dirstamp) \
 	acc/$(DEPDIR)/$(am__dirstamp)
-acc/trench-tcp.$(OBJEXT): acc/$(am__dirstamp) \
+acc/Trench-tcp.$(OBJEXT): acc/$(am__dirstamp) \
 	acc/$(DEPDIR)/$(am__dirstamp)
-acc/trench-subscriber.$(OBJEXT): acc/$(am__dirstamp) \
+acc/Trench-subscriber.$(OBJEXT): acc/$(am__dirstamp) \
 	acc/$(DEPDIR)/$(am__dirstamp)
-acc/trench-radiusC.$(OBJEXT): acc/$(am__dirstamp) \
+acc/Trench-radiusC.$(OBJEXT): acc/$(am__dirstamp) \
 	acc/$(DEPDIR)/$(am__dirstamp)
-acc/trench-md5.$(OBJEXT): acc/$(am__dirstamp) \
+acc/Trench-md5.$(OBJEXT): acc/$(am__dirstamp) \
 	acc/$(DEPDIR)/$(am__dirstamp)
-acc/trench-acc.$(OBJEXT): acc/$(am__dirstamp) \
+acc/Trench-acc.$(OBJEXT): acc/$(am__dirstamp) \
 	acc/$(DEPDIR)/$(am__dirstamp)
 
-trench$(EXEEXT): $(trench_OBJECTS) $(trench_DEPENDENCIES) $(EXTRA_trench_DEPENDENCIES) 
-	@rm -f trench$(EXEEXT)
-	$(AM_V_CCLD)$(trench_LINK) $(trench_OBJECTS) $(trench_LDADD) $(LIBS)
+Trench$(EXEEXT): $(Trench_OBJECTS) $(Trench_DEPENDENCIES) $(EXTRA_Trench_DEPENDENCIES) 
+	@rm -f Trench$(EXEEXT)
+	$(AM_V_CCLD)$(Trench_LINK) $(Trench_OBJECTS) $(Trench_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -551,29 +551,29 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/trench-acc.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/trench-arp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/trench-db.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/trench-dhcp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/trench-dns.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/trench-icmp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/trench-md5.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/trench-nat.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/trench-net.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/trench-radiusC.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/trench-redir.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/trench-subscriber.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/trench-tcp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/trench-timer.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/trench-tun.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/trench-utility.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@oauth20/$(DEPDIR)/trench-oauth20.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@oauth20/$(DEPDIR)/trench-sslc.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@uam/$(DEPDIR)/trench-http.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@uidai/$(DEPDIR)/trench-auth.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@uidai/$(DEPDIR)/trench-otp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@uidai/$(DEPDIR)/trench-uidai.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@uidai/$(DEPDIR)/trench-util.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-acc.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-arp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-db.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-dhcp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-dns.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-icmp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-md5.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-nat.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-net.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-radiusC.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-redir.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-subscriber.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-tcp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-timer.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-tun.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-utility.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@oauth20/$(DEPDIR)/Trench-oauth20.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@oauth20/$(DEPDIR)/Trench-sslc.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@uam/$(DEPDIR)/Trench-http.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@uidai/$(DEPDIR)/Trench-auth.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@uidai/$(DEPDIR)/Trench-otp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@uidai/$(DEPDIR)/Trench-uidai.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@uidai/$(DEPDIR)/Trench-util.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
@@ -591,348 +591,348 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
-uidai/trench-util.o: uidai/util.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT uidai/trench-util.o -MD -MP -MF uidai/$(DEPDIR)/trench-util.Tpo -c -o uidai/trench-util.o `test -f 'uidai/util.c' || echo '$(srcdir)/'`uidai/util.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) uidai/$(DEPDIR)/trench-util.Tpo uidai/$(DEPDIR)/trench-util.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='uidai/util.c' object='uidai/trench-util.o' libtool=no @AMDEPBACKSLASH@
+uidai/Trench-util.o: uidai/util.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT uidai/Trench-util.o -MD -MP -MF uidai/$(DEPDIR)/Trench-util.Tpo -c -o uidai/Trench-util.o `test -f 'uidai/util.c' || echo '$(srcdir)/'`uidai/util.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) uidai/$(DEPDIR)/Trench-util.Tpo uidai/$(DEPDIR)/Trench-util.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='uidai/util.c' object='uidai/Trench-util.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o uidai/trench-util.o `test -f 'uidai/util.c' || echo '$(srcdir)/'`uidai/util.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o uidai/Trench-util.o `test -f 'uidai/util.c' || echo '$(srcdir)/'`uidai/util.c
 
-uidai/trench-util.obj: uidai/util.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT uidai/trench-util.obj -MD -MP -MF uidai/$(DEPDIR)/trench-util.Tpo -c -o uidai/trench-util.obj `if test -f 'uidai/util.c'; then $(CYGPATH_W) 'uidai/util.c'; else $(CYGPATH_W) '$(srcdir)/uidai/util.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) uidai/$(DEPDIR)/trench-util.Tpo uidai/$(DEPDIR)/trench-util.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='uidai/util.c' object='uidai/trench-util.obj' libtool=no @AMDEPBACKSLASH@
+uidai/Trench-util.obj: uidai/util.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT uidai/Trench-util.obj -MD -MP -MF uidai/$(DEPDIR)/Trench-util.Tpo -c -o uidai/Trench-util.obj `if test -f 'uidai/util.c'; then $(CYGPATH_W) 'uidai/util.c'; else $(CYGPATH_W) '$(srcdir)/uidai/util.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) uidai/$(DEPDIR)/Trench-util.Tpo uidai/$(DEPDIR)/Trench-util.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='uidai/util.c' object='uidai/Trench-util.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o uidai/trench-util.obj `if test -f 'uidai/util.c'; then $(CYGPATH_W) 'uidai/util.c'; else $(CYGPATH_W) '$(srcdir)/uidai/util.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o uidai/Trench-util.obj `if test -f 'uidai/util.c'; then $(CYGPATH_W) 'uidai/util.c'; else $(CYGPATH_W) '$(srcdir)/uidai/util.c'; fi`
 
-uidai/trench-uidai.o: uidai/uidai.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT uidai/trench-uidai.o -MD -MP -MF uidai/$(DEPDIR)/trench-uidai.Tpo -c -o uidai/trench-uidai.o `test -f 'uidai/uidai.c' || echo '$(srcdir)/'`uidai/uidai.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) uidai/$(DEPDIR)/trench-uidai.Tpo uidai/$(DEPDIR)/trench-uidai.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='uidai/uidai.c' object='uidai/trench-uidai.o' libtool=no @AMDEPBACKSLASH@
+uidai/Trench-uidai.o: uidai/uidai.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT uidai/Trench-uidai.o -MD -MP -MF uidai/$(DEPDIR)/Trench-uidai.Tpo -c -o uidai/Trench-uidai.o `test -f 'uidai/uidai.c' || echo '$(srcdir)/'`uidai/uidai.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) uidai/$(DEPDIR)/Trench-uidai.Tpo uidai/$(DEPDIR)/Trench-uidai.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='uidai/uidai.c' object='uidai/Trench-uidai.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o uidai/trench-uidai.o `test -f 'uidai/uidai.c' || echo '$(srcdir)/'`uidai/uidai.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o uidai/Trench-uidai.o `test -f 'uidai/uidai.c' || echo '$(srcdir)/'`uidai/uidai.c
 
-uidai/trench-uidai.obj: uidai/uidai.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT uidai/trench-uidai.obj -MD -MP -MF uidai/$(DEPDIR)/trench-uidai.Tpo -c -o uidai/trench-uidai.obj `if test -f 'uidai/uidai.c'; then $(CYGPATH_W) 'uidai/uidai.c'; else $(CYGPATH_W) '$(srcdir)/uidai/uidai.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) uidai/$(DEPDIR)/trench-uidai.Tpo uidai/$(DEPDIR)/trench-uidai.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='uidai/uidai.c' object='uidai/trench-uidai.obj' libtool=no @AMDEPBACKSLASH@
+uidai/Trench-uidai.obj: uidai/uidai.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT uidai/Trench-uidai.obj -MD -MP -MF uidai/$(DEPDIR)/Trench-uidai.Tpo -c -o uidai/Trench-uidai.obj `if test -f 'uidai/uidai.c'; then $(CYGPATH_W) 'uidai/uidai.c'; else $(CYGPATH_W) '$(srcdir)/uidai/uidai.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) uidai/$(DEPDIR)/Trench-uidai.Tpo uidai/$(DEPDIR)/Trench-uidai.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='uidai/uidai.c' object='uidai/Trench-uidai.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o uidai/trench-uidai.obj `if test -f 'uidai/uidai.c'; then $(CYGPATH_W) 'uidai/uidai.c'; else $(CYGPATH_W) '$(srcdir)/uidai/uidai.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o uidai/Trench-uidai.obj `if test -f 'uidai/uidai.c'; then $(CYGPATH_W) 'uidai/uidai.c'; else $(CYGPATH_W) '$(srcdir)/uidai/uidai.c'; fi`
 
-uidai/trench-otp.o: uidai/otp.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT uidai/trench-otp.o -MD -MP -MF uidai/$(DEPDIR)/trench-otp.Tpo -c -o uidai/trench-otp.o `test -f 'uidai/otp.c' || echo '$(srcdir)/'`uidai/otp.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) uidai/$(DEPDIR)/trench-otp.Tpo uidai/$(DEPDIR)/trench-otp.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='uidai/otp.c' object='uidai/trench-otp.o' libtool=no @AMDEPBACKSLASH@
+uidai/Trench-otp.o: uidai/otp.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT uidai/Trench-otp.o -MD -MP -MF uidai/$(DEPDIR)/Trench-otp.Tpo -c -o uidai/Trench-otp.o `test -f 'uidai/otp.c' || echo '$(srcdir)/'`uidai/otp.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) uidai/$(DEPDIR)/Trench-otp.Tpo uidai/$(DEPDIR)/Trench-otp.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='uidai/otp.c' object='uidai/Trench-otp.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o uidai/trench-otp.o `test -f 'uidai/otp.c' || echo '$(srcdir)/'`uidai/otp.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o uidai/Trench-otp.o `test -f 'uidai/otp.c' || echo '$(srcdir)/'`uidai/otp.c
 
-uidai/trench-otp.obj: uidai/otp.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT uidai/trench-otp.obj -MD -MP -MF uidai/$(DEPDIR)/trench-otp.Tpo -c -o uidai/trench-otp.obj `if test -f 'uidai/otp.c'; then $(CYGPATH_W) 'uidai/otp.c'; else $(CYGPATH_W) '$(srcdir)/uidai/otp.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) uidai/$(DEPDIR)/trench-otp.Tpo uidai/$(DEPDIR)/trench-otp.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='uidai/otp.c' object='uidai/trench-otp.obj' libtool=no @AMDEPBACKSLASH@
+uidai/Trench-otp.obj: uidai/otp.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT uidai/Trench-otp.obj -MD -MP -MF uidai/$(DEPDIR)/Trench-otp.Tpo -c -o uidai/Trench-otp.obj `if test -f 'uidai/otp.c'; then $(CYGPATH_W) 'uidai/otp.c'; else $(CYGPATH_W) '$(srcdir)/uidai/otp.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) uidai/$(DEPDIR)/Trench-otp.Tpo uidai/$(DEPDIR)/Trench-otp.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='uidai/otp.c' object='uidai/Trench-otp.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o uidai/trench-otp.obj `if test -f 'uidai/otp.c'; then $(CYGPATH_W) 'uidai/otp.c'; else $(CYGPATH_W) '$(srcdir)/uidai/otp.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o uidai/Trench-otp.obj `if test -f 'uidai/otp.c'; then $(CYGPATH_W) 'uidai/otp.c'; else $(CYGPATH_W) '$(srcdir)/uidai/otp.c'; fi`
 
-uidai/trench-auth.o: uidai/auth.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT uidai/trench-auth.o -MD -MP -MF uidai/$(DEPDIR)/trench-auth.Tpo -c -o uidai/trench-auth.o `test -f 'uidai/auth.c' || echo '$(srcdir)/'`uidai/auth.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) uidai/$(DEPDIR)/trench-auth.Tpo uidai/$(DEPDIR)/trench-auth.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='uidai/auth.c' object='uidai/trench-auth.o' libtool=no @AMDEPBACKSLASH@
+uidai/Trench-auth.o: uidai/auth.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT uidai/Trench-auth.o -MD -MP -MF uidai/$(DEPDIR)/Trench-auth.Tpo -c -o uidai/Trench-auth.o `test -f 'uidai/auth.c' || echo '$(srcdir)/'`uidai/auth.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) uidai/$(DEPDIR)/Trench-auth.Tpo uidai/$(DEPDIR)/Trench-auth.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='uidai/auth.c' object='uidai/Trench-auth.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o uidai/trench-auth.o `test -f 'uidai/auth.c' || echo '$(srcdir)/'`uidai/auth.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o uidai/Trench-auth.o `test -f 'uidai/auth.c' || echo '$(srcdir)/'`uidai/auth.c
 
-uidai/trench-auth.obj: uidai/auth.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT uidai/trench-auth.obj -MD -MP -MF uidai/$(DEPDIR)/trench-auth.Tpo -c -o uidai/trench-auth.obj `if test -f 'uidai/auth.c'; then $(CYGPATH_W) 'uidai/auth.c'; else $(CYGPATH_W) '$(srcdir)/uidai/auth.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) uidai/$(DEPDIR)/trench-auth.Tpo uidai/$(DEPDIR)/trench-auth.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='uidai/auth.c' object='uidai/trench-auth.obj' libtool=no @AMDEPBACKSLASH@
+uidai/Trench-auth.obj: uidai/auth.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT uidai/Trench-auth.obj -MD -MP -MF uidai/$(DEPDIR)/Trench-auth.Tpo -c -o uidai/Trench-auth.obj `if test -f 'uidai/auth.c'; then $(CYGPATH_W) 'uidai/auth.c'; else $(CYGPATH_W) '$(srcdir)/uidai/auth.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) uidai/$(DEPDIR)/Trench-auth.Tpo uidai/$(DEPDIR)/Trench-auth.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='uidai/auth.c' object='uidai/Trench-auth.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o uidai/trench-auth.obj `if test -f 'uidai/auth.c'; then $(CYGPATH_W) 'uidai/auth.c'; else $(CYGPATH_W) '$(srcdir)/uidai/auth.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o uidai/Trench-auth.obj `if test -f 'uidai/auth.c'; then $(CYGPATH_W) 'uidai/auth.c'; else $(CYGPATH_W) '$(srcdir)/uidai/auth.c'; fi`
 
-uam/trench-http.o: uam/http.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT uam/trench-http.o -MD -MP -MF uam/$(DEPDIR)/trench-http.Tpo -c -o uam/trench-http.o `test -f 'uam/http.c' || echo '$(srcdir)/'`uam/http.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) uam/$(DEPDIR)/trench-http.Tpo uam/$(DEPDIR)/trench-http.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='uam/http.c' object='uam/trench-http.o' libtool=no @AMDEPBACKSLASH@
+uam/Trench-http.o: uam/http.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT uam/Trench-http.o -MD -MP -MF uam/$(DEPDIR)/Trench-http.Tpo -c -o uam/Trench-http.o `test -f 'uam/http.c' || echo '$(srcdir)/'`uam/http.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) uam/$(DEPDIR)/Trench-http.Tpo uam/$(DEPDIR)/Trench-http.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='uam/http.c' object='uam/Trench-http.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o uam/trench-http.o `test -f 'uam/http.c' || echo '$(srcdir)/'`uam/http.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o uam/Trench-http.o `test -f 'uam/http.c' || echo '$(srcdir)/'`uam/http.c
 
-uam/trench-http.obj: uam/http.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT uam/trench-http.obj -MD -MP -MF uam/$(DEPDIR)/trench-http.Tpo -c -o uam/trench-http.obj `if test -f 'uam/http.c'; then $(CYGPATH_W) 'uam/http.c'; else $(CYGPATH_W) '$(srcdir)/uam/http.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) uam/$(DEPDIR)/trench-http.Tpo uam/$(DEPDIR)/trench-http.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='uam/http.c' object='uam/trench-http.obj' libtool=no @AMDEPBACKSLASH@
+uam/Trench-http.obj: uam/http.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT uam/Trench-http.obj -MD -MP -MF uam/$(DEPDIR)/Trench-http.Tpo -c -o uam/Trench-http.obj `if test -f 'uam/http.c'; then $(CYGPATH_W) 'uam/http.c'; else $(CYGPATH_W) '$(srcdir)/uam/http.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) uam/$(DEPDIR)/Trench-http.Tpo uam/$(DEPDIR)/Trench-http.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='uam/http.c' object='uam/Trench-http.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o uam/trench-http.obj `if test -f 'uam/http.c'; then $(CYGPATH_W) 'uam/http.c'; else $(CYGPATH_W) '$(srcdir)/uam/http.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o uam/Trench-http.obj `if test -f 'uam/http.c'; then $(CYGPATH_W) 'uam/http.c'; else $(CYGPATH_W) '$(srcdir)/uam/http.c'; fi`
 
-oauth20/trench-sslc.o: oauth20/sslc.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT oauth20/trench-sslc.o -MD -MP -MF oauth20/$(DEPDIR)/trench-sslc.Tpo -c -o oauth20/trench-sslc.o `test -f 'oauth20/sslc.c' || echo '$(srcdir)/'`oauth20/sslc.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) oauth20/$(DEPDIR)/trench-sslc.Tpo oauth20/$(DEPDIR)/trench-sslc.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='oauth20/sslc.c' object='oauth20/trench-sslc.o' libtool=no @AMDEPBACKSLASH@
+oauth20/Trench-sslc.o: oauth20/sslc.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT oauth20/Trench-sslc.o -MD -MP -MF oauth20/$(DEPDIR)/Trench-sslc.Tpo -c -o oauth20/Trench-sslc.o `test -f 'oauth20/sslc.c' || echo '$(srcdir)/'`oauth20/sslc.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) oauth20/$(DEPDIR)/Trench-sslc.Tpo oauth20/$(DEPDIR)/Trench-sslc.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='oauth20/sslc.c' object='oauth20/Trench-sslc.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o oauth20/trench-sslc.o `test -f 'oauth20/sslc.c' || echo '$(srcdir)/'`oauth20/sslc.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o oauth20/Trench-sslc.o `test -f 'oauth20/sslc.c' || echo '$(srcdir)/'`oauth20/sslc.c
 
-oauth20/trench-sslc.obj: oauth20/sslc.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT oauth20/trench-sslc.obj -MD -MP -MF oauth20/$(DEPDIR)/trench-sslc.Tpo -c -o oauth20/trench-sslc.obj `if test -f 'oauth20/sslc.c'; then $(CYGPATH_W) 'oauth20/sslc.c'; else $(CYGPATH_W) '$(srcdir)/oauth20/sslc.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) oauth20/$(DEPDIR)/trench-sslc.Tpo oauth20/$(DEPDIR)/trench-sslc.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='oauth20/sslc.c' object='oauth20/trench-sslc.obj' libtool=no @AMDEPBACKSLASH@
+oauth20/Trench-sslc.obj: oauth20/sslc.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT oauth20/Trench-sslc.obj -MD -MP -MF oauth20/$(DEPDIR)/Trench-sslc.Tpo -c -o oauth20/Trench-sslc.obj `if test -f 'oauth20/sslc.c'; then $(CYGPATH_W) 'oauth20/sslc.c'; else $(CYGPATH_W) '$(srcdir)/oauth20/sslc.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) oauth20/$(DEPDIR)/Trench-sslc.Tpo oauth20/$(DEPDIR)/Trench-sslc.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='oauth20/sslc.c' object='oauth20/Trench-sslc.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o oauth20/trench-sslc.obj `if test -f 'oauth20/sslc.c'; then $(CYGPATH_W) 'oauth20/sslc.c'; else $(CYGPATH_W) '$(srcdir)/oauth20/sslc.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o oauth20/Trench-sslc.obj `if test -f 'oauth20/sslc.c'; then $(CYGPATH_W) 'oauth20/sslc.c'; else $(CYGPATH_W) '$(srcdir)/oauth20/sslc.c'; fi`
 
-oauth20/trench-oauth20.o: oauth20/oauth20.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT oauth20/trench-oauth20.o -MD -MP -MF oauth20/$(DEPDIR)/trench-oauth20.Tpo -c -o oauth20/trench-oauth20.o `test -f 'oauth20/oauth20.c' || echo '$(srcdir)/'`oauth20/oauth20.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) oauth20/$(DEPDIR)/trench-oauth20.Tpo oauth20/$(DEPDIR)/trench-oauth20.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='oauth20/oauth20.c' object='oauth20/trench-oauth20.o' libtool=no @AMDEPBACKSLASH@
+oauth20/Trench-oauth20.o: oauth20/oauth20.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT oauth20/Trench-oauth20.o -MD -MP -MF oauth20/$(DEPDIR)/Trench-oauth20.Tpo -c -o oauth20/Trench-oauth20.o `test -f 'oauth20/oauth20.c' || echo '$(srcdir)/'`oauth20/oauth20.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) oauth20/$(DEPDIR)/Trench-oauth20.Tpo oauth20/$(DEPDIR)/Trench-oauth20.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='oauth20/oauth20.c' object='oauth20/Trench-oauth20.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o oauth20/trench-oauth20.o `test -f 'oauth20/oauth20.c' || echo '$(srcdir)/'`oauth20/oauth20.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o oauth20/Trench-oauth20.o `test -f 'oauth20/oauth20.c' || echo '$(srcdir)/'`oauth20/oauth20.c
 
-oauth20/trench-oauth20.obj: oauth20/oauth20.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT oauth20/trench-oauth20.obj -MD -MP -MF oauth20/$(DEPDIR)/trench-oauth20.Tpo -c -o oauth20/trench-oauth20.obj `if test -f 'oauth20/oauth20.c'; then $(CYGPATH_W) 'oauth20/oauth20.c'; else $(CYGPATH_W) '$(srcdir)/oauth20/oauth20.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) oauth20/$(DEPDIR)/trench-oauth20.Tpo oauth20/$(DEPDIR)/trench-oauth20.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='oauth20/oauth20.c' object='oauth20/trench-oauth20.obj' libtool=no @AMDEPBACKSLASH@
+oauth20/Trench-oauth20.obj: oauth20/oauth20.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT oauth20/Trench-oauth20.obj -MD -MP -MF oauth20/$(DEPDIR)/Trench-oauth20.Tpo -c -o oauth20/Trench-oauth20.obj `if test -f 'oauth20/oauth20.c'; then $(CYGPATH_W) 'oauth20/oauth20.c'; else $(CYGPATH_W) '$(srcdir)/oauth20/oauth20.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) oauth20/$(DEPDIR)/Trench-oauth20.Tpo oauth20/$(DEPDIR)/Trench-oauth20.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='oauth20/oauth20.c' object='oauth20/Trench-oauth20.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o oauth20/trench-oauth20.obj `if test -f 'oauth20/oauth20.c'; then $(CYGPATH_W) 'oauth20/oauth20.c'; else $(CYGPATH_W) '$(srcdir)/oauth20/oauth20.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o oauth20/Trench-oauth20.obj `if test -f 'oauth20/oauth20.c'; then $(CYGPATH_W) 'oauth20/oauth20.c'; else $(CYGPATH_W) '$(srcdir)/oauth20/oauth20.c'; fi`
 
-acc/trench-utility.o: acc/utility.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-utility.o -MD -MP -MF acc/$(DEPDIR)/trench-utility.Tpo -c -o acc/trench-utility.o `test -f 'acc/utility.c' || echo '$(srcdir)/'`acc/utility.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-utility.Tpo acc/$(DEPDIR)/trench-utility.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/utility.c' object='acc/trench-utility.o' libtool=no @AMDEPBACKSLASH@
+acc/Trench-utility.o: acc/utility.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-utility.o -MD -MP -MF acc/$(DEPDIR)/Trench-utility.Tpo -c -o acc/Trench-utility.o `test -f 'acc/utility.c' || echo '$(srcdir)/'`acc/utility.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-utility.Tpo acc/$(DEPDIR)/Trench-utility.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/utility.c' object='acc/Trench-utility.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-utility.o `test -f 'acc/utility.c' || echo '$(srcdir)/'`acc/utility.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-utility.o `test -f 'acc/utility.c' || echo '$(srcdir)/'`acc/utility.c
 
-acc/trench-utility.obj: acc/utility.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-utility.obj -MD -MP -MF acc/$(DEPDIR)/trench-utility.Tpo -c -o acc/trench-utility.obj `if test -f 'acc/utility.c'; then $(CYGPATH_W) 'acc/utility.c'; else $(CYGPATH_W) '$(srcdir)/acc/utility.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-utility.Tpo acc/$(DEPDIR)/trench-utility.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/utility.c' object='acc/trench-utility.obj' libtool=no @AMDEPBACKSLASH@
+acc/Trench-utility.obj: acc/utility.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-utility.obj -MD -MP -MF acc/$(DEPDIR)/Trench-utility.Tpo -c -o acc/Trench-utility.obj `if test -f 'acc/utility.c'; then $(CYGPATH_W) 'acc/utility.c'; else $(CYGPATH_W) '$(srcdir)/acc/utility.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-utility.Tpo acc/$(DEPDIR)/Trench-utility.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/utility.c' object='acc/Trench-utility.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-utility.obj `if test -f 'acc/utility.c'; then $(CYGPATH_W) 'acc/utility.c'; else $(CYGPATH_W) '$(srcdir)/acc/utility.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-utility.obj `if test -f 'acc/utility.c'; then $(CYGPATH_W) 'acc/utility.c'; else $(CYGPATH_W) '$(srcdir)/acc/utility.c'; fi`
 
-acc/trench-net.o: acc/net.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-net.o -MD -MP -MF acc/$(DEPDIR)/trench-net.Tpo -c -o acc/trench-net.o `test -f 'acc/net.c' || echo '$(srcdir)/'`acc/net.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-net.Tpo acc/$(DEPDIR)/trench-net.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/net.c' object='acc/trench-net.o' libtool=no @AMDEPBACKSLASH@
+acc/Trench-net.o: acc/net.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-net.o -MD -MP -MF acc/$(DEPDIR)/Trench-net.Tpo -c -o acc/Trench-net.o `test -f 'acc/net.c' || echo '$(srcdir)/'`acc/net.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-net.Tpo acc/$(DEPDIR)/Trench-net.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/net.c' object='acc/Trench-net.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-net.o `test -f 'acc/net.c' || echo '$(srcdir)/'`acc/net.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-net.o `test -f 'acc/net.c' || echo '$(srcdir)/'`acc/net.c
 
-acc/trench-net.obj: acc/net.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-net.obj -MD -MP -MF acc/$(DEPDIR)/trench-net.Tpo -c -o acc/trench-net.obj `if test -f 'acc/net.c'; then $(CYGPATH_W) 'acc/net.c'; else $(CYGPATH_W) '$(srcdir)/acc/net.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-net.Tpo acc/$(DEPDIR)/trench-net.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/net.c' object='acc/trench-net.obj' libtool=no @AMDEPBACKSLASH@
+acc/Trench-net.obj: acc/net.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-net.obj -MD -MP -MF acc/$(DEPDIR)/Trench-net.Tpo -c -o acc/Trench-net.obj `if test -f 'acc/net.c'; then $(CYGPATH_W) 'acc/net.c'; else $(CYGPATH_W) '$(srcdir)/acc/net.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-net.Tpo acc/$(DEPDIR)/Trench-net.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/net.c' object='acc/Trench-net.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-net.obj `if test -f 'acc/net.c'; then $(CYGPATH_W) 'acc/net.c'; else $(CYGPATH_W) '$(srcdir)/acc/net.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-net.obj `if test -f 'acc/net.c'; then $(CYGPATH_W) 'acc/net.c'; else $(CYGPATH_W) '$(srcdir)/acc/net.c'; fi`
 
-acc/trench-tun.o: acc/tun.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-tun.o -MD -MP -MF acc/$(DEPDIR)/trench-tun.Tpo -c -o acc/trench-tun.o `test -f 'acc/tun.c' || echo '$(srcdir)/'`acc/tun.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-tun.Tpo acc/$(DEPDIR)/trench-tun.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/tun.c' object='acc/trench-tun.o' libtool=no @AMDEPBACKSLASH@
+acc/Trench-tun.o: acc/tun.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-tun.o -MD -MP -MF acc/$(DEPDIR)/Trench-tun.Tpo -c -o acc/Trench-tun.o `test -f 'acc/tun.c' || echo '$(srcdir)/'`acc/tun.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-tun.Tpo acc/$(DEPDIR)/Trench-tun.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/tun.c' object='acc/Trench-tun.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-tun.o `test -f 'acc/tun.c' || echo '$(srcdir)/'`acc/tun.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-tun.o `test -f 'acc/tun.c' || echo '$(srcdir)/'`acc/tun.c
 
-acc/trench-tun.obj: acc/tun.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-tun.obj -MD -MP -MF acc/$(DEPDIR)/trench-tun.Tpo -c -o acc/trench-tun.obj `if test -f 'acc/tun.c'; then $(CYGPATH_W) 'acc/tun.c'; else $(CYGPATH_W) '$(srcdir)/acc/tun.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-tun.Tpo acc/$(DEPDIR)/trench-tun.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/tun.c' object='acc/trench-tun.obj' libtool=no @AMDEPBACKSLASH@
+acc/Trench-tun.obj: acc/tun.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-tun.obj -MD -MP -MF acc/$(DEPDIR)/Trench-tun.Tpo -c -o acc/Trench-tun.obj `if test -f 'acc/tun.c'; then $(CYGPATH_W) 'acc/tun.c'; else $(CYGPATH_W) '$(srcdir)/acc/tun.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-tun.Tpo acc/$(DEPDIR)/Trench-tun.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/tun.c' object='acc/Trench-tun.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-tun.obj `if test -f 'acc/tun.c'; then $(CYGPATH_W) 'acc/tun.c'; else $(CYGPATH_W) '$(srcdir)/acc/tun.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-tun.obj `if test -f 'acc/tun.c'; then $(CYGPATH_W) 'acc/tun.c'; else $(CYGPATH_W) '$(srcdir)/acc/tun.c'; fi`
 
-acc/trench-db.o: acc/db.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-db.o -MD -MP -MF acc/$(DEPDIR)/trench-db.Tpo -c -o acc/trench-db.o `test -f 'acc/db.c' || echo '$(srcdir)/'`acc/db.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-db.Tpo acc/$(DEPDIR)/trench-db.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/db.c' object='acc/trench-db.o' libtool=no @AMDEPBACKSLASH@
+acc/Trench-db.o: acc/db.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-db.o -MD -MP -MF acc/$(DEPDIR)/Trench-db.Tpo -c -o acc/Trench-db.o `test -f 'acc/db.c' || echo '$(srcdir)/'`acc/db.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-db.Tpo acc/$(DEPDIR)/Trench-db.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/db.c' object='acc/Trench-db.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-db.o `test -f 'acc/db.c' || echo '$(srcdir)/'`acc/db.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-db.o `test -f 'acc/db.c' || echo '$(srcdir)/'`acc/db.c
 
-acc/trench-db.obj: acc/db.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-db.obj -MD -MP -MF acc/$(DEPDIR)/trench-db.Tpo -c -o acc/trench-db.obj `if test -f 'acc/db.c'; then $(CYGPATH_W) 'acc/db.c'; else $(CYGPATH_W) '$(srcdir)/acc/db.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-db.Tpo acc/$(DEPDIR)/trench-db.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/db.c' object='acc/trench-db.obj' libtool=no @AMDEPBACKSLASH@
+acc/Trench-db.obj: acc/db.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-db.obj -MD -MP -MF acc/$(DEPDIR)/Trench-db.Tpo -c -o acc/Trench-db.obj `if test -f 'acc/db.c'; then $(CYGPATH_W) 'acc/db.c'; else $(CYGPATH_W) '$(srcdir)/acc/db.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-db.Tpo acc/$(DEPDIR)/Trench-db.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/db.c' object='acc/Trench-db.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-db.obj `if test -f 'acc/db.c'; then $(CYGPATH_W) 'acc/db.c'; else $(CYGPATH_W) '$(srcdir)/acc/db.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-db.obj `if test -f 'acc/db.c'; then $(CYGPATH_W) 'acc/db.c'; else $(CYGPATH_W) '$(srcdir)/acc/db.c'; fi`
 
-acc/trench-nat.o: acc/nat.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-nat.o -MD -MP -MF acc/$(DEPDIR)/trench-nat.Tpo -c -o acc/trench-nat.o `test -f 'acc/nat.c' || echo '$(srcdir)/'`acc/nat.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-nat.Tpo acc/$(DEPDIR)/trench-nat.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/nat.c' object='acc/trench-nat.o' libtool=no @AMDEPBACKSLASH@
+acc/Trench-nat.o: acc/nat.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-nat.o -MD -MP -MF acc/$(DEPDIR)/Trench-nat.Tpo -c -o acc/Trench-nat.o `test -f 'acc/nat.c' || echo '$(srcdir)/'`acc/nat.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-nat.Tpo acc/$(DEPDIR)/Trench-nat.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/nat.c' object='acc/Trench-nat.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-nat.o `test -f 'acc/nat.c' || echo '$(srcdir)/'`acc/nat.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-nat.o `test -f 'acc/nat.c' || echo '$(srcdir)/'`acc/nat.c
 
-acc/trench-nat.obj: acc/nat.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-nat.obj -MD -MP -MF acc/$(DEPDIR)/trench-nat.Tpo -c -o acc/trench-nat.obj `if test -f 'acc/nat.c'; then $(CYGPATH_W) 'acc/nat.c'; else $(CYGPATH_W) '$(srcdir)/acc/nat.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-nat.Tpo acc/$(DEPDIR)/trench-nat.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/nat.c' object='acc/trench-nat.obj' libtool=no @AMDEPBACKSLASH@
+acc/Trench-nat.obj: acc/nat.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-nat.obj -MD -MP -MF acc/$(DEPDIR)/Trench-nat.Tpo -c -o acc/Trench-nat.obj `if test -f 'acc/nat.c'; then $(CYGPATH_W) 'acc/nat.c'; else $(CYGPATH_W) '$(srcdir)/acc/nat.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-nat.Tpo acc/$(DEPDIR)/Trench-nat.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/nat.c' object='acc/Trench-nat.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-nat.obj `if test -f 'acc/nat.c'; then $(CYGPATH_W) 'acc/nat.c'; else $(CYGPATH_W) '$(srcdir)/acc/nat.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-nat.obj `if test -f 'acc/nat.c'; then $(CYGPATH_W) 'acc/nat.c'; else $(CYGPATH_W) '$(srcdir)/acc/nat.c'; fi`
 
-acc/trench-redir.o: acc/redir.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-redir.o -MD -MP -MF acc/$(DEPDIR)/trench-redir.Tpo -c -o acc/trench-redir.o `test -f 'acc/redir.c' || echo '$(srcdir)/'`acc/redir.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-redir.Tpo acc/$(DEPDIR)/trench-redir.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/redir.c' object='acc/trench-redir.o' libtool=no @AMDEPBACKSLASH@
+acc/Trench-redir.o: acc/redir.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-redir.o -MD -MP -MF acc/$(DEPDIR)/Trench-redir.Tpo -c -o acc/Trench-redir.o `test -f 'acc/redir.c' || echo '$(srcdir)/'`acc/redir.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-redir.Tpo acc/$(DEPDIR)/Trench-redir.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/redir.c' object='acc/Trench-redir.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-redir.o `test -f 'acc/redir.c' || echo '$(srcdir)/'`acc/redir.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-redir.o `test -f 'acc/redir.c' || echo '$(srcdir)/'`acc/redir.c
 
-acc/trench-redir.obj: acc/redir.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-redir.obj -MD -MP -MF acc/$(DEPDIR)/trench-redir.Tpo -c -o acc/trench-redir.obj `if test -f 'acc/redir.c'; then $(CYGPATH_W) 'acc/redir.c'; else $(CYGPATH_W) '$(srcdir)/acc/redir.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-redir.Tpo acc/$(DEPDIR)/trench-redir.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/redir.c' object='acc/trench-redir.obj' libtool=no @AMDEPBACKSLASH@
+acc/Trench-redir.obj: acc/redir.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-redir.obj -MD -MP -MF acc/$(DEPDIR)/Trench-redir.Tpo -c -o acc/Trench-redir.obj `if test -f 'acc/redir.c'; then $(CYGPATH_W) 'acc/redir.c'; else $(CYGPATH_W) '$(srcdir)/acc/redir.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-redir.Tpo acc/$(DEPDIR)/Trench-redir.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/redir.c' object='acc/Trench-redir.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-redir.obj `if test -f 'acc/redir.c'; then $(CYGPATH_W) 'acc/redir.c'; else $(CYGPATH_W) '$(srcdir)/acc/redir.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-redir.obj `if test -f 'acc/redir.c'; then $(CYGPATH_W) 'acc/redir.c'; else $(CYGPATH_W) '$(srcdir)/acc/redir.c'; fi`
 
-acc/trench-timer.o: acc/timer.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-timer.o -MD -MP -MF acc/$(DEPDIR)/trench-timer.Tpo -c -o acc/trench-timer.o `test -f 'acc/timer.c' || echo '$(srcdir)/'`acc/timer.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-timer.Tpo acc/$(DEPDIR)/trench-timer.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/timer.c' object='acc/trench-timer.o' libtool=no @AMDEPBACKSLASH@
+acc/Trench-timer.o: acc/timer.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-timer.o -MD -MP -MF acc/$(DEPDIR)/Trench-timer.Tpo -c -o acc/Trench-timer.o `test -f 'acc/timer.c' || echo '$(srcdir)/'`acc/timer.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-timer.Tpo acc/$(DEPDIR)/Trench-timer.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/timer.c' object='acc/Trench-timer.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-timer.o `test -f 'acc/timer.c' || echo '$(srcdir)/'`acc/timer.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-timer.o `test -f 'acc/timer.c' || echo '$(srcdir)/'`acc/timer.c
 
-acc/trench-timer.obj: acc/timer.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-timer.obj -MD -MP -MF acc/$(DEPDIR)/trench-timer.Tpo -c -o acc/trench-timer.obj `if test -f 'acc/timer.c'; then $(CYGPATH_W) 'acc/timer.c'; else $(CYGPATH_W) '$(srcdir)/acc/timer.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-timer.Tpo acc/$(DEPDIR)/trench-timer.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/timer.c' object='acc/trench-timer.obj' libtool=no @AMDEPBACKSLASH@
+acc/Trench-timer.obj: acc/timer.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-timer.obj -MD -MP -MF acc/$(DEPDIR)/Trench-timer.Tpo -c -o acc/Trench-timer.obj `if test -f 'acc/timer.c'; then $(CYGPATH_W) 'acc/timer.c'; else $(CYGPATH_W) '$(srcdir)/acc/timer.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-timer.Tpo acc/$(DEPDIR)/Trench-timer.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/timer.c' object='acc/Trench-timer.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-timer.obj `if test -f 'acc/timer.c'; then $(CYGPATH_W) 'acc/timer.c'; else $(CYGPATH_W) '$(srcdir)/acc/timer.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-timer.obj `if test -f 'acc/timer.c'; then $(CYGPATH_W) 'acc/timer.c'; else $(CYGPATH_W) '$(srcdir)/acc/timer.c'; fi`
 
-acc/trench-dns.o: acc/dns.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-dns.o -MD -MP -MF acc/$(DEPDIR)/trench-dns.Tpo -c -o acc/trench-dns.o `test -f 'acc/dns.c' || echo '$(srcdir)/'`acc/dns.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-dns.Tpo acc/$(DEPDIR)/trench-dns.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/dns.c' object='acc/trench-dns.o' libtool=no @AMDEPBACKSLASH@
+acc/Trench-dns.o: acc/dns.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-dns.o -MD -MP -MF acc/$(DEPDIR)/Trench-dns.Tpo -c -o acc/Trench-dns.o `test -f 'acc/dns.c' || echo '$(srcdir)/'`acc/dns.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-dns.Tpo acc/$(DEPDIR)/Trench-dns.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/dns.c' object='acc/Trench-dns.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-dns.o `test -f 'acc/dns.c' || echo '$(srcdir)/'`acc/dns.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-dns.o `test -f 'acc/dns.c' || echo '$(srcdir)/'`acc/dns.c
 
-acc/trench-dns.obj: acc/dns.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-dns.obj -MD -MP -MF acc/$(DEPDIR)/trench-dns.Tpo -c -o acc/trench-dns.obj `if test -f 'acc/dns.c'; then $(CYGPATH_W) 'acc/dns.c'; else $(CYGPATH_W) '$(srcdir)/acc/dns.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-dns.Tpo acc/$(DEPDIR)/trench-dns.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/dns.c' object='acc/trench-dns.obj' libtool=no @AMDEPBACKSLASH@
+acc/Trench-dns.obj: acc/dns.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-dns.obj -MD -MP -MF acc/$(DEPDIR)/Trench-dns.Tpo -c -o acc/Trench-dns.obj `if test -f 'acc/dns.c'; then $(CYGPATH_W) 'acc/dns.c'; else $(CYGPATH_W) '$(srcdir)/acc/dns.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-dns.Tpo acc/$(DEPDIR)/Trench-dns.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/dns.c' object='acc/Trench-dns.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-dns.obj `if test -f 'acc/dns.c'; then $(CYGPATH_W) 'acc/dns.c'; else $(CYGPATH_W) '$(srcdir)/acc/dns.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-dns.obj `if test -f 'acc/dns.c'; then $(CYGPATH_W) 'acc/dns.c'; else $(CYGPATH_W) '$(srcdir)/acc/dns.c'; fi`
 
-acc/trench-arp.o: acc/arp.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-arp.o -MD -MP -MF acc/$(DEPDIR)/trench-arp.Tpo -c -o acc/trench-arp.o `test -f 'acc/arp.c' || echo '$(srcdir)/'`acc/arp.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-arp.Tpo acc/$(DEPDIR)/trench-arp.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/arp.c' object='acc/trench-arp.o' libtool=no @AMDEPBACKSLASH@
+acc/Trench-arp.o: acc/arp.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-arp.o -MD -MP -MF acc/$(DEPDIR)/Trench-arp.Tpo -c -o acc/Trench-arp.o `test -f 'acc/arp.c' || echo '$(srcdir)/'`acc/arp.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-arp.Tpo acc/$(DEPDIR)/Trench-arp.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/arp.c' object='acc/Trench-arp.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-arp.o `test -f 'acc/arp.c' || echo '$(srcdir)/'`acc/arp.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-arp.o `test -f 'acc/arp.c' || echo '$(srcdir)/'`acc/arp.c
 
-acc/trench-arp.obj: acc/arp.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-arp.obj -MD -MP -MF acc/$(DEPDIR)/trench-arp.Tpo -c -o acc/trench-arp.obj `if test -f 'acc/arp.c'; then $(CYGPATH_W) 'acc/arp.c'; else $(CYGPATH_W) '$(srcdir)/acc/arp.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-arp.Tpo acc/$(DEPDIR)/trench-arp.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/arp.c' object='acc/trench-arp.obj' libtool=no @AMDEPBACKSLASH@
+acc/Trench-arp.obj: acc/arp.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-arp.obj -MD -MP -MF acc/$(DEPDIR)/Trench-arp.Tpo -c -o acc/Trench-arp.obj `if test -f 'acc/arp.c'; then $(CYGPATH_W) 'acc/arp.c'; else $(CYGPATH_W) '$(srcdir)/acc/arp.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-arp.Tpo acc/$(DEPDIR)/Trench-arp.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/arp.c' object='acc/Trench-arp.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-arp.obj `if test -f 'acc/arp.c'; then $(CYGPATH_W) 'acc/arp.c'; else $(CYGPATH_W) '$(srcdir)/acc/arp.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-arp.obj `if test -f 'acc/arp.c'; then $(CYGPATH_W) 'acc/arp.c'; else $(CYGPATH_W) '$(srcdir)/acc/arp.c'; fi`
 
-acc/trench-dhcp.o: acc/dhcp.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-dhcp.o -MD -MP -MF acc/$(DEPDIR)/trench-dhcp.Tpo -c -o acc/trench-dhcp.o `test -f 'acc/dhcp.c' || echo '$(srcdir)/'`acc/dhcp.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-dhcp.Tpo acc/$(DEPDIR)/trench-dhcp.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/dhcp.c' object='acc/trench-dhcp.o' libtool=no @AMDEPBACKSLASH@
+acc/Trench-dhcp.o: acc/dhcp.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-dhcp.o -MD -MP -MF acc/$(DEPDIR)/Trench-dhcp.Tpo -c -o acc/Trench-dhcp.o `test -f 'acc/dhcp.c' || echo '$(srcdir)/'`acc/dhcp.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-dhcp.Tpo acc/$(DEPDIR)/Trench-dhcp.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/dhcp.c' object='acc/Trench-dhcp.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-dhcp.o `test -f 'acc/dhcp.c' || echo '$(srcdir)/'`acc/dhcp.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-dhcp.o `test -f 'acc/dhcp.c' || echo '$(srcdir)/'`acc/dhcp.c
 
-acc/trench-dhcp.obj: acc/dhcp.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-dhcp.obj -MD -MP -MF acc/$(DEPDIR)/trench-dhcp.Tpo -c -o acc/trench-dhcp.obj `if test -f 'acc/dhcp.c'; then $(CYGPATH_W) 'acc/dhcp.c'; else $(CYGPATH_W) '$(srcdir)/acc/dhcp.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-dhcp.Tpo acc/$(DEPDIR)/trench-dhcp.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/dhcp.c' object='acc/trench-dhcp.obj' libtool=no @AMDEPBACKSLASH@
+acc/Trench-dhcp.obj: acc/dhcp.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-dhcp.obj -MD -MP -MF acc/$(DEPDIR)/Trench-dhcp.Tpo -c -o acc/Trench-dhcp.obj `if test -f 'acc/dhcp.c'; then $(CYGPATH_W) 'acc/dhcp.c'; else $(CYGPATH_W) '$(srcdir)/acc/dhcp.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-dhcp.Tpo acc/$(DEPDIR)/Trench-dhcp.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/dhcp.c' object='acc/Trench-dhcp.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-dhcp.obj `if test -f 'acc/dhcp.c'; then $(CYGPATH_W) 'acc/dhcp.c'; else $(CYGPATH_W) '$(srcdir)/acc/dhcp.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-dhcp.obj `if test -f 'acc/dhcp.c'; then $(CYGPATH_W) 'acc/dhcp.c'; else $(CYGPATH_W) '$(srcdir)/acc/dhcp.c'; fi`
 
-acc/trench-icmp.o: acc/icmp.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-icmp.o -MD -MP -MF acc/$(DEPDIR)/trench-icmp.Tpo -c -o acc/trench-icmp.o `test -f 'acc/icmp.c' || echo '$(srcdir)/'`acc/icmp.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-icmp.Tpo acc/$(DEPDIR)/trench-icmp.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/icmp.c' object='acc/trench-icmp.o' libtool=no @AMDEPBACKSLASH@
+acc/Trench-icmp.o: acc/icmp.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-icmp.o -MD -MP -MF acc/$(DEPDIR)/Trench-icmp.Tpo -c -o acc/Trench-icmp.o `test -f 'acc/icmp.c' || echo '$(srcdir)/'`acc/icmp.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-icmp.Tpo acc/$(DEPDIR)/Trench-icmp.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/icmp.c' object='acc/Trench-icmp.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-icmp.o `test -f 'acc/icmp.c' || echo '$(srcdir)/'`acc/icmp.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-icmp.o `test -f 'acc/icmp.c' || echo '$(srcdir)/'`acc/icmp.c
 
-acc/trench-icmp.obj: acc/icmp.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-icmp.obj -MD -MP -MF acc/$(DEPDIR)/trench-icmp.Tpo -c -o acc/trench-icmp.obj `if test -f 'acc/icmp.c'; then $(CYGPATH_W) 'acc/icmp.c'; else $(CYGPATH_W) '$(srcdir)/acc/icmp.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-icmp.Tpo acc/$(DEPDIR)/trench-icmp.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/icmp.c' object='acc/trench-icmp.obj' libtool=no @AMDEPBACKSLASH@
+acc/Trench-icmp.obj: acc/icmp.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-icmp.obj -MD -MP -MF acc/$(DEPDIR)/Trench-icmp.Tpo -c -o acc/Trench-icmp.obj `if test -f 'acc/icmp.c'; then $(CYGPATH_W) 'acc/icmp.c'; else $(CYGPATH_W) '$(srcdir)/acc/icmp.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-icmp.Tpo acc/$(DEPDIR)/Trench-icmp.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/icmp.c' object='acc/Trench-icmp.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-icmp.obj `if test -f 'acc/icmp.c'; then $(CYGPATH_W) 'acc/icmp.c'; else $(CYGPATH_W) '$(srcdir)/acc/icmp.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-icmp.obj `if test -f 'acc/icmp.c'; then $(CYGPATH_W) 'acc/icmp.c'; else $(CYGPATH_W) '$(srcdir)/acc/icmp.c'; fi`
 
-acc/trench-tcp.o: acc/tcp.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-tcp.o -MD -MP -MF acc/$(DEPDIR)/trench-tcp.Tpo -c -o acc/trench-tcp.o `test -f 'acc/tcp.c' || echo '$(srcdir)/'`acc/tcp.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-tcp.Tpo acc/$(DEPDIR)/trench-tcp.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/tcp.c' object='acc/trench-tcp.o' libtool=no @AMDEPBACKSLASH@
+acc/Trench-tcp.o: acc/tcp.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-tcp.o -MD -MP -MF acc/$(DEPDIR)/Trench-tcp.Tpo -c -o acc/Trench-tcp.o `test -f 'acc/tcp.c' || echo '$(srcdir)/'`acc/tcp.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-tcp.Tpo acc/$(DEPDIR)/Trench-tcp.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/tcp.c' object='acc/Trench-tcp.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-tcp.o `test -f 'acc/tcp.c' || echo '$(srcdir)/'`acc/tcp.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-tcp.o `test -f 'acc/tcp.c' || echo '$(srcdir)/'`acc/tcp.c
 
-acc/trench-tcp.obj: acc/tcp.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-tcp.obj -MD -MP -MF acc/$(DEPDIR)/trench-tcp.Tpo -c -o acc/trench-tcp.obj `if test -f 'acc/tcp.c'; then $(CYGPATH_W) 'acc/tcp.c'; else $(CYGPATH_W) '$(srcdir)/acc/tcp.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-tcp.Tpo acc/$(DEPDIR)/trench-tcp.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/tcp.c' object='acc/trench-tcp.obj' libtool=no @AMDEPBACKSLASH@
+acc/Trench-tcp.obj: acc/tcp.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-tcp.obj -MD -MP -MF acc/$(DEPDIR)/Trench-tcp.Tpo -c -o acc/Trench-tcp.obj `if test -f 'acc/tcp.c'; then $(CYGPATH_W) 'acc/tcp.c'; else $(CYGPATH_W) '$(srcdir)/acc/tcp.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-tcp.Tpo acc/$(DEPDIR)/Trench-tcp.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/tcp.c' object='acc/Trench-tcp.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-tcp.obj `if test -f 'acc/tcp.c'; then $(CYGPATH_W) 'acc/tcp.c'; else $(CYGPATH_W) '$(srcdir)/acc/tcp.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-tcp.obj `if test -f 'acc/tcp.c'; then $(CYGPATH_W) 'acc/tcp.c'; else $(CYGPATH_W) '$(srcdir)/acc/tcp.c'; fi`
 
-acc/trench-subscriber.o: acc/subscriber.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-subscriber.o -MD -MP -MF acc/$(DEPDIR)/trench-subscriber.Tpo -c -o acc/trench-subscriber.o `test -f 'acc/subscriber.c' || echo '$(srcdir)/'`acc/subscriber.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-subscriber.Tpo acc/$(DEPDIR)/trench-subscriber.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/subscriber.c' object='acc/trench-subscriber.o' libtool=no @AMDEPBACKSLASH@
+acc/Trench-subscriber.o: acc/subscriber.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-subscriber.o -MD -MP -MF acc/$(DEPDIR)/Trench-subscriber.Tpo -c -o acc/Trench-subscriber.o `test -f 'acc/subscriber.c' || echo '$(srcdir)/'`acc/subscriber.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-subscriber.Tpo acc/$(DEPDIR)/Trench-subscriber.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/subscriber.c' object='acc/Trench-subscriber.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-subscriber.o `test -f 'acc/subscriber.c' || echo '$(srcdir)/'`acc/subscriber.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-subscriber.o `test -f 'acc/subscriber.c' || echo '$(srcdir)/'`acc/subscriber.c
 
-acc/trench-subscriber.obj: acc/subscriber.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-subscriber.obj -MD -MP -MF acc/$(DEPDIR)/trench-subscriber.Tpo -c -o acc/trench-subscriber.obj `if test -f 'acc/subscriber.c'; then $(CYGPATH_W) 'acc/subscriber.c'; else $(CYGPATH_W) '$(srcdir)/acc/subscriber.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-subscriber.Tpo acc/$(DEPDIR)/trench-subscriber.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/subscriber.c' object='acc/trench-subscriber.obj' libtool=no @AMDEPBACKSLASH@
+acc/Trench-subscriber.obj: acc/subscriber.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-subscriber.obj -MD -MP -MF acc/$(DEPDIR)/Trench-subscriber.Tpo -c -o acc/Trench-subscriber.obj `if test -f 'acc/subscriber.c'; then $(CYGPATH_W) 'acc/subscriber.c'; else $(CYGPATH_W) '$(srcdir)/acc/subscriber.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-subscriber.Tpo acc/$(DEPDIR)/Trench-subscriber.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/subscriber.c' object='acc/Trench-subscriber.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-subscriber.obj `if test -f 'acc/subscriber.c'; then $(CYGPATH_W) 'acc/subscriber.c'; else $(CYGPATH_W) '$(srcdir)/acc/subscriber.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-subscriber.obj `if test -f 'acc/subscriber.c'; then $(CYGPATH_W) 'acc/subscriber.c'; else $(CYGPATH_W) '$(srcdir)/acc/subscriber.c'; fi`
 
-acc/trench-radiusC.o: acc/radiusC.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-radiusC.o -MD -MP -MF acc/$(DEPDIR)/trench-radiusC.Tpo -c -o acc/trench-radiusC.o `test -f 'acc/radiusC.c' || echo '$(srcdir)/'`acc/radiusC.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-radiusC.Tpo acc/$(DEPDIR)/trench-radiusC.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/radiusC.c' object='acc/trench-radiusC.o' libtool=no @AMDEPBACKSLASH@
+acc/Trench-radiusC.o: acc/radiusC.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-radiusC.o -MD -MP -MF acc/$(DEPDIR)/Trench-radiusC.Tpo -c -o acc/Trench-radiusC.o `test -f 'acc/radiusC.c' || echo '$(srcdir)/'`acc/radiusC.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-radiusC.Tpo acc/$(DEPDIR)/Trench-radiusC.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/radiusC.c' object='acc/Trench-radiusC.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-radiusC.o `test -f 'acc/radiusC.c' || echo '$(srcdir)/'`acc/radiusC.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-radiusC.o `test -f 'acc/radiusC.c' || echo '$(srcdir)/'`acc/radiusC.c
 
-acc/trench-radiusC.obj: acc/radiusC.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-radiusC.obj -MD -MP -MF acc/$(DEPDIR)/trench-radiusC.Tpo -c -o acc/trench-radiusC.obj `if test -f 'acc/radiusC.c'; then $(CYGPATH_W) 'acc/radiusC.c'; else $(CYGPATH_W) '$(srcdir)/acc/radiusC.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-radiusC.Tpo acc/$(DEPDIR)/trench-radiusC.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/radiusC.c' object='acc/trench-radiusC.obj' libtool=no @AMDEPBACKSLASH@
+acc/Trench-radiusC.obj: acc/radiusC.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-radiusC.obj -MD -MP -MF acc/$(DEPDIR)/Trench-radiusC.Tpo -c -o acc/Trench-radiusC.obj `if test -f 'acc/radiusC.c'; then $(CYGPATH_W) 'acc/radiusC.c'; else $(CYGPATH_W) '$(srcdir)/acc/radiusC.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-radiusC.Tpo acc/$(DEPDIR)/Trench-radiusC.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/radiusC.c' object='acc/Trench-radiusC.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-radiusC.obj `if test -f 'acc/radiusC.c'; then $(CYGPATH_W) 'acc/radiusC.c'; else $(CYGPATH_W) '$(srcdir)/acc/radiusC.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-radiusC.obj `if test -f 'acc/radiusC.c'; then $(CYGPATH_W) 'acc/radiusC.c'; else $(CYGPATH_W) '$(srcdir)/acc/radiusC.c'; fi`
 
-acc/trench-md5.o: acc/md5.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-md5.o -MD -MP -MF acc/$(DEPDIR)/trench-md5.Tpo -c -o acc/trench-md5.o `test -f 'acc/md5.c' || echo '$(srcdir)/'`acc/md5.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-md5.Tpo acc/$(DEPDIR)/trench-md5.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/md5.c' object='acc/trench-md5.o' libtool=no @AMDEPBACKSLASH@
+acc/Trench-md5.o: acc/md5.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-md5.o -MD -MP -MF acc/$(DEPDIR)/Trench-md5.Tpo -c -o acc/Trench-md5.o `test -f 'acc/md5.c' || echo '$(srcdir)/'`acc/md5.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-md5.Tpo acc/$(DEPDIR)/Trench-md5.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/md5.c' object='acc/Trench-md5.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-md5.o `test -f 'acc/md5.c' || echo '$(srcdir)/'`acc/md5.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-md5.o `test -f 'acc/md5.c' || echo '$(srcdir)/'`acc/md5.c
 
-acc/trench-md5.obj: acc/md5.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-md5.obj -MD -MP -MF acc/$(DEPDIR)/trench-md5.Tpo -c -o acc/trench-md5.obj `if test -f 'acc/md5.c'; then $(CYGPATH_W) 'acc/md5.c'; else $(CYGPATH_W) '$(srcdir)/acc/md5.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-md5.Tpo acc/$(DEPDIR)/trench-md5.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/md5.c' object='acc/trench-md5.obj' libtool=no @AMDEPBACKSLASH@
+acc/Trench-md5.obj: acc/md5.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-md5.obj -MD -MP -MF acc/$(DEPDIR)/Trench-md5.Tpo -c -o acc/Trench-md5.obj `if test -f 'acc/md5.c'; then $(CYGPATH_W) 'acc/md5.c'; else $(CYGPATH_W) '$(srcdir)/acc/md5.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-md5.Tpo acc/$(DEPDIR)/Trench-md5.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/md5.c' object='acc/Trench-md5.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-md5.obj `if test -f 'acc/md5.c'; then $(CYGPATH_W) 'acc/md5.c'; else $(CYGPATH_W) '$(srcdir)/acc/md5.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-md5.obj `if test -f 'acc/md5.c'; then $(CYGPATH_W) 'acc/md5.c'; else $(CYGPATH_W) '$(srcdir)/acc/md5.c'; fi`
 
-acc/trench-acc.o: acc/acc.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-acc.o -MD -MP -MF acc/$(DEPDIR)/trench-acc.Tpo -c -o acc/trench-acc.o `test -f 'acc/acc.c' || echo '$(srcdir)/'`acc/acc.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-acc.Tpo acc/$(DEPDIR)/trench-acc.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/acc.c' object='acc/trench-acc.o' libtool=no @AMDEPBACKSLASH@
+acc/Trench-acc.o: acc/acc.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-acc.o -MD -MP -MF acc/$(DEPDIR)/Trench-acc.Tpo -c -o acc/Trench-acc.o `test -f 'acc/acc.c' || echo '$(srcdir)/'`acc/acc.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-acc.Tpo acc/$(DEPDIR)/Trench-acc.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/acc.c' object='acc/Trench-acc.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-acc.o `test -f 'acc/acc.c' || echo '$(srcdir)/'`acc/acc.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-acc.o `test -f 'acc/acc.c' || echo '$(srcdir)/'`acc/acc.c
 
-acc/trench-acc.obj: acc/acc.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -MT acc/trench-acc.obj -MD -MP -MF acc/$(DEPDIR)/trench-acc.Tpo -c -o acc/trench-acc.obj `if test -f 'acc/acc.c'; then $(CYGPATH_W) 'acc/acc.c'; else $(CYGPATH_W) '$(srcdir)/acc/acc.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/trench-acc.Tpo acc/$(DEPDIR)/trench-acc.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/acc.c' object='acc/trench-acc.obj' libtool=no @AMDEPBACKSLASH@
+acc/Trench-acc.obj: acc/acc.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-acc.obj -MD -MP -MF acc/$(DEPDIR)/Trench-acc.Tpo -c -o acc/Trench-acc.obj `if test -f 'acc/acc.c'; then $(CYGPATH_W) 'acc/acc.c'; else $(CYGPATH_W) '$(srcdir)/acc/acc.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-acc.Tpo acc/$(DEPDIR)/Trench-acc.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/acc.c' object='acc/Trench-acc.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(trench_CPPFLAGS) $(CPPFLAGS) $(trench_CFLAGS) $(CFLAGS) -c -o acc/trench-acc.obj `if test -f 'acc/acc.c'; then $(CYGPATH_W) 'acc/acc.c'; else $(CYGPATH_W) '$(srcdir)/acc/acc.c'; fi`
-install-trenchHEADERS: $(trench_HEADERS)
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-acc.obj `if test -f 'acc/acc.c'; then $(CYGPATH_W) 'acc/acc.c'; else $(CYGPATH_W) '$(srcdir)/acc/acc.c'; fi`
+install-TrenchHEADERS: $(Trench_HEADERS)
 	@$(NORMAL_INSTALL)
-	@list='$(trench_HEADERS)'; test -n "$(trenchdir)" || list=; \
+	@list='$(Trench_HEADERS)'; test -n "$(Trenchdir)" || list=; \
 	if test -n "$$list"; then \
-	  echo " $(MKDIR_P) '$(DESTDIR)$(trenchdir)'"; \
-	  $(MKDIR_P) "$(DESTDIR)$(trenchdir)" || exit 1; \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(Trenchdir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(Trenchdir)" || exit 1; \
 	fi; \
 	for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  echo "$$d$$p"; \
 	done | $(am__base_list) | \
 	while read files; do \
-	  echo " $(INSTALL_HEADER) $$files '$(DESTDIR)$(trenchdir)'"; \
-	  $(INSTALL_HEADER) $$files "$(DESTDIR)$(trenchdir)" || exit $$?; \
+	  echo " $(INSTALL_HEADER) $$files '$(DESTDIR)$(Trenchdir)'"; \
+	  $(INSTALL_HEADER) $$files "$(DESTDIR)$(Trenchdir)" || exit $$?; \
 	done
 
-uninstall-trenchHEADERS:
+uninstall-TrenchHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(trench_HEADERS)'; test -n "$(trenchdir)" || list=; \
+	@list='$(Trench_HEADERS)'; test -n "$(Trenchdir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	dir='$(DESTDIR)$(trenchdir)'; $(am__uninstall_files_from_dir)
+	dir='$(DESTDIR)$(Trenchdir)'; $(am__uninstall_files_from_dir)
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -1020,7 +1020,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(PROGRAMS) $(HEADERS)
 installdirs:
-	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(trenchdir)"; do \
+	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(Trenchdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -1083,7 +1083,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-trenchHEADERS
+install-data-am: install-TrenchHEADERS
 
 install-dvi: install-dvi-am
 
@@ -1128,7 +1128,7 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-binPROGRAMS uninstall-trenchHEADERS
+uninstall-am: uninstall-TrenchHEADERS uninstall-binPROGRAMS
 
 .MAKE: install-am install-strip
 
@@ -1136,15 +1136,15 @@ uninstall-am: uninstall-binPROGRAMS uninstall-trenchHEADERS
 	clean-binPROGRAMS clean-generic cscopelist-am ctags ctags-am \
 	distclean distclean-compile distclean-generic distclean-tags \
 	distdir dvi dvi-am html html-am info info-am install \
-	install-am install-binPROGRAMS install-data install-data-am \
-	install-dvi install-dvi-am install-exec install-exec-am \
-	install-html install-html-am install-info install-info-am \
-	install-man install-pdf install-pdf-am install-ps \
-	install-ps-am install-strip install-trenchHEADERS installcheck \
-	installcheck-am installdirs maintainer-clean \
+	install-TrenchHEADERS install-am install-binPROGRAMS \
+	install-data install-data-am install-dvi install-dvi-am \
+	install-exec install-exec-am install-html install-html-am \
+	install-info install-info-am install-man install-pdf \
+	install-pdf-am install-ps install-ps-am install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic pdf pdf-am ps ps-am tags tags-am uninstall \
-	uninstall-am uninstall-binPROGRAMS uninstall-trenchHEADERS
+	uninstall-TrenchHEADERS uninstall-am uninstall-binPROGRAMS
 
 .PRECIOUS: Makefile
 

@@ -6,4 +6,4 @@ export LD_LIBRARY_PATH="/usr/local/openssl-1.1.0e/lib"
 #         --track-origins=yes \
 #         --verbose \
 #         --log-file=valgrind-out.txt \
-./ACC .acc_db
+../src/Trench ../src/.acc_db

@@ -1,6 +1,7 @@
 AUTOMAKE_OPTIONS = foreign
 SUBDIRS = src
-dist_doc_DATA= script/firewall_rule.sh \
+dist_doc_DATA= src/.acc_db \
+               script/firewall_rule.sh \
                script/start.sh \
                script/schema.sqlite3 \
                script/schema.sql \

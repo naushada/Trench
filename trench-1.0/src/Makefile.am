@@ -20,11 +20,11 @@ AM_CPPFLAGS = -I../inc \
               -I/usr/local/mysql-8.0.3-rc/include \
               -I/usr/local/openssl-1.1.0e/include
 
-trenchdir = $(includedir)/trench
+Trenchdir = $(includedir)/Trench
 
 # this lists the binaries to produce, the (non-PHONY, binary) targets in
 # the previous manual Makefile
-bin_PROGRAMS = trench 
+bin_PROGRAMS = Trench 
 
 UIDAI_SRC = uidai/util.c \
             uidai/uidai.c \
@@ -85,19 +85,19 @@ ACC_INC = ../inc/type.h \
           ../inc/subscriber.h \
           ../inc/acc.h
 
-trench_SOURCES = $(UIDAI_SRC) \
+Trench_SOURCES = $(UIDAI_SRC) \
                  $(UAM_SRC) \
                  $(OAUTH20_SRC) \
                  $(ACC_SRC)
         
-trench_HEADERS = $(UIDAI_INC) \
+Trench_HEADERS = $(UIDAI_INC) \
                  $(UAM_INC) \
                  $(OAUTH20_INC) \
                  $(ACC_INC)
              
-trench_LDFLAGS = $(AM_LDFLAGS)
-trench_LFLAGS = $(AM_LFLAGS)
-trench_CFLAGS = $(AM_CFLAGS)
-trench_CPPFLAGS = $(AM_CPPFLAGS)
+Trench_LDFLAGS = $(AM_LDFLAGS)
+Trench_LFLAGS = $(AM_LFLAGS)
+Trench_CFLAGS = $(AM_CFLAGS)
+Trench_CPPFLAGS = $(AM_CPPFLAGS)
 
 LINK = $(LD) -o $@

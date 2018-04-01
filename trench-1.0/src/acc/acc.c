@@ -192,7 +192,7 @@ int32_t acc_init(char *argv[]) {
   int32_t col;
   uint8_t record[40][16][32];
 
-  acc_preinit(argv[0]);
+  acc_preinit(argv[1]);
 
   snprintf(sql_query,
            sizeof(sql_query),
