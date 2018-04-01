@@ -442,6 +442,7 @@ int32_t nat_perform_dnat(uint8_t *packet_ptr,
           nat_delete_cache(dest_ip);
 
       } else if((!ret) || (1 == ret)) {
+
         /*connection is not yet authenticated*/
         /*Retrieve the IP, MAC from cache based on nat_port*/
         ret = nat_query_cache(dest_port,
@@ -458,6 +459,7 @@ int32_t nat_perform_dnat(uint8_t *packet_ptr,
 
         /*TCP Dest Port Modification*/
         tcphdr_ptr->src_port = htons(src_port);
+        //tcphdr_ptr->src_port = htons(80);
         /*checksum field has to be reset before computing it.*/
         tcphdr_ptr->check_sum = 0;
         tcphdr_ptr->check_sum = tcp_checksum(&dnat_ptr[sizeof(struct eth)]);

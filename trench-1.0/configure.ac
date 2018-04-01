@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([trench], [1.0], [naushad.dln@gmail.com])
+AC_INIT([Trench], [1.0], [naushad.dln@gmail.com])
 
 #AM_INIT_AUTOMAKE(dd_s, 0.1)
 AM_INIT_AUTOMAKE
