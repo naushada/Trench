@@ -14,6 +14,7 @@ int32_t oauth20_process_google_api_rsp(uint32_t oauth2_fd,
                                        uint32_t rsp_len, 
                                        uint32_t nas_fd) {
   uint8_t *tmp_ptr = NULL;
+  char *save_ptr = NULL;
   uint8_t *token_ptr = NULL;
   uint8_t *req_ptr = NULL;
   uint32_t req_ptr_size = 512;
@@ -30,7 +31,7 @@ int32_t oauth20_process_google_api_rsp(uint32_t oauth2_fd,
   memset((void *)tmp_ptr, 0, sizeof(uint8_t) * rsp_len);
   memcpy((void *)tmp_ptr, rsp_ptr, sizeof(uint8_t) * rsp_len);
   
-  for(token_ptr = strtok(tmp_ptr, "\n"); token_ptr; token_ptr = strtok(NULL, "\n")) {
+  for(token_ptr = strtok_r(tmp_ptr, "\n", &save_ptr); token_ptr; token_ptr = strtok_r(NULL, "\n", &save_ptr)) {
     if(!strncmp(&token_ptr[4], "value", 5)) {
       /*extract the e-mail*/
       memset((void *)email, 0, sizeof(email));
@@ -95,6 +96,7 @@ int32_t oauth20_process_google_api_rsp(uint32_t oauth2_fd,
 int32_t oauth20_process_access_token_rsp(uint32_t oauth2_fd, uint8_t *rsp_ptr, uint32_t rsp_len) {
 
   uint8_t *tmp_ptr = NULL;
+  char *save_ptr = NULL;
   uint8_t *token_ptr = NULL;
   uint8_t *access_token = NULL;
   uint8_t token_type[32];
@@ -113,7 +115,9 @@ int32_t oauth20_process_access_token_rsp(uint32_t oauth2_fd, uint8_t *rsp_ptr, u
   memset((void *)tmp_ptr, 0, rsp_len);
   memcpy((void *)tmp_ptr, rsp_ptr, rsp_len);
 
-  for(token_ptr = strtok(tmp_ptr, "\n"); token_ptr; token_ptr = strtok(NULL, "\n")) {
+  for(token_ptr = strtok_r(tmp_ptr, "\n", &save_ptr); 
+      token_ptr; 
+      token_ptr = strtok_r(NULL, "\n", &save_ptr)) {
 
     //fprintf(stderr, "\n%s:%d \ntoken_ptr %s len %d\n", __FILE__, __LINE__, token_ptr, strlen(token_ptr));
     /*Note: there are two white spaces at begining of every row*/ 
@@ -404,6 +408,7 @@ uint8_t *oauth20_get_param(uint8_t *packet_ptr, uint8_t *p_name) {
   uint8_t *param_value = NULL;
   uint32_t param_max_size = 512; 
   uint8_t *tmp_ptr = NULL;
+  char *save_ptr = NULL;
   uint8_t *line_ptr = NULL;
   uint8_t param_name[32];
   uint8_t is_found = 0; 
@@ -415,7 +420,7 @@ uint8_t *oauth20_get_param(uint8_t *packet_ptr, uint8_t *p_name) {
   memset((void *)tmp_ptr, 0, strlen(packet_ptr));
   sscanf(packet_ptr, "%*[^?]?%s", tmp_ptr);  
 
-  line_ptr = strtok(tmp_ptr, "&");
+  line_ptr = strtok_r(tmp_ptr, "&", &save_ptr);
   while(line_ptr) {
     memset((void *)param_name, 0, sizeof(param_name));
     memset((void *)param_value, 0, param_max_size);
@@ -426,7 +431,7 @@ uint8_t *oauth20_get_param(uint8_t *packet_ptr, uint8_t *p_name) {
       break;  
     }    
 
-    line_ptr = strtok(NULL, "&");
+    line_ptr = strtok_r(NULL, "&", &save_ptr);
   }
 
   if(is_found) {

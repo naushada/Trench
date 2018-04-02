@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Auth xmlns="http://www.uidai.gov.in/authentication/uid-auth-request/2.0" ac="public" lk="MEaMX8fkRa6PqsqK6wGMrEXcXFl_oXHA-YuknI2uf0gKgZ80HaZgG3A" rc="Y" sa="public" tid="" txn="17-22-24-999999990019-SampleClient" uid="999999990019" ver="2.0">
+<Auth xmlns="http://www.uidai.gov.in/authentication/uid-auth-request/2.0" ac="public" lk="MEaMX8fkRa6PqsqK6wGMrEXcXFl_oXHA-YuknI2uf0gKgZ80HaZgG3A" rc="Y" sa="public" tid="" txn="13-18-20-999999990019-SampleClient" uid="999999990019" ver="2.0">
   <Uses bio="n" bt="n" otp="n" pa="n" pfa="n" pi="y" pin="n"/>
   <Meta udc="SampleClientDemo"/>
-  <Skey ci="20200916">RuAGuk2UYUBcnkgb6y3xRMmIW6Vp+UekNbUP5OLCJbDTsl1NiiaoFm5e8Vm8NxQjBWaIzFbJrM2E7KM05xExSZpY60N/jCF05Z7NfJuNG40Bn4ODDaT1dBr7BuVq6xkrOewQ4T+QIahWcRBdJdZG5Ml/wetI3CSmzDqC5QltGy5RpzIn/n6n+19pLDmURnwqEWkD5qIOInFszGBu8KjWunrf0CPIE0v4v0SpBJrt3UEOxUV/XIRMIf5aKypViDJknlxtRVINrk3xKcOEEr2MjwYqbGIXNpvqjS9ZJsdbd3xtPHNNlRJSjV7fOUEcHDqIVQ0fg5pQRAT7cMxYiKClAA==</Skey>
-  <Hmac>IoC6wJS5M2vQNjnXp7APYtwgQdQCi0eo6N0AaOsDff7DhPS5Ss+Gm38eLeKklKzV</Hmac>
-  <Data type="X">MjAxOC0wNC0wMVQxODo0MTozNW6aAbjfU1FSmt/ZdrviVxXseK8DDPmpmXJjEAkaVa3UtqNuAsha7dlB5usQA78KwWgGUIKKuBwB8i7LFPDXjKcqvNrlQhBnI+j1Shv9H2i0t3zuZv3C94C/FPGjSVjHU+0pFB/IJzfeZvR7b1fYPfstC0hq0yWto/FQVfWYo/B1dTj6cGZFp3PRawiyYxgbgrzlRfR4pB2YjHNRrPRvdHqF8BhOJwuDAmEE0JZZvITWFgtyH0sFQFHEMnfDq2MERJHRTlP+dkFKIBAlEsfm9Rz8</Data>
+  <Skey ci="20200916">Mb+PX5flugYDD1dKKWxItXVcgXm7pVM5hI5D/Icr4GL+whUGfo6fwLAPcnGNZGOhO8MdmRJ+tDhw2G5jNtxuRupYf2K7ZDyL7gPtlVo2ByzzAhOI1y4duw3nBRky/Lvu8u322xOKOoAwzD3/GNtb0qk72hDhiMQzKS1iFe06CaFE9KyVMBNz7c/Qm+E1f23LC072m7CJ4dub4ulcjT4pa1+CQPTdCQNtnm7pyBKvW9Gzej/+upi3cbMlL+bYNoSQBZyRfMnqjWnNmmJ7LTi41K01lMuH5QAyY9ePTT0P8thub4uFB1WSnDy6u8cVk7CKl1bUnisZBOikU8d9+BK14w==</Skey>
+  <Hmac>QBv7H6mrO6wePEsLff5TMwtTRjRPjZ6+dVUFfkzCZTdP+IrNG2faVjoHPDrspBrH</Hmac>
+  <Data type="X">MjAxOC0wNC0wMlQxODoyNDo0NcW/XBsuHSjbpjguPHoX51jh013B+Q4K6JAmDdrKzHpVo8VhubES8wbplfIDj63cp26+Ht8L9EE3CaGDfrWdEmRaRkoRslQcAVApyK9S2c4He0/ZATowhShjvH2qZY8Dde7ke6VV9md+XBD4Y+9XxRban53MfVWI4vPMG+IKFTvQD5ZPWjYO6waf38V2X1jpdHLzgKLdaJkDafaTYcul6S7svJUNC+2VcG+TYoGwEOmXDR7prOV8TZAQSiyyuDg6pV0CKbm5uiziHGtz2M3p3lrW</Data>
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
@@ -14,10 +14,10 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
-        <DigestValue>G3WRASFAK6x1mBONdoy4gO5rS9E=</DigestValue>
+        <DigestValue>G2WSXafEOGNT/tdlrHH/Tn0hH5I=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>Hf/TgZQpW9PqHSxEZpT+j3AhgPOT1qeg4iIKt4eRSKnqSX6uUJXXfT0s8exS+9sHO5nq61Ey7G3ZoTV3hHpC2BDEyGof/p9O5fWRDW5soQ122gp/PQ5Qd0LfIyOETmpDBgCyc+b0rZLPU36eOrNkHPgcGiixKmP8QPBwmSp1J+N7cmWY89XisG2K0Szi9uEKa/VEN7ovHSBsPx/dGzKzm605OE9wttqjX0Jny9JZFWZaCaN1yFaOZ52UtiZXQqOQuCKPhKEbSF4BJvTt2wobPDSSNBfkB32JIscUNs40AIFxMpuvxv3iD6SfYp0g1K8p5Fj/Lc8dq9xM3aIncMQAMg==</SignatureValue>
+    <SignatureValue>TbxZMZ2yQ5NDlHUBwiwcdDuz3/kCUvihNrNCkLV/E3T7ST27Gv9jV4xLUgw3NSBVousbtClmacNpAnbVg9EquyBxzjOvIyEO8LoE24QqRYyS/bUT5ZShSFDmA5/dUOCcwUB6syhZFesDcstQpi1XRz5BRgVv19/DYXcA/z+pqPHuIRgc1GGYAavu0PFUoxACCOSuLkV+T/4r9DxKtOg6uwSGDkEI62b729GXwjADigLvl6YpMfP+xPelWlv0EjjYJcWyh1v2Zvdlgeb3W5uA/02lsIEG7s63s05bledfFMR04oVmUDzZJr+EkslrUQKr+Fcs9TSylCgyxZjtxiMaUA==</SignatureValue>
     <KeyInfo>
       <X509Data>
         <X509SubjectName>C=IN,ST=KA,L=Bangalore,O=Public AUA,OU=Staging Services,CN=Public AUA for Staging Services</X509SubjectName>

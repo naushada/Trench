@@ -132,7 +132,9 @@ int32_t redir_send_to_oauth2(uint32_t conn_id, uint8_t *oauth2_req, uint32_t oau
   return(0);
 }/*redir_send_to_oauth2*/
 
-int32_t redir_send_to_uidai(uint32_t conn_id, uint8_t *uidai_req, uint32_t uidai_req_len) {
+int32_t redir_send_to_uidai(uint32_t conn_id, 
+                            uint8_t *uidai_req, 
+                            uint32_t uidai_req_len) {
   
  redir_ctx_t *pRedirCtx = &redir_ctx_g;
 
@@ -1475,8 +1477,7 @@ int32_t redir_process_redirect_req(uint32_t conn_id,
 
   free(referer_ptr);
   referer_ptr = NULL;
-
-
+  return(0);
 }/*redir_process_redirect_req*/
 
 int32_t redir_is_connection_close(uint32_t conn_id) {
@@ -1530,7 +1531,7 @@ int32_t redir_process_req(uint32_t conn_id,
 
   //fprintf(stderr, "\n%s:%d REQ(%d) %s\n", __FILE__, __LINE__, conn_id, packet_ptr);
   redir_parse_req(conn_id, packet_ptr, packet_length);
-
+#if 0
   if(redir_is_connection_close(conn_id)) {
     /*Connection is being closed*/
     return(1);
@@ -1538,6 +1539,9 @@ int32_t redir_process_req(uint32_t conn_id,
   } else {
     redir_process_uri(conn_id, &redir_ptr, &redir_len);
   }
+#endif
+
+  redir_process_uri(conn_id, &redir_ptr, &redir_len);
 
   if(redir_len) {
     if(redir_send(conn_id, redir_ptr, redir_len) < 0) {
@@ -1757,14 +1761,14 @@ void *redir_main(void *argv) {
         new_conn = accept(pRedirCtx->redir_fd, 
                           (struct sockaddr *)&peer_addr, 
                           (socklen_t *)&peer_addr_len);
-#if 0
+
         fprintf(stderr, "\n%s:%d New Connection received conn %d ip %s (port %d)\n", 
                    __FILE__,
                    __LINE__,
                    new_conn, 
                    inet_ntoa(peer_addr.sin_addr),
                    ntohs(peer_addr.sin_port));
-#endif
+
         session = redir_add_session(new_conn); 
         session->peer_addr = peer_addr;
       } 
@@ -1815,7 +1819,6 @@ void *redir_main(void *argv) {
         } else {
           redir_process_uidai_response(pRedirCtx->uidaiC_fd, packet_buffer, packet_length);
         }
-
       }
 
       /*Process request either from UAM or un-authenticated subscriber*/
@@ -1830,10 +1833,12 @@ void *redir_main(void *argv) {
             redir_process_req(session->conn, 
                               packet_buffer, 
                               packet_length)) {
-            fprintf(stderr, "\n%s:%d src port %d being closed for zero length\n", 
+            fprintf(stderr, "\n%s:%d src port %d being closed for length %d (conn_id %d)\n", 
                           __FILE__,
                           __LINE__,
-                          ntohs(peer_addr.sin_port));
+                          ntohs(peer_addr.sin_port),
+                          packet_length,
+                          session->conn);
             /*Closing the connected conn_id*/
             close(session->conn);
             session->conn = 0;

@@ -190,7 +190,7 @@ uint32_t dns_perform_snat(int16_t fd,
 
     memset((void *)pDnsCtx->host_ip, 0, sizeof(pDnsCtx->host_ip));
     utility_ip_int_to_str(htonl(pDnsCtx->ns1_ip), pDnsCtx->host_ip);
-    dns_build_rr_reply(fd, packet_ptr, packet_length, 0);
+    dns_build_rr_reply(fd, packet_ptr, packet_length, 0/*TTL =0 do not cache*/);
 
   } else { 
 
@@ -566,7 +566,10 @@ uint32_t dns_build_rr_reply(int16_t fd,
   memcpy((void *)&rsp_ptr[offset], pDnsCtx->ns1_name, idx);
   offset += idx;
   
-  sscanf((const char *)pDnsCtx->domain_name, "%[^.].%s", label_str[0], label_str[1]);
+  sscanf((const char *)pDnsCtx->domain_name, 
+         "%[^.].%s", 
+         label_str[0], 
+         label_str[1]);
 
   idx = strlen((const char *)label_str[0]);
   rsp_ptr[offset++] = idx & 0xFF;
@@ -603,7 +606,8 @@ uint32_t dns_build_rr_reply(int16_t fd,
   /*populating length in respective Header filed*/ 
   ip_rsp_ptr->ip_tot_len = htons(offset - sizeof(struct eth));
   udp_rsp_ptr->udp_len   = htons(offset - (sizeof(struct eth) + sizeof(struct iphdr)));
-  ip_rsp_ptr->ip_chksum  = utility_cksum((void *)ip_rsp_ptr,  (sizeof(unsigned int) * ip_rsp_ptr->ip_len));
+  ip_rsp_ptr->ip_chksum  = utility_cksum((void *)ip_rsp_ptr,  
+                                         (sizeof(unsigned int) * ip_rsp_ptr->ip_len));
 
   udp_rsp_ptr->udp_chksum = utility_udp_checksum((uint8_t *)ip_rsp_ptr);
  
@@ -713,7 +717,7 @@ uint32_t dns_process_dns_query(int16_t fd,
                  strlen((const char *)pDnsCtx->qdata.qname[0].value));
 
           /*Prepare the RR (Resource Record for DNS Reply*/
-          dns_build_rr_reply(fd, packet_ptr, packet_length, 256);
+          dns_build_rr_reply(fd, packet_ptr, packet_length, 256/*TTL in sec*/);
 
         } else {
           /*DNS Request for ns1*/
@@ -726,7 +730,7 @@ uint32_t dns_process_dns_query(int16_t fd,
               memset((void *)pDnsCtx->host_ip, 0, sizeof(pDnsCtx->host_ip));
               utility_ip_int_to_str(htonl(pDnsCtx->ns1_ip), pDnsCtx->host_ip);
               /*Prepare the RR (Resource Record for DNS Reply*/
-              dns_build_rr_reply(fd, packet_ptr, packet_length, 256);
+              dns_build_rr_reply(fd, packet_ptr, packet_length, 256/*TTL in sec*/);
             } else {
               /*IP is not managed by this DHCP Server*/
               dns_perform_snat(fd, packet_ptr, packet_length);

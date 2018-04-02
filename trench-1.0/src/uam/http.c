@@ -1026,12 +1026,15 @@ int32_t http_is_connection_closed(uint32_t conn_id) {
   http_session_t *session = http_get_session(conn_id);
   assert(session != NULL);
 
-  for(idx = 0; idx < session->mime_header_count; idx++) {
-    if((!strncmp(session->mime_header[idx][0], "Connection", 10)) &&
-       (!strncmp(session->mime_header[idx][1], "close", 5))) {
-      return(1);
-    }  
+  if(!strncmp(session->method, "HTTP/1.0", 8)) {
+    for(idx = 0; idx < session->mime_header_count; idx++) {
+      if((!strncmp(session->mime_header[idx][0], "Connection", 10)) &&
+         (!strncmp(session->mime_header[idx][1], "close", 5))) {
+        return(1);
+      }  
+    }
   }
+
   return(0);
 }/*http_is_connection_closed*/
 
@@ -1133,10 +1136,6 @@ int32_t http_parse_req(uint32_t conn_id,
   free(tmp_ptr);
   tmp_ptr = NULL;
 
-  if(http_is_connection_closed(conn_id)) {
-    return(1);
-  }
- 
   return(0);  
 }/*http_parse_req*/
 
@@ -1642,8 +1641,8 @@ int32_t http_process_aadhaar_ui_req(uint32_t conn_id,
                            /*For Responsive Web Page*/
                            "<style> .box1 {",
                            "position:absolute;",
-                           "top: 60%;left: 60%;height:14em;margin-top: -9em;",
-                           "margin-left: -15em;border: none;background-color: #ffffff;}",
+                           "top: 40%;left: 60%;height:14em;margin-top: 2%;",
+                           "margin-left: 10%;border: none;background-color: #ffffff;}",
                            "</style></head>",
                            "<body><div id=aadhaar_pi class=\"box1\">",
                            "<fieldset><legend>Aadhaar Pi + OTP</legend>",
@@ -1708,14 +1707,14 @@ int32_t http_process_ui_req(uint32_t conn_id,
                            "<title>"
                            "</title>"
                            "<style>",
-                           ".box2 { position:absolute; top: 50%; left: 64%; height:14em; margin-top: -9em;", 
-                           "margin-left: -15em;", 
+                           ".box2 { position:absolute; top: 30%; left: 30%; height:14em; margin-top: -9em;", 
+                           "margin-left: 1em;", 
                            "border: none;",
                            "background-color: white;",
                            "border-left-style: solid;}",
                            ".box1 {",
-                           "position:absolute;top: 50%;left: 50%;height:14em;margin-top: -9em;",
-                           "margin-left: -15em;border: none;background-color: #ffffff;}",
+                           "position:absolute;top: 30%;left: 20%;height:14em;margin-top: -9em;",
+                           "margin-left:1em ;border: none;background-color: #ffffff;}",
                            "</style></head><body>",
                            "<div class=\"box2\">",
                            "<table><tr>",
@@ -1930,6 +1929,7 @@ int32_t http_process_req(uint32_t conn_id,
 
     free(http_ptr);
     http_ptr = NULL;
+    //return(http_is_connection_closed(conn_id));
   }
 
   return(0);

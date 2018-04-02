@@ -661,6 +661,7 @@ int32_t auth_skey(uint8_t *b64_skey, uint16_t b64_skey_size) {
   uint8_t mm[4];
   uint8_t yyyy[8];
   uint8_t *tmp_ptr = NULL;
+  char *save_ptr = NULL;
   uint16_t idx;
   int32_t rc;
   uint8_t *mm_str[] = {"Dummy", "Jan", "Feb", 
@@ -712,12 +713,12 @@ int32_t auth_skey(uint8_t *b64_skey, uint16_t b64_skey_size) {
     return(-4);
   }
 
-  tmp_ptr = strtok(not_after, " ");
+  tmp_ptr = strtok_r(not_after, " ", &save_ptr);
   strncpy(mm, tmp_ptr, strlen((const char *)tmp_ptr));  
-  tmp_ptr = strtok(NULL, " ");
+  tmp_ptr = strtok_r(NULL, " ", &save_ptr);
   strncpy(dd, tmp_ptr, strlen((const char *)tmp_ptr));
-  tmp_ptr = strtok(NULL, " ");
-  tmp_ptr = strtok(NULL, " ");
+  tmp_ptr = strtok_r(NULL, " ", &save_ptr);
+  tmp_ptr = strtok_r(NULL, " ", &save_ptr);
   strncpy(yyyy, tmp_ptr, strlen((const char *)tmp_ptr));
  
   for(idx = 0; mm_str[idx]; idx++) {
@@ -963,19 +964,20 @@ int32_t auth_auth_xml(uint8_t *auth_xml,
   uint16_t meta_size = sizeof(meta);
   uint8_t c14n_meta[512];
   uint16_t c14n_meta_size = sizeof(c14n_meta);
-  uint8_t skey[1024];
+  uint8_t skey[512];
   uint16_t skey_size = sizeof(skey);
   uint8_t pid_otp_xml[1024];
   uint16_t pid_otp_xml_size = sizeof(pid_otp_xml);
-  uint8_t hmac[1024];
+  uint8_t hmac[512];
   uint16_t hmac_size = sizeof(hmac);
   uint8_t data[1024];
   uint16_t data_size = sizeof(data);
   uint16_t auth_xml_len = 0;
-  uint8_t b64_digest[1024];
-  uint8_t b64_signature[2048];
-  uint8_t b64_subject[1024];
-  uint8_t b64_certificate[2048];
+  uint8_t *b64_digest;
+  uint8_t *b64_signature;
+  uint8_t *b64_subject;
+  uint8_t *b64_certificate;
+  uint32_t b64_max_size = 2048;
   uint16_t tmp_len = 0;
 
   /*Uses Tag of Final AUTH XML <Uses .../>*/  
@@ -1011,11 +1013,23 @@ int32_t auth_auth_xml(uint8_t *auth_xml,
                      hmac, 
                      data);
 
+  b64_digest = (uint8_t *)malloc(sizeof(uint8_t) * b64_max_size);
+  b64_signature = (uint8_t *)malloc(sizeof(uint8_t) * b64_max_size);
+  b64_subject = (uint8_t *)malloc(sizeof(uint8_t) * b64_max_size);
+  b64_certificate = (uint8_t *)malloc(sizeof(uint8_t) * b64_max_size);
+
+  if(!b64_digest || 
+     !b64_signature ||
+     !b64_subject ||
+     !b64_certificate) {
+    fprintf(stderr, "\n%s:%d Memory allocation failed\n", __FILE__, __LINE__);
+    return(1);
+  }
   /*compute the digest, signature, subject and certificate*/
-  memset((void *)b64_digest, 0, sizeof(b64_digest));
-  memset((void *)b64_signature, 0, sizeof(b64_signature));
-  memset((void *)b64_subject, 0, sizeof(b64_subject));
-  memset((void *)b64_certificate, 0, sizeof(b64_certificate));
+  memset((void *)b64_digest, 0, b64_max_size);
+  memset((void *)b64_signature, 0, b64_max_size);
+  memset((void *)b64_subject, 0, b64_max_size);
+  memset((void *)b64_certificate, 0, b64_max_size);
 
   auth_c14n_sign(auth_xml,
                  b64_digest,
@@ -1049,6 +1063,12 @@ int32_t auth_auth_xml(uint8_t *auth_xml,
            auth_xml_size, 
            "%s", 
            "</Auth>");
+
+  /*free the allocated memory*/
+  free(b64_digest);
+  free(b64_signature);
+  free(b64_subject);
+  free(b64_certificate);
 
   /*Writing xml into file*/
   auth_dump_xml(auth_xml, strlen(auth_xml));

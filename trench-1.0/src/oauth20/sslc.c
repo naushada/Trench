@@ -11,7 +11,6 @@ sslc_ctx_t sslc_ctx_g;
 int32_t sslc_close(uint32_t oauth2_fd) {
 
   sslc_session_t *session = NULL;
-
   session = sslc_get_session(oauth2_fd);
   
   if(session) {
@@ -28,7 +27,6 @@ int32_t sslc_init(void) {
   SSL_CTX    *ctx;
   sslc_ctx_t *pSslcCtx = &sslc_ctx_g;
 
-  //method = TLS_method();              /* Create new client-method instance */
   method = TLS_client_method();
   ctx = SSL_CTX_new(method);          /* Create new context */
 
@@ -92,7 +90,10 @@ int32_t sslc_get_ipaddr(uint8_t *host_name, uint8_t *ip_str) {
   return(1);
 }/*sslc_get_ipaddr*/
 
-int32_t sslc_connect(uint8_t *host_name, uint32_t port, uint32_t *tcp_fd, uint8_t *req_ptr) {
+int32_t sslc_connect(uint8_t *host_name, 
+                     uint32_t port, 
+                     uint32_t *tcp_fd, 
+                     uint8_t *req_ptr) {
   sslc_ctx_t *pSslcCtx = &sslc_ctx_g;
   int32_t fd;
   struct sockaddr_in addr;
@@ -169,7 +170,10 @@ int32_t sslc_connect(uint8_t *host_name, uint32_t port, uint32_t *tcp_fd, uint8_
   SSL_set_fd(new_session->ssl_fd, new_session->tcp_fd);
 
   if((ret = SSL_connect(new_session->ssl_fd)) < 0) {
-    fprintf(stderr, "\n%s:%d SSL Connect failed %d\n", __FILE__, __LINE__, SSL_get_error(new_session->ssl_fd, ret));
+    fprintf(stderr, "\n%s:%d SSL Connect failed %d\n", 
+                    __FILE__, 
+                    __LINE__, 
+                    SSL_get_error(new_session->ssl_fd, ret));
     SSL_free(new_session->ssl_fd);
     close(fd);
     free(new_session);
@@ -202,7 +206,6 @@ sslc_session_t *sslc_get_session(uint32_t tcp_fd) {
     if(tcp_fd == tmp_session->tcp_fd) {
       return(tmp_session);
     } 
-
     tmp_session = tmp_session->next;
   }
 
@@ -317,9 +320,9 @@ int32_t sslc_pre_process_rsp(uint8_t *req_ptr,
                              uint32_t req_len) {
   uint8_t *tmp_ptr = NULL;
   uint8_t *line_ptr = NULL;
+  char *save_ptr = NULL;
   uint8_t is_response_chunked = 0;
   uint16_t payload_len = 0;
-  uint8_t is_start_chunked = 0;
   uint8_t is_end_chunked = 0;
 
   if(!req_len) {
@@ -332,32 +335,23 @@ int32_t sslc_pre_process_rsp(uint8_t *req_ptr,
   memcpy((void *)tmp_ptr, req_ptr, req_len);
 
   /*Parse the Response*/
-  line_ptr = strtok(tmp_ptr, "\n");
+  line_ptr = strtok_r(tmp_ptr, "\r\n", &save_ptr);
   while(line_ptr != NULL) {
 
-    if(!strncmp(line_ptr, "\r",1)) {
-      line_ptr = strtok(NULL, "\n");
-
-      if(line_ptr) {
-        is_start_chunked = 1;
-
-      } else if(is_start_chunked && !line_ptr) {
-        /*end chunked length will be ZERO*/
+    if(is_response_chunked) {
+      if(!strncmp(line_ptr, "0", 1)) {
         is_end_chunked = 1;
-      }
-
+      } 
     } else if(!strncmp(line_ptr, "Transfer-Encoding: chunked", 26)) {
       /*Response received in chunked*/
       is_response_chunked = 1;
 
     } else if(!strncmp(line_ptr, "Content-Length:", 15)) {
       /*Response is not chunked*/
-      is_response_chunked = 0;
+      free(tmp_ptr);
       return(0);
     }
-
-    line_ptr = NULL;
-    line_ptr = strtok(NULL, "\n");
+    line_ptr = strtok_r(NULL, "\r\n", &save_ptr);
   }
 
   if(is_response_chunked && is_end_chunked) {
