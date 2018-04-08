@@ -114,7 +114,8 @@ am__objects_4 = acc/Trench-utility.$(OBJEXT) acc/Trench-net.$(OBJEXT) \
 	acc/Trench-arp.$(OBJEXT) acc/Trench-dhcp.$(OBJEXT) \
 	acc/Trench-icmp.$(OBJEXT) acc/Trench-tcp.$(OBJEXT) \
 	acc/Trench-subscriber.$(OBJEXT) acc/Trench-radiusC.$(OBJEXT) \
-	acc/Trench-md5.$(OBJEXT) acc/Trench-acc.$(OBJEXT)
+	acc/Trench-md5.$(OBJEXT) acc/Trench-eapol.$(OBJEXT) \
+	acc/Trench-acc.$(OBJEXT)
 am_Trench_OBJECTS = $(am__objects_1) $(am__objects_2) $(am__objects_3) \
 	$(am__objects_4)
 Trench_OBJECTS = $(am_Trench_OBJECTS)
@@ -353,6 +354,7 @@ ACC_SRC = acc/utility.c \
           acc/subscriber.c \
           acc/radiusC.c \
           acc/md5.c \
+          acc/eapol.c \
           acc/acc.c
 
 ACC_INC = ../inc/type.h \
@@ -365,7 +367,6 @@ ACC_INC = ../inc/type.h \
           ../inc/icmp.h \
           ../inc/nat.h \
           ../inc/net.h \
-          ../inc/packet.h \
           ../inc/tcp.h  \
           ../inc/timer.h \
           ../inc/transport.h \
@@ -374,6 +375,7 @@ ACC_INC = ../inc/type.h \
           ../inc/radiusC.h \
           ../inc/redir.h \
           ../inc/subscriber.h \
+          ../inc/eapol.h \
           ../inc/acc.h
 
 Trench_SOURCES = $(UIDAI_SRC) \
@@ -534,6 +536,8 @@ acc/Trench-radiusC.$(OBJEXT): acc/$(am__dirstamp) \
 	acc/$(DEPDIR)/$(am__dirstamp)
 acc/Trench-md5.$(OBJEXT): acc/$(am__dirstamp) \
 	acc/$(DEPDIR)/$(am__dirstamp)
+acc/Trench-eapol.$(OBJEXT): acc/$(am__dirstamp) \
+	acc/$(DEPDIR)/$(am__dirstamp)
 acc/Trench-acc.$(OBJEXT): acc/$(am__dirstamp) \
 	acc/$(DEPDIR)/$(am__dirstamp)
 
@@ -556,6 +560,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-db.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-dhcp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-dns.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-eapol.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-icmp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-md5.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-nat.Po@am__quote@
@@ -898,6 +903,20 @@ acc/Trench-md5.obj: acc/md5.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/md5.c' object='acc/Trench-md5.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-md5.obj `if test -f 'acc/md5.c'; then $(CYGPATH_W) 'acc/md5.c'; else $(CYGPATH_W) '$(srcdir)/acc/md5.c'; fi`
+
+acc/Trench-eapol.o: acc/eapol.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-eapol.o -MD -MP -MF acc/$(DEPDIR)/Trench-eapol.Tpo -c -o acc/Trench-eapol.o `test -f 'acc/eapol.c' || echo '$(srcdir)/'`acc/eapol.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-eapol.Tpo acc/$(DEPDIR)/Trench-eapol.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/eapol.c' object='acc/Trench-eapol.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-eapol.o `test -f 'acc/eapol.c' || echo '$(srcdir)/'`acc/eapol.c
+
+acc/Trench-eapol.obj: acc/eapol.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-eapol.obj -MD -MP -MF acc/$(DEPDIR)/Trench-eapol.Tpo -c -o acc/Trench-eapol.obj `if test -f 'acc/eapol.c'; then $(CYGPATH_W) 'acc/eapol.c'; else $(CYGPATH_W) '$(srcdir)/acc/eapol.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-eapol.Tpo acc/$(DEPDIR)/Trench-eapol.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/eapol.c' object='acc/Trench-eapol.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-eapol.obj `if test -f 'acc/eapol.c'; then $(CYGPATH_W) 'acc/eapol.c'; else $(CYGPATH_W) '$(srcdir)/acc/eapol.c'; fi`
 
 acc/Trench-acc.o: acc/acc.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-acc.o -MD -MP -MF acc/$(DEPDIR)/Trench-acc.Tpo -c -o acc/Trench-acc.o `test -f 'acc/acc.c' || echo '$(srcdir)/'`acc/acc.c

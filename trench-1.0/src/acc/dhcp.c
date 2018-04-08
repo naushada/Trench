@@ -6,6 +6,7 @@
 #include <pthread.h>
 #include <db.h>
 #include <transport.h>
+#include <eapol.h>
 #include <utility.h>
 #include <dhcp.h>
 #include <tcp.h>
@@ -355,6 +356,14 @@ int32_t dhcp_process_eth_frame(int32_t fd,
  
   } else if (ETH_P_ARP == ntohs(eth_hdr_ptr->h_proto)) {
     arp_main(fd, packet_ptr, packet_length); 
+
+  } else if(ETH_P_EAPOL == ntohs(eth_hdr_ptr->h_proto)) {
+    /*eapol - eap over LAN*/
+    eapol_main(fd, packet_ptr, (uint32_t)packet_length);
+
+  } else if(ntohs(eth_hdr_ptr->h_proto) <= 1500) {
+    /*802.3 Ethernet Frame*/
+    utility_hex_dump(packet_ptr, packet_length);
   }
 
   return(0);

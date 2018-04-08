@@ -1,6 +1,32 @@
 #ifndef __TRANSPORT_H__
 #define __TRANSPORT_H__
 
+/* ARP protocol opcodes. */
+#define ARPOP_REQUEST   1               /* ARP request                  */
+#define ARPOP_REPLY     2               /* ARP reply                    */
+#define ARPOP_RREQUEST  3               /* RARP request                 */
+#define ARPOP_RREPLY    4               /* RARP reply                   */
+#define ARPOP_InREQUEST 8               /* InARP request                */
+#define ARPOP_InREPLY   9               /* InARP reply                  */
+#define ARPOP_NAK       10              /* (ATM)ARP NAK                 */
+
+#define ARPHRD_ETHER    1               /* Ethernet 10Mbps              */
+
+#define ETH_ALEN        6               /* Octets in one ethernet addr  */
+#define ETH_P_ARP       0x0806          /* Address Resolution packet    */
+#define ETH_P_IP        0x0800          /* Internet Protocol packet     */
+#define ETH_P_ALL       0x0003          /* Every packet (be careful!!!) */
+#define ETH_P_WOL       0x0842
+#define ETH_P_ETHBR     0x6558
+#define ETH_P_8021Q     0x8100
+#define ETH_P_IPX       0x8137
+#define ETH_P_IPv6      0x86dd
+#define ETH_P_PPP       0x880b
+#define ETH_P_PPPOED    0x8863
+#define ETH_P_PPPOES    0x8864
+#define ETH_P_EAPOL     0x888e
+
+
 struct arp {
 uint16_t  ar_hrd;          /*Hardware Type*/
 uint16_t  ar_pro;          /*Protocol Type*/

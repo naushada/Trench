@@ -62,6 +62,7 @@ ACC_SRC = acc/utility.c \
           acc/subscriber.c \
           acc/radiusC.c \
           acc/md5.c \
+          acc/eapol.c \
           acc/acc.c
 
 ACC_INC = ../inc/type.h \
@@ -74,7 +75,6 @@ ACC_INC = ../inc/type.h \
           ../inc/icmp.h \
           ../inc/nat.h \
           ../inc/net.h \
-          ../inc/packet.h \
           ../inc/tcp.h  \
           ../inc/timer.h \
           ../inc/transport.h \
@@ -83,6 +83,7 @@ ACC_INC = ../inc/type.h \
           ../inc/radiusC.h \
           ../inc/redir.h \
           ../inc/subscriber.h \
+          ../inc/eapol.h \
           ../inc/acc.h
 
 Trench_SOURCES = $(UIDAI_SRC) \
