@@ -6,7 +6,7 @@
 #include <pthread.h>
 #include <db.h>
 #include <transport.h>
-#include <eapol.h>
+#include <eapol/eapol.h>
 #include <utility.h>
 #include <dhcp.h>
 #include <tcp.h>

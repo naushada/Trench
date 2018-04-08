@@ -47,6 +47,10 @@ OAUTH20_SRC = oauth20/sslc.c \
 OAUTH20_INC = oauth20/sslc.h \
               oauth20/oauth20.h
 
+EAPOL_SRC = eapol/eapol.c
+
+EAPOL_INC = eapol/eapol.h
+
 ACC_SRC = acc/utility.c \
           acc/net.c \
           acc/tun.c \
@@ -62,7 +66,6 @@ ACC_SRC = acc/utility.c \
           acc/subscriber.c \
           acc/radiusC.c \
           acc/md5.c \
-          acc/eapol.c \
           acc/acc.c
 
 ACC_INC = ../inc/type.h \
@@ -83,17 +86,18 @@ ACC_INC = ../inc/type.h \
           ../inc/radiusC.h \
           ../inc/redir.h \
           ../inc/subscriber.h \
-          ../inc/eapol.h \
           ../inc/acc.h
 
 Trench_SOURCES = $(UIDAI_SRC) \
                  $(UAM_SRC) \
                  $(OAUTH20_SRC) \
+                 $(EAPOL_SRC) \
                  $(ACC_SRC)
         
 Trench_HEADERS = $(UIDAI_INC) \
                  $(UAM_INC) \
                  $(OAUTH20_INC) \
+                 $(EAPOL_INC) \
                  $(ACC_INC)
              
 Trench_LDFLAGS = $(AM_LDFLAGS)

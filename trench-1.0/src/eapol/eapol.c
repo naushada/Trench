@@ -4,7 +4,7 @@
 #include <common.h>
 #include <transport.h>
 #include <type.h>
-#include <eapol.h>
+#include "eapol.h"
 
 eapol_ctx_t eapol_ctx_g;
 

@@ -6,7 +6,7 @@
 #include <signal.h>
 #include <pthread.h>
 #include <type.h>
-#include <eapol.h>
+#include <eapol/eapol.h>
 #include <dhcp.h>
 #include <dns.h>
 #include <acc.h>

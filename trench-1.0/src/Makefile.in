@@ -107,17 +107,17 @@ am__objects_1 = uidai/Trench-util.$(OBJEXT) \
 am__objects_2 = uam/Trench-http.$(OBJEXT)
 am__objects_3 = oauth20/Trench-sslc.$(OBJEXT) \
 	oauth20/Trench-oauth20.$(OBJEXT)
-am__objects_4 = acc/Trench-utility.$(OBJEXT) acc/Trench-net.$(OBJEXT) \
+am__objects_4 = eapol/Trench-eapol.$(OBJEXT)
+am__objects_5 = acc/Trench-utility.$(OBJEXT) acc/Trench-net.$(OBJEXT) \
 	acc/Trench-tun.$(OBJEXT) acc/Trench-db.$(OBJEXT) \
 	acc/Trench-nat.$(OBJEXT) acc/Trench-redir.$(OBJEXT) \
 	acc/Trench-timer.$(OBJEXT) acc/Trench-dns.$(OBJEXT) \
 	acc/Trench-arp.$(OBJEXT) acc/Trench-dhcp.$(OBJEXT) \
 	acc/Trench-icmp.$(OBJEXT) acc/Trench-tcp.$(OBJEXT) \
 	acc/Trench-subscriber.$(OBJEXT) acc/Trench-radiusC.$(OBJEXT) \
-	acc/Trench-md5.$(OBJEXT) acc/Trench-eapol.$(OBJEXT) \
-	acc/Trench-acc.$(OBJEXT)
+	acc/Trench-md5.$(OBJEXT) acc/Trench-acc.$(OBJEXT)
 am_Trench_OBJECTS = $(am__objects_1) $(am__objects_2) $(am__objects_3) \
-	$(am__objects_4)
+	$(am__objects_4) $(am__objects_5)
 Trench_OBJECTS = $(am_Trench_OBJECTS)
 Trench_LDADD = $(LDADD)
 Trench_LINK = $(CCLD) $(Trench_CFLAGS) $(CFLAGS) $(Trench_LDFLAGS) \
@@ -339,6 +339,8 @@ OAUTH20_SRC = oauth20/sslc.c \
 OAUTH20_INC = oauth20/sslc.h \
               oauth20/oauth20.h
 
+EAPOL_SRC = eapol/eapol.c
+EAPOL_INC = eapol/eapol.h
 ACC_SRC = acc/utility.c \
           acc/net.c \
           acc/tun.c \
@@ -354,7 +356,6 @@ ACC_SRC = acc/utility.c \
           acc/subscriber.c \
           acc/radiusC.c \
           acc/md5.c \
-          acc/eapol.c \
           acc/acc.c
 
 ACC_INC = ../inc/type.h \
@@ -375,17 +376,18 @@ ACC_INC = ../inc/type.h \
           ../inc/radiusC.h \
           ../inc/redir.h \
           ../inc/subscriber.h \
-          ../inc/eapol.h \
           ../inc/acc.h
 
 Trench_SOURCES = $(UIDAI_SRC) \
                  $(UAM_SRC) \
                  $(OAUTH20_SRC) \
+                 $(EAPOL_SRC) \
                  $(ACC_SRC)
 
 Trench_HEADERS = $(UIDAI_INC) \
                  $(UAM_INC) \
                  $(OAUTH20_INC) \
+                 $(EAPOL_INC) \
                  $(ACC_INC)
 
 Trench_LDFLAGS = $(AM_LDFLAGS)
@@ -500,6 +502,14 @@ oauth20/Trench-sslc.$(OBJEXT): oauth20/$(am__dirstamp) \
 	oauth20/$(DEPDIR)/$(am__dirstamp)
 oauth20/Trench-oauth20.$(OBJEXT): oauth20/$(am__dirstamp) \
 	oauth20/$(DEPDIR)/$(am__dirstamp)
+eapol/$(am__dirstamp):
+	@$(MKDIR_P) eapol
+	@: > eapol/$(am__dirstamp)
+eapol/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) eapol/$(DEPDIR)
+	@: > eapol/$(DEPDIR)/$(am__dirstamp)
+eapol/Trench-eapol.$(OBJEXT): eapol/$(am__dirstamp) \
+	eapol/$(DEPDIR)/$(am__dirstamp)
 acc/$(am__dirstamp):
 	@$(MKDIR_P) acc
 	@: > acc/$(am__dirstamp)
@@ -536,8 +546,6 @@ acc/Trench-radiusC.$(OBJEXT): acc/$(am__dirstamp) \
 	acc/$(DEPDIR)/$(am__dirstamp)
 acc/Trench-md5.$(OBJEXT): acc/$(am__dirstamp) \
 	acc/$(DEPDIR)/$(am__dirstamp)
-acc/Trench-eapol.$(OBJEXT): acc/$(am__dirstamp) \
-	acc/$(DEPDIR)/$(am__dirstamp)
 acc/Trench-acc.$(OBJEXT): acc/$(am__dirstamp) \
 	acc/$(DEPDIR)/$(am__dirstamp)
 
@@ -548,6 +556,7 @@ Trench$(EXEEXT): $(Trench_OBJECTS) $(Trench_DEPENDENCIES) $(EXTRA_Trench_DEPENDE
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
 	-rm -f acc/*.$(OBJEXT)
+	-rm -f eapol/*.$(OBJEXT)
 	-rm -f oauth20/*.$(OBJEXT)
 	-rm -f uam/*.$(OBJEXT)
 	-rm -f uidai/*.$(OBJEXT)
@@ -560,7 +569,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-db.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-dhcp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-dns.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-eapol.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-icmp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-md5.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-nat.Po@am__quote@
@@ -572,6 +580,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-timer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-tun.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-utility.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@eapol/$(DEPDIR)/Trench-eapol.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@oauth20/$(DEPDIR)/Trench-oauth20.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@oauth20/$(DEPDIR)/Trench-sslc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@uam/$(DEPDIR)/Trench-http.Po@am__quote@
@@ -693,6 +702,20 @@ oauth20/Trench-oauth20.obj: oauth20/oauth20.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='oauth20/oauth20.c' object='oauth20/Trench-oauth20.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o oauth20/Trench-oauth20.obj `if test -f 'oauth20/oauth20.c'; then $(CYGPATH_W) 'oauth20/oauth20.c'; else $(CYGPATH_W) '$(srcdir)/oauth20/oauth20.c'; fi`
+
+eapol/Trench-eapol.o: eapol/eapol.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT eapol/Trench-eapol.o -MD -MP -MF eapol/$(DEPDIR)/Trench-eapol.Tpo -c -o eapol/Trench-eapol.o `test -f 'eapol/eapol.c' || echo '$(srcdir)/'`eapol/eapol.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) eapol/$(DEPDIR)/Trench-eapol.Tpo eapol/$(DEPDIR)/Trench-eapol.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='eapol/eapol.c' object='eapol/Trench-eapol.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o eapol/Trench-eapol.o `test -f 'eapol/eapol.c' || echo '$(srcdir)/'`eapol/eapol.c
+
+eapol/Trench-eapol.obj: eapol/eapol.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT eapol/Trench-eapol.obj -MD -MP -MF eapol/$(DEPDIR)/Trench-eapol.Tpo -c -o eapol/Trench-eapol.obj `if test -f 'eapol/eapol.c'; then $(CYGPATH_W) 'eapol/eapol.c'; else $(CYGPATH_W) '$(srcdir)/eapol/eapol.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) eapol/$(DEPDIR)/Trench-eapol.Tpo eapol/$(DEPDIR)/Trench-eapol.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='eapol/eapol.c' object='eapol/Trench-eapol.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o eapol/Trench-eapol.obj `if test -f 'eapol/eapol.c'; then $(CYGPATH_W) 'eapol/eapol.c'; else $(CYGPATH_W) '$(srcdir)/eapol/eapol.c'; fi`
 
 acc/Trench-utility.o: acc/utility.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-utility.o -MD -MP -MF acc/$(DEPDIR)/Trench-utility.Tpo -c -o acc/Trench-utility.o `test -f 'acc/utility.c' || echo '$(srcdir)/'`acc/utility.c
@@ -904,20 +927,6 @@ acc/Trench-md5.obj: acc/md5.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-md5.obj `if test -f 'acc/md5.c'; then $(CYGPATH_W) 'acc/md5.c'; else $(CYGPATH_W) '$(srcdir)/acc/md5.c'; fi`
 
-acc/Trench-eapol.o: acc/eapol.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-eapol.o -MD -MP -MF acc/$(DEPDIR)/Trench-eapol.Tpo -c -o acc/Trench-eapol.o `test -f 'acc/eapol.c' || echo '$(srcdir)/'`acc/eapol.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-eapol.Tpo acc/$(DEPDIR)/Trench-eapol.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/eapol.c' object='acc/Trench-eapol.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-eapol.o `test -f 'acc/eapol.c' || echo '$(srcdir)/'`acc/eapol.c
-
-acc/Trench-eapol.obj: acc/eapol.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-eapol.obj -MD -MP -MF acc/$(DEPDIR)/Trench-eapol.Tpo -c -o acc/Trench-eapol.obj `if test -f 'acc/eapol.c'; then $(CYGPATH_W) 'acc/eapol.c'; else $(CYGPATH_W) '$(srcdir)/acc/eapol.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-eapol.Tpo acc/$(DEPDIR)/Trench-eapol.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='acc/eapol.c' object='acc/Trench-eapol.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o acc/Trench-eapol.obj `if test -f 'acc/eapol.c'; then $(CYGPATH_W) 'acc/eapol.c'; else $(CYGPATH_W) '$(srcdir)/acc/eapol.c'; fi`
-
 acc/Trench-acc.o: acc/acc.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-acc.o -MD -MP -MF acc/$(DEPDIR)/Trench-acc.Tpo -c -o acc/Trench-acc.o `test -f 'acc/acc.c' || echo '$(srcdir)/'`acc/acc.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) acc/$(DEPDIR)/Trench-acc.Tpo acc/$(DEPDIR)/Trench-acc.Po
@@ -1070,6 +1079,8 @@ distclean-generic:
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
 	-rm -f acc/$(DEPDIR)/$(am__dirstamp)
 	-rm -f acc/$(am__dirstamp)
+	-rm -f eapol/$(DEPDIR)/$(am__dirstamp)
+	-rm -f eapol/$(am__dirstamp)
 	-rm -f oauth20/$(DEPDIR)/$(am__dirstamp)
 	-rm -f oauth20/$(am__dirstamp)
 	-rm -f uam/$(DEPDIR)/$(am__dirstamp)
@@ -1085,7 +1096,7 @@ clean: clean-am
 clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
 
 distclean: distclean-am
-	-rm -rf acc/$(DEPDIR) oauth20/$(DEPDIR) uam/$(DEPDIR) uidai/$(DEPDIR)
+	-rm -rf acc/$(DEPDIR) eapol/$(DEPDIR) oauth20/$(DEPDIR) uam/$(DEPDIR) uidai/$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -1131,7 +1142,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-	-rm -rf acc/$(DEPDIR) oauth20/$(DEPDIR) uam/$(DEPDIR) uidai/$(DEPDIR)
+	-rm -rf acc/$(DEPDIR) eapol/$(DEPDIR) oauth20/$(DEPDIR) uam/$(DEPDIR) uidai/$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
