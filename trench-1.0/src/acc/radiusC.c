@@ -107,6 +107,41 @@ int32_t radiusC_sendto(uint8_t *packet_ptr, uint16_t packet_length) {
   return(0);
 }/*radiusC_sendto*/
 
+int32_t radiusC_process_access_challenge(access_challenge_t *rsp_ptr,
+                                         uint8_t *packet_ptr,
+                                         uint32_t packet_length) {
+  radiusS_message_header_t *header_ptr;
+  radiusS_attr_t *attr_ptr;
+  uint16_t offset = 0;
+  uint8_t flag = 0;
+
+  do {
+    attr_ptr = (radiusS_attr_t *)&packet_ptr[offset];
+
+    switch(attr_ptr->type) {
+
+      case EAP_MESSAGE:
+        rsp_ptr->eap_len = ntohs(attr_ptr->len);
+        memset((void *)rsp_ptr->eap, 
+               0, 
+               sizeof(rsp_ptr->eap));
+        strncpy((char *)rsp_ptr->eap, 
+                (const char *)attr_ptr->value, 
+                ntohs(attr_ptr->len));
+        offset += ntohs(attr_ptr->len);
+        flag = 1;
+        break;
+
+      default:
+        offset += ntohs(attr_ptr->len);
+        break;
+    }
+
+  }while((offset < packet_length) && !flag);
+
+ return(0); 
+}/*radiusC_process_access_challenge*/
+
 int32_t radiusC_process_access_reject(access_reject_t *rsp_ptr,
                                       uint8_t *packet_ptr,
                                       uint16_t packet_length) {
@@ -164,37 +199,37 @@ int32_t radiusC_process_access_accept(access_accept_t *rsp_ptr,
 
     switch(attr_ptr->type) {
       case USER_NAME:
-        rsp_ptr->user_name_len = attr_ptr->len - 2;
+        rsp_ptr->user_name_len = ntohs(attr_ptr->len) - 2;
         memset((void *)rsp_ptr->user_name, 
                0, 
                sizeof(rsp_ptr->user_name));
         strncpy((char *)rsp_ptr->user_name, 
                 (const char *)attr_ptr->value, 
                 /*-2 is because length includes type and len*/
-                (attr_ptr->len - 2));
-        offset += attr_ptr->len;
+                (ntohs(attr_ptr->len) - 2));
+        offset += ntohs(attr_ptr->len);
       break;
 
       case CALLING_STATION_ID:
-        rsp_ptr->calling_station_id_len = attr_ptr->len - 2;
+        rsp_ptr->calling_station_id_len = ntohs(attr_ptr->len) - 2;
         memset((void *)rsp_ptr->calling_station_id, 
                0, 
                sizeof(rsp_ptr->calling_station_id));
         strncpy((char *)rsp_ptr->calling_station_id, 
                 (const char *)attr_ptr->value, 
                 /*-2 is because length includes type and len*/
-                (attr_ptr->len - 2));
-        offset += attr_ptr->len;
+                (ntohs(attr_ptr->len) - 2));
+        offset += ntohs(attr_ptr->len);
       break;
 
       case VENDOR_SPECIFIC:
         rsp_ptr->txn_id = 0;
         rsp_ptr->txn_id = (*(uint32_t *)attr_ptr->value);
-        offset += attr_ptr->len;
+        offset += ntohs(attr_ptr->len);
       break;
 
       default:
-        offset += attr_ptr->len;
+        offset += ntohs(attr_ptr->len);
       break;
     }
   }while(offset < packet_length);
@@ -311,7 +346,16 @@ int32_t radiusC_process_request(uint32_t uam_conn,
                encoded_password_len);
         offset += encoded_password_len;
       }
-      
+     
+      if(req->access_req.eap_len) {
+        /*encode EAP attribute*/
+        radiusS_buffer[offset++] =  EAP_MESSAGE;
+        radiusS_buffer[offset++] =  req->access_req.eap_len + 2;
+        memcpy((void *)&radiusS_buffer[offset], 
+               (const char *)req->access_req.eap, 
+               req->access_req.eap_len);
+      }
+ 
       /*NAS-IP-Address*/
       radiusS_buffer[offset++] = NAS_IP_ADDRESS;
       radiusS_buffer[offset++] = 4 + 2;
@@ -416,7 +460,16 @@ int32_t radiusC_parse_radiusS_response(uint32_t uam_conn,
     case ACCESS_CHALLENGE:
       message_response.access_challenge.message_type = *packet_ptr;
 
-      //radiusC_process_access_challenge(message_response);
+      radiusC_process_access_challenge(&message_response.access_challenge,
+                                       packet_ptr,
+                                       packet_length);
+
+      response_ptr = (uint8_t *)&message_response.access_challenge;
+      response_length = sizeof(access_challenge_t);
+
+      radiusC_send(uam_conn, 
+                   response_ptr, 
+                   response_length);
       break;
 
     case ACCOUNTING_RESPONSE:

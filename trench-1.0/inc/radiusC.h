@@ -58,7 +58,9 @@ typedef enum {
   NAS_PORT,
   SERVICE_TYPE,
   VENDOR_SPECIFIC = 26,
-  CALLING_STATION_ID = 31
+  CALLING_STATION_ID = 31,
+  EAP_MESSAGE = 79,
+  MESSAGE_AUTHENTICATOR = 80
 
 }radiusS_attr_type_t;
 
@@ -95,6 +97,8 @@ typedef struct {
 typedef struct {
   uint8_t message_type;
   uint32_t txn_id;
+  uint32_t eap_len;
+  uint8_t eap[512];
   
 }access_challenge_t;
 
@@ -106,6 +110,8 @@ typedef struct {
   uint8_t  user_id[255];
   uint16_t password_len;
   uint8_t password[255];
+  uint32_t eap_len;
+  uint8_t eap[512]; 
  
 }access_request_t;
 
@@ -176,5 +182,9 @@ int32_t radiusC_encode_password(uint8_t *password_ptr,
 int32_t radiusC_process_request(uint32_t uam_conn,
                                 uint8_t *packet_ptr, 
                                 uint16_t packet_length);
+
+int32_t radiusC_process_access_challenge(access_challenge_t *rsp_ptr,
+                                         uint8_t *packet_ptr,
+                                         uint32_t packet_length);
 
 #endif /* __RADIUSC_H__ */
