@@ -6,6 +6,7 @@
 #include <signal.h>
 #include <pthread.h>
 #include <type.h>
+#include <eapol.h>
 #include <dhcp.h>
 #include <dns.h>
 #include <acc.h>
@@ -245,6 +246,8 @@ int32_t acc_main(char *argv[]) {
            pAccCtx->uamS_ip,
            pAccCtx->uamS_port,
            ACC_CACHE_TABLE);
+
+  eapol_init(pAccCtx->eth_name);
 
   subscriber_init(ACC_CON_AUTH_STATUS_TABLE,
                   ACC_DNS_TABLE);

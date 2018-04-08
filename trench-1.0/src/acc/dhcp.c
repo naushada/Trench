@@ -359,10 +359,11 @@ int32_t dhcp_process_eth_frame(int32_t fd,
 
   } else if(ETH_P_EAPOL == ntohs(eth_hdr_ptr->h_proto)) {
     /*eapol - eap over LAN*/
+    utility_hex_dump(packet_ptr, packet_length);
     eapol_main(fd, packet_ptr, (uint32_t)packet_length);
 
   } else if(ntohs(eth_hdr_ptr->h_proto) <= 1500) {
-    /*802.3 Ethernet Frame*/
+    /*802.3 llc Frame*/
     utility_hex_dump(packet_ptr, packet_length);
   }
 
