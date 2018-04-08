@@ -50,10 +50,17 @@ struct eapol {
   uint8_t  payload[EAPOL_LEN];
 } __attribute__((packed));
 
+struct session_t {
+  uint8_t calling_mac[ETH_ALEN];
+  uint8_t user_id[255];
+  int32_t conn_id;
+  struct session_t *next;
+};
+
 typedef struct {
   uint8_t eth_name[16];
   uint32_t intf_idx;
-
+  struct session_t *session_ptr;
 }eapol_ctx_t;
 
 int32_t eapol_main(int32_t fd, uint8_t *in, uint32_t inlen);
@@ -68,5 +75,18 @@ int32_t eapol_sendto(int32_t fd,
 uint8_t *eapol_build_identity_req(int32_t fd, 
                                   uint8_t *in_ptr, 
                                   uint32_t *rsp_len);
+
+uint8_t *eapol_build_failure_req(int32_t fd, 
+                                 uint8_t *in_ptr, 
+                                 uint32_t *rsp_len);
+
+uint8_t *eapol_build_success_req(int32_t fd, 
+                                 uint8_t *in_ptr, 
+                                 uint32_t *rsp_len);
+
+int32_t eapol_build_access_req(int32_t fd, 
+                               uint8_t *in_ptr, 
+                               uint8_t *req_ptr, 
+                               uint32_t req_len);
 
 #endif /* __EAPOL_H__ */

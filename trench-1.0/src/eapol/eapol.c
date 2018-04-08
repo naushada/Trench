@@ -4,6 +4,7 @@
 #include <common.h>
 #include <transport.h>
 #include <type.h>
+#include <radiusC.h>
 #include "eapol.h"
 
 eapol_ctx_t eapol_ctx_g;
@@ -86,6 +87,128 @@ int32_t eapol_sendto(int32_t fd,
   return (ret);
 }/*eapol_sendto*/
 
+int32_t eapol_build_access_req(int32_t fd, 
+                               uint8_t *in_ptr, 
+                               uint8_t *req_ptr, 
+                               uint32_t req_len) {
+
+}/*eapol_build_access_req*/
+
+uint8_t *eapol_process_rsp(int32_t fd, uint8_t *in_ptr, uint32_t *rsp_len) {
+  struct eapol *eapol_ptr;
+  uint8_t *req_ptr = NULL;
+  uint32_t req_len = 0;
+
+  eapol_ptr = (struct eapol *)&in_ptr[sizeof(struct eth) + 
+              sizeof(struct ieee802dot1x)];
+
+  switch(eapol_ptr->type) {
+
+    case EAP_TYPE_IDENTITY:
+      req_ptr = (uint8_t *)malloc(sizeof(uint8_t) * 256);
+      assert(req_ptr != NULL);
+      memset((void *)req_ptr, 0, sizeof(uint8_t) * 256);
+      memcpy((void *)req_ptr, eapol_ptr, ntohs(eapol_ptr->length));
+      req_len = ntohs(eapol_ptr->length);
+      /*Build Access Request*/
+      eapol_build_access_req(fd, in_ptr, req_ptr, req_len);
+      break;
+
+    case EAP_TYPE_NAK:
+      break;
+
+    default:
+      break; 
+
+  }
+
+
+}/*eapol_process_rsp*/
+
+uint8_t *eapol_build_failure_req(int32_t fd, 
+                                 uint8_t *in_ptr, 
+                                 uint32_t *rsp_len) {
+
+  uint8_t *rsp_ptr = NULL;
+  uint32_t rsp_size = sizeof(uint8_t) * 256;
+  struct eth *eth_ptr = NULL;
+  struct ieee802dot1x *dot1x_ptr = NULL;
+  struct eapol *eapol_ptr = NULL;
+
+  rsp_ptr = (uint8_t *)malloc(rsp_size);
+  assert(rsp_ptr != NULL);
+  memset((void *)rsp_ptr, 0, rsp_size);
+
+  eth_ptr = (struct eth *)rsp_ptr;
+  dot1x_ptr = (struct ieee802dot1x *)&rsp_ptr[sizeof(struct eth)];
+  eapol_ptr = (struct eapol *)&rsp_ptr[sizeof(struct eth) + sizeof(struct ieee802dot1x)];
+
+  /*Populating Ethernet Header*/
+  memcpy((void *)eth_ptr->h_source, ((struct eth *)in_ptr)->h_dest, ETH_ALEN);
+  memcpy((void *)eth_ptr->h_dest, ((struct eth *)in_ptr)->h_source, ETH_ALEN);
+  eth_ptr->h_proto = ((struct eth *)in_ptr)->h_proto;
+
+  /*Populating 802.1x header*/
+  dot1x_ptr->ver = 1;
+  /*802.1x containing EAP Payload*/
+  dot1x_ptr->type = EAPOL_TYPE_EAP;
+  /*802.1x payload length*/ 
+  dot1x_ptr->len = htons(5);
+
+  /*Populating EAP Request*/
+  eapol_ptr->code = EAP_CODE_FAILURE;
+  /*ip to be copied from Access-Reject*/
+  eapol_ptr->id = 1;
+  eapol_ptr->length = htons(4);
+ 
+  *rsp_len = sizeof(struct eth) + sizeof(struct ieee802dot1x) + 4;
+
+  return(rsp_ptr); 
+}/*eapol_build_failure_req*/
+
+
+uint8_t *eapol_build_success_req(int32_t fd, 
+                                 uint8_t *in_ptr, 
+                                 uint32_t *rsp_len) {
+
+  uint8_t *rsp_ptr = NULL;
+  uint32_t rsp_size = sizeof(uint8_t) * 256;
+  struct eth *eth_ptr = NULL;
+  struct ieee802dot1x *dot1x_ptr = NULL;
+  struct eapol *eapol_ptr = NULL;
+
+  rsp_ptr = (uint8_t *)malloc(rsp_size);
+  assert(rsp_ptr != NULL);
+  memset((void *)rsp_ptr, 0, rsp_size);
+
+  eth_ptr = (struct eth *)rsp_ptr;
+  dot1x_ptr = (struct ieee802dot1x *)&rsp_ptr[sizeof(struct eth)];
+  eapol_ptr = (struct eapol *)&rsp_ptr[sizeof(struct eth) + sizeof(struct ieee802dot1x)];
+
+  /*Populating Ethernet Header*/
+  memcpy((void *)eth_ptr->h_source, ((struct eth *)in_ptr)->h_dest, ETH_ALEN);
+  memcpy((void *)eth_ptr->h_dest, ((struct eth *)in_ptr)->h_source, ETH_ALEN);
+  eth_ptr->h_proto = ((struct eth *)in_ptr)->h_proto;
+
+  /*Populating 802.1x header*/
+  dot1x_ptr->ver = 1;
+  /*802.1x containing EAP Payload*/
+  dot1x_ptr->type = EAPOL_TYPE_EAP;
+  /*802.1x payload length*/ 
+  dot1x_ptr->len = htons(5);
+
+  /*Populating EAP Request*/
+  eapol_ptr->code = EAP_CODE_SUCCESS;
+  /*ip to be copied from Access-Acept*/
+  eapol_ptr->id = 1;
+  eapol_ptr->length = htons(4);
+ 
+  *rsp_len = sizeof(struct eth) + sizeof(struct ieee802dot1x) + 4;
+
+  return(rsp_ptr); 
+}/*eapol_build_success_req*/
+
+
 uint8_t *eapol_build_identity_req(int32_t fd, 
                                   uint8_t *in_ptr, 
                                   uint32_t *rsp_len) {
@@ -146,8 +269,8 @@ int32_t eapol_main(int32_t fd, uint8_t *in_ptr, uint32_t inlen) {
 
   switch(dot1x_ptr->type) {
     case EAPOL_TYPE_EAP:
-      /*EAP Packet*/
-      
+      /*EAP Response Packet*/
+      rsp_ptr = eapol_process_rsp(fd, in_ptr, &rsp_len);
       break;
 
     case EAPOL_TYPE_START:
