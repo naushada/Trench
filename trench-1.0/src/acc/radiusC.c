@@ -5,9 +5,84 @@
 #include <type.h>
 #include <utility.h>
 #include <radiusC.h>
-#include <md5.h>
+#include <openssl/md5.h>
 
 radiusC_ctx_t g_radiusC_ctx;
+
+/*https://www.ietf.org/rfc/rfc2104.txt*/
+int32_t radiusC_hmac_md5(uint8_t *key, 
+                         uint32_t key_len, 
+                         uint8_t *in, 
+                         uint32_t inlen, 
+                         uint8_t *out, 
+                         uint32_t *olen) {
+
+  MD5_CTX ctx;
+  uint8_t k_ipad[65];    /* inner padding -
+                          * key XORd with ipad
+                          */
+  uint8_t k_opad[65];    /* outer padding -
+                          * key XORd with opad
+                          */
+  uint8_t tk[16];
+  int32_t i;
+  /* if key is longer than 64 bytes reset it to key=MD5(key) */
+  if (key_len > 64) {
+
+    MD5_CTX tctx;
+    
+    MD5_Init(&tctx);
+    MD5_Update(&tctx, key, key_len);
+    MD5_Final(tk, &tctx);
+
+    key = tk;
+    key_len = 16;
+
+  } 
+  /*
+   * the HMAC_MD5 transform looks like:
+   *
+   * MD5(K XOR opad, MD5(K XOR ipad, text))
+   *
+   * where K is an n byte key
+   * opad is the byte 0x5c repeated 64 times
+   * and text is the data being protected
+   */
+
+  /* start out by storing key in pads */
+  memset((void *)k_ipad, 0, sizeof(k_ipad));
+  memset((void *)k_opad, 0, sizeof(k_opad));
+  memcpy(k_ipad, key, key_len);
+  memcpy(k_opad, key, key_len);
+  /* XOR key with ipad and opad values */
+  for(i = 0; i < 64; i++) {
+    k_ipad[i] ^= 0x36;
+    k_opad[i] ^= 0x5c;
+  }
+
+  /*
+   * perform inner MD5
+   */
+  MD5_Init(&ctx);               /* init context for 1st
+                                 * pass */
+  MD5_Update(&ctx, k_ipad, 64); /* start with inner pad */
+  MD5_Update(&ctx, in, inlen);  /* then text of datagram */
+  MD5_Final(out, &ctx);         /* finish up 1st pass */
+  /*
+   * perform outer MD5
+   */
+  MD5_Init(&ctx);                /* init context for 2nd
+                                  * pass */
+  MD5_Update(&ctx, k_opad, 64);  /* start with outer pad */
+  MD5_Update(&ctx, out, 16);     /* then results of 1st
+                                  * hash */
+  MD5_Final(out, &ctx);          /* finish up 2nd pass */
+
+  /*128-bits*/
+  *olen = 16;
+
+  return(0);
+}/*radiusC_hmac_md5*/
 
 int32_t radiusC_send(uint32_t conn_fd, 
                      uint8_t *packet_ptr, 
@@ -279,12 +354,12 @@ int32_t radiusC_encode_password(uint8_t *password_ptr,
          password_len);
 
   /* Get MD5 hash on secret + authenticator */
-  MD5Init(&context);
-  MD5Update(&context, 
+  MD5_Init(&context);
+  MD5_Update(&context, 
             (uint8_t*)pRadiusCCtx->secret_code, 
             strlen((const char *)pRadiusCCtx->secret_code));
-  MD5Update(&context, authenticator_ptr, 16);
-  MD5Final(output, &context);
+  MD5_Update(&context, authenticator_ptr, 16);
+  MD5_Final(output, &context);
 
   /* XOR first 16 octets of dst with MD5 hash */
   for (idx = 0; idx < 16; idx++) {
@@ -298,11 +373,20 @@ int32_t radiusC_encode_password(uint8_t *password_ptr,
 int32_t radiusC_process_request(uint32_t uam_conn,
                                 uint8_t *packet_ptr, 
                                 uint16_t packet_length) {
-  uint8_t radiusS_buffer[4096];
+  uint8_t *radiusS_buffer;
   uint16_t offset = 0;
+  uint8_t *secret = "Trench_captive_portal";
+  //uint8_t *secret = "testing123";
+  uint32_t secret_len = strlen(secret);
+  uint8_t ma[16];
+  uint32_t ma_len = sizeof(ma);
   uint8_t encoded_password[128];
   uint16_t encoded_password_len;
   radiusC_ctx_t *pRadiusCCtx = &g_radiusC_ctx;
+
+  radiusS_buffer = (uint8_t *)malloc(sizeof(uint8_t) * 1024);
+  assert(radiusS_buffer != NULL);
+  memset((void *)radiusS_buffer, 0, sizeof(uint8_t) * 1024);
 
   radiusC_message_t *req = (radiusC_message_t *)packet_ptr;
 
@@ -347,15 +431,6 @@ int32_t radiusC_process_request(uint32_t uam_conn,
         offset += encoded_password_len;
       }
      
-      if(req->access_req.eap_len) {
-        /*encode EAP attribute*/
-        radiusS_buffer[offset++] =  EAP_MESSAGE;
-        radiusS_buffer[offset++] =  req->access_req.eap_len + 2;
-        memcpy((void *)&radiusS_buffer[offset], 
-               (const char *)req->access_req.eap, 
-               req->access_req.eap_len);
-      }
- 
       /*NAS-IP-Address*/
       radiusS_buffer[offset++] = NAS_IP_ADDRESS;
       radiusS_buffer[offset++] = 4 + 2;
@@ -375,12 +450,15 @@ int32_t radiusC_process_request(uint32_t uam_conn,
       *((uint32_t *)&radiusS_buffer[offset]) = htonl(0x00000001); 
       offset += 4;
 
-      /*Calling-Station-Id*/
-      radiusS_buffer[offset++] = CALLING_STATION_ID;
-      radiusS_buffer[offset++] = 4 + 2;
-      /*Login - 1*/
-      *((uint32_t *)&radiusS_buffer[offset]) = htonl(0x00000005); 
-      offset += 4;
+      if(req->access_req.supplicant_id_len) {
+        /*Calling-Station-Id*/
+        radiusS_buffer[offset++] = CALLING_STATION_ID;
+        radiusS_buffer[offset++] = req->access_req.supplicant_id_len + 2;
+        memcpy((void *)&radiusS_buffer[offset], 
+               req->access_req.supplicant_id, 
+               req->access_req.supplicant_id_len);
+        offset += req->access_req.supplicant_id_len;
+      }
       
       /*Vendor Specific Attr*/
       radiusS_buffer[offset++] = VENDOR_SPECIFIC;
@@ -388,6 +466,33 @@ int32_t radiusC_process_request(uint32_t uam_conn,
       *((uint32_t *)&radiusS_buffer[offset]) = ntohl(req->access_req.txn_id); 
       offset += 4;
 
+      if(req->access_req.eap_len) {
+        /*encode EAP attribute*/
+        radiusS_buffer[offset++] =  EAP_MESSAGE;
+        radiusS_buffer[offset++] =  req->access_req.eap_len + 2;
+        memcpy((void *)&radiusS_buffer[offset], 
+               (const char *)req->access_req.eap, 
+               req->access_req.eap_len);
+        offset += req->access_req.eap_len;
+      }
+
+      /*encode Message-Authenticator*/
+      radiusS_buffer[offset++] = MESSAGE_AUTHENTICATOR;
+      radiusS_buffer[offset++] = ma_len + 2;
+
+      memset((void *)ma, 0, sizeof(ma));
+      memcpy((void *)&radiusS_buffer[offset], 
+             (const char *)ma, 
+             ma_len);
+      offset += ma_len;
+
+      /*Updating the final length of RadiusS Packet*/
+      *((uint16_t *)&radiusS_buffer[2]) = htons(offset);
+
+      /*Encoding of Message-Authenticator*/
+      radiusC_hmac_md5(secret, secret_len, radiusS_buffer, offset, ma, &ma_len);
+      memcpy((void *)&radiusS_buffer[offset - 16], ma, ma_len);
+ 
       /*Vendor Id will not be present in Access-Reject*/ 
       pRadiusCCtx->subscriber_id[pRadiusCCtx->subscriber_count].ext_conn_id = req->access_req.txn_id;
 
@@ -396,8 +501,13 @@ int32_t radiusC_process_request(uint32_t uam_conn,
      
       /*Updating the length of RadiusS Packet*/
       *((uint16_t *)&radiusS_buffer[2]) = htons(offset);
+
+      /*calculate the Message Authenticator*/
       utility_hex_dump(radiusS_buffer, offset);
+      printf("\n");
       radiusC_sendto(radiusS_buffer, offset);
+      free(radiusS_buffer);
+
     break;
 
     case ACCOUNTING_REQUEST:

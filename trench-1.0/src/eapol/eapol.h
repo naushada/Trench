@@ -51,21 +51,32 @@ struct eapol {
 } __attribute__((packed));
 
 struct session_t {
+  /*supplicant MAC*/
   uint8_t calling_mac[ETH_ALEN];
+  /*Authenticator MAC*/
+  uint8_t self_mac[ETH_ALEN];
+  /*Supplicant user id*/
   uint8_t user_id[255];
+  /*RadiusS connection id*/
   int32_t conn_id;
+  /*cookie received in Access-Challenge*/
+  uint8_t state[32];
   struct session_t *next;
 };
 
 typedef struct {
   uint8_t eth_name[16];
   uint32_t intf_idx;
+  uint32_t radiusC_ip;
+  uint32_t radiusC_port;
   struct session_t *session_ptr;
 }eapol_ctx_t;
 
 int32_t eapol_main(int32_t fd, uint8_t *in, uint32_t inlen);
 
-int32_t eapol_init(uint8_t *eth_name);
+int32_t eapol_init(uint8_t *eth_name,
+                   uint32_t radiusC_ip,
+                   uint32_t radiusC_port);
 
 int32_t eapol_sendto(int32_t fd, 
                      uint8_t *dst_mac, 
@@ -87,6 +98,24 @@ uint8_t *eapol_build_success_req(int32_t fd,
 int32_t eapol_build_access_req(int32_t fd, 
                                uint8_t *in_ptr, 
                                uint8_t *req_ptr, 
-                               uint32_t req_len);
+                               uint32_t *req_len);
+
+int32_t eapol_insert_session(struct session_t **session_ptr, 
+                             uint8_t *in_ptr);
+
+struct session_t *eapol_get_session(uint8_t *in_ptr);
+
+int32_t eapol_process_rsp(int32_t fd, 
+                          uint8_t *in_ptr, 
+                          uint32_t in_len);
+
+int32_t eapol_del_session(struct session_t **session_ptr, 
+                          uint8_t *in_ptr);
+
+uint32_t eapol_get_session_count(void);
+
+uint8_t *eapol_build_md5_challenge_req(int32_t fd, 
+                                       uint8_t *eap_ptr, 
+                                       uint32_t *rsp_len);
 
 #endif /* __EAPOL_H__ */

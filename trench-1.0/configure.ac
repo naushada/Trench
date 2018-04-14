@@ -32,7 +32,7 @@ AC_SUBST([AM_CFLAGS])
 AC_SUBST([AM_LDFLAGS])
 AC_SUBST([AM_LFLAGS])
 
-#AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_HEADERS([config.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 

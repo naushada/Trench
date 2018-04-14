@@ -111,7 +111,9 @@ typedef struct {
   uint16_t password_len;
   uint8_t password[255];
   uint32_t eap_len;
-  uint8_t eap[512]; 
+  uint8_t eap[255]; 
+  uint32_t supplicant_id_len;
+  uint8_t supplicant_id[32];
  
 }access_request_t;
 
@@ -186,5 +188,11 @@ int32_t radiusC_process_request(uint32_t uam_conn,
 int32_t radiusC_process_access_challenge(access_challenge_t *rsp_ptr,
                                          uint8_t *packet_ptr,
                                          uint32_t packet_length);
+int32_t radiusC_hmac_md5(uint8_t *key, 
+                         uint32_t key_len, 
+                         uint8_t *in, 
+                         uint32_t inlen, 
+                         uint8_t *out, 
+                         uint32_t *olen);
 
 #endif /* __RADIUSC_H__ */

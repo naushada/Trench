@@ -247,7 +247,9 @@ int32_t acc_main(char *argv[]) {
            pAccCtx->uamS_port,
            ACC_CACHE_TABLE);
 
-  eapol_init(pAccCtx->eth_name);
+  eapol_init(pAccCtx->eth_name,
+             pAccCtx->radiusC_ip,
+             pAccCtx->radiusC_port);
 
   subscriber_init(ACC_CON_AUTH_STATUS_TABLE,
                   ACC_DNS_TABLE);
