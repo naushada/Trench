@@ -57,6 +57,7 @@ typedef enum {
   /*Physical Port at which NAS is operating*/
   NAS_PORT,
   SERVICE_TYPE,
+  STATE = 24,
   VENDOR_SPECIFIC = 26,
   CALLING_STATION_ID = 31,
   EAP_MESSAGE = 79,
@@ -97,6 +98,8 @@ typedef struct {
 typedef struct {
   uint8_t message_type;
   uint32_t txn_id;
+  uint32_t state_len;
+  uint8_t state[64];
   uint32_t eap_len;
   uint8_t eap[512];
   
@@ -114,6 +117,8 @@ typedef struct {
   uint8_t eap[255]; 
   uint32_t supplicant_id_len;
   uint8_t supplicant_id[32];
+  uint32_t state_len;
+  uint8_t state[64];
  
 }access_request_t;
 

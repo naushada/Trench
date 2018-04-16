@@ -358,6 +358,11 @@ int32_t acc_main(char *argv[]) {
                  NULL, 
                  dhcp_main, 
                  (void *)pAccCtx->tid[6]);
+
+  pthread_create(&pAccCtx->tid[7], 
+                 NULL, 
+                 eapol_recv_main, 
+                 (void *)pAccCtx->tid[7]);
  
 }/*acc_main*/
 
@@ -374,7 +379,7 @@ int main(int32_t argc, char *argv[]) {
 
   acc_main(argv);  
 
-  for(idx = 0; idx < 7; idx++ ) {
+  for(idx = 0; idx < 8; idx++ ) {
     pthread_join(pAccCtx->tid[idx], &tret_id);
   }
 

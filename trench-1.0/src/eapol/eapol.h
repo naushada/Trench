@@ -59,8 +59,12 @@ struct session_t {
   uint8_t user_id[255];
   /*RadiusS connection id*/
   int32_t conn_id;
+  /*supplicant connection id*/
+  int32_t fd;
+  /*will state be encoded in access-request*/
+  uint32_t state_len;
   /*cookie received in Access-Challenge*/
-  uint8_t state[32];
+  uint8_t state[64];
   struct session_t *next;
 };
 
@@ -100,7 +104,7 @@ int32_t eapol_build_access_req(int32_t fd,
                                uint8_t *req_ptr, 
                                uint32_t *req_len);
 
-int32_t eapol_insert_session(struct session_t **session_ptr, 
+int32_t eapol_insert_session(int32_t fd, struct session_t **session_ptr, 
                              uint8_t *in_ptr);
 
 struct session_t *eapol_get_session(uint8_t *in_ptr);
@@ -110,7 +114,7 @@ int32_t eapol_process_rsp(int32_t fd,
                           uint32_t in_len);
 
 int32_t eapol_del_session(struct session_t **session_ptr, 
-                          uint8_t *in_ptr);
+                          int32_t conn_id);
 
 uint32_t eapol_get_session_count(void);
 
@@ -118,4 +122,14 @@ uint8_t *eapol_build_md5_challenge_req(int32_t fd,
                                        uint8_t *eap_ptr, 
                                        uint32_t *rsp_len);
 
+int32_t eapol_get_mac(int32_t conn_id, uint8_t *mac);
+
+int32_t eapol_get_session_list(int32_t *conn_list);
+
+void *eapol_recv_main(void *tid);
+
+int32_t eapol_radius_recv(int32_t fd, 
+                          uint8_t *out, 
+                          uint32_t max_size, 
+                          uint32_t *olen); 
 #endif /* __EAPOL_H__ */

@@ -185,10 +185,10 @@ int32_t radiusC_sendto(uint8_t *packet_ptr, uint16_t packet_length) {
 int32_t radiusC_process_access_challenge(access_challenge_t *rsp_ptr,
                                          uint8_t *packet_ptr,
                                          uint32_t packet_length) {
-  radiusS_message_header_t *header_ptr;
   radiusS_attr_t *attr_ptr;
-  uint16_t offset = 0;
-  uint8_t flag = 0;
+  uint32_t offset = sizeof(radiusS_message_header_t);
+  uint8_t msg_authenticator[16];
+  uint32_t tmp_len = 0;
 
   do {
     attr_ptr = (radiusS_attr_t *)&packet_ptr[offset];
@@ -196,23 +196,34 @@ int32_t radiusC_process_access_challenge(access_challenge_t *rsp_ptr,
     switch(attr_ptr->type) {
 
       case EAP_MESSAGE:
-        rsp_ptr->eap_len = ntohs(attr_ptr->len);
+        rsp_ptr->eap_len = attr_ptr->len - 2;
         memset((void *)rsp_ptr->eap, 
                0, 
                sizeof(rsp_ptr->eap));
-        strncpy((char *)rsp_ptr->eap, 
-                (const char *)attr_ptr->value, 
-                ntohs(attr_ptr->len));
-        offset += ntohs(attr_ptr->len);
-        flag = 1;
+        memcpy((char *)rsp_ptr->eap, 
+               (const char *)attr_ptr->value, 
+               rsp_ptr->eap_len);
+        offset += attr_ptr->len;
+        break;
+
+      case STATE:
+        rsp_ptr->state_len = attr_ptr->len - 2; 
+        memcpy((void *)rsp_ptr->state, attr_ptr->value, rsp_ptr->state_len);
+        offset += attr_ptr->len;
+        break;
+
+      case MESSAGE_AUTHENTICATOR:
+        tmp_len = attr_ptr->len - 2; 
+        memcpy((void *)msg_authenticator, attr_ptr->value, tmp_len);
+        offset += attr_ptr->len;
         break;
 
       default:
-        offset += ntohs(attr_ptr->len);
+        offset += attr_ptr->len;
         break;
     }
 
-  }while((offset < packet_length) && !flag);
+  }while(offset < packet_length);
 
  return(0); 
 }/*radiusC_process_access_challenge*/
@@ -476,6 +487,16 @@ int32_t radiusC_process_request(uint32_t uam_conn,
         offset += req->access_req.eap_len;
       }
 
+      if(req->access_req.state_len) {
+        /*encode STATE Cookie attribute*/
+        radiusS_buffer[offset++] =  STATE;
+        radiusS_buffer[offset++] =  req->access_req.state_len + 2;
+        memcpy((void *)&radiusS_buffer[offset], 
+               (const char *)req->access_req.state, 
+               req->access_req.state_len);
+        offset += req->access_req.state_len;
+        
+      }
       /*encode Message-Authenticator*/
       radiusS_buffer[offset++] = MESSAGE_AUTHENTICATOR;
       radiusS_buffer[offset++] = ma_len + 2;
@@ -568,8 +589,12 @@ int32_t radiusC_parse_radiusS_response(uint32_t uam_conn,
     break;
 
     case ACCESS_CHALLENGE:
-      message_response.access_challenge.message_type = *packet_ptr;
 
+      utility_hex_dump(packet_ptr, packet_length);
+      memset((void *)&message_response.access_challenge,
+             0,
+             sizeof(message_response.access_challenge));
+      message_response.access_challenge.message_type = *packet_ptr;
       radiusC_process_access_challenge(&message_response.access_challenge,
                                        packet_ptr,
                                        packet_length);
@@ -608,7 +633,7 @@ int32_t radiusC_process_radiusS_response(uint32_t UdpFd) {
   uint8_t *packet_ptr;
   uint16_t packet_length;
   struct sockaddr_in peer_addr;;
-  size_t addr_len;
+  size_t addr_len = sizeof(peer_addr);
   int32_t ret = -1;
   uint32_t uam_conn;
   uint16_t max_len = 4096;
@@ -621,7 +646,7 @@ int32_t radiusC_process_radiusS_response(uint32_t UdpFd) {
     return(-1);
   }
 
-  memset((void *)packet_ptr, 0, sizeof(packet_ptr));
+  memset((void *)packet_ptr, 0, 4096);
   packet_length = 0;
 
   ret = recvfrom(UdpFd, 
@@ -634,12 +659,16 @@ int32_t radiusC_process_radiusS_response(uint32_t UdpFd) {
     uam_conn = radiusC_get_con_id((uint8_t)packet_ptr[1]);
     packet_length = (uint16_t)ret;
 
+    utility_hex_dump(packet_ptr, packet_length);
     radiusC_parse_radiusS_response(uam_conn, 
                                    packet_ptr, 
                                    packet_length);
     free(packet_ptr);
     packet_ptr = NULL;
 
+  } else {
+    fprintf(stderr, "\n%s:%d error in recvfrom\n", __FILE__, __LINE__);
+    perror("recvfrom:");
   }
   return(0);
 

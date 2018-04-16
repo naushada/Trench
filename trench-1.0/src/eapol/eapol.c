@@ -12,6 +12,134 @@
  */
 eapol_ctx_t eapol_ctx_g;
 
+int32_t eapol_process_radius_response(int32_t conn_id, 
+                                      uint8_t *in_ptr, 
+                                      uint32_t in_len) {
+  eapol_ctx_t *pEapolCtx = &eapol_ctx_g;
+  struct session_t *session = NULL;
+
+  switch(*in_ptr) {
+    case ACCESS_ACCEPT: {
+      access_accept_t *accept = (access_accept_t *)in_ptr;  
+      break;
+    }
+    case ACCESS_REJECT: {
+      access_reject_t *reject = (access_reject_t *)in_ptr;  
+      break;
+    }
+    case ACCESS_CHALLENGE: {
+      uint8_t mac[ETH_ALEN];
+      uint8_t *rsp_ptr = NULL;
+      uint32_t rsp_len = 0;
+
+      memset((void *)mac, 0, sizeof(mac));
+      access_challenge_t *challenge = (access_challenge_t *)in_ptr;
+      eapol_get_mac(conn_id, mac);
+      session = eapol_get_session(mac);
+      assert(session != NULL);
+      /**/
+      fprintf(stderr, "\n%s:%d challenge length %X\n", __FILE__, __LINE__, challenge->state_len);
+      utility_hex_dump(in_ptr, in_len);
+      session->state_len = challenge->state_len;
+      memcpy((void *)session->state, challenge->state, session->state_len); 
+
+      rsp_ptr = eapol_build_md5_challenge_req(conn_id, 
+                                              challenge->eap, 
+                                              &rsp_len);
+      if(rsp_len) {
+        eapol_sendto(session->fd, session->calling_mac, rsp_ptr, rsp_len);
+        fprintf(stderr, "\n%s:%d Being sent to supplicant\n", __FILE__, __LINE__);
+        utility_hex_dump(rsp_ptr, rsp_len);
+        free(rsp_ptr);
+      }
+    }
+      break;
+
+    default:
+      break;
+  }   
+
+  return(0);
+}/*eapol_process_radius_response*/
+
+int32_t eapol_radius_recv(int32_t fd, 
+                          uint8_t *out, 
+                          uint32_t max_size, 
+                          uint32_t *olen) {
+  ssize_t ret;
+  ret = recv(fd, out, max_size, 0);
+
+  if(ret > 0) {
+    *olen = ret;
+    ret = 0;
+  }
+
+  return(ret);
+}/*eapol_radius_recv*/
+
+void *eapol_recv_main(void *tid) {
+
+  eapol_ctx_t *pEapolCtx = &eapol_ctx_g;
+  int32_t ret = -1;
+  fd_set rd_fd;
+  int32_t max_fd;
+  uint32_t conn_cnt = 0;
+  uint32_t idx;
+  int32_t *conn_list = NULL;
+  struct timeval to;
+
+  for(;;) {
+
+    max_fd = 0;
+    FD_ZERO(&rd_fd);
+    conn_cnt = eapol_get_session_count();
+
+    if(conn_cnt > 0) {
+      /*connection is established with radiusS*/
+      conn_list = (int32_t *)malloc(sizeof(int32_t) * conn_cnt);
+      assert(conn_list != NULL);
+      memset((void *)conn_list, 0, sizeof(int32_t) * conn_cnt);
+      eapol_get_session_list(conn_list);
+
+      for(idx = 0; idx < conn_cnt; idx++) {
+        FD_SET(conn_list[idx], &rd_fd);
+        max_fd = (max_fd > conn_list[idx]) ? max_fd : conn_list[idx];
+      }
+
+      to.tv_sec = 2;
+      to.tv_usec = 0;
+      ret = select(max_fd + 1, &rd_fd, NULL, NULL, &to);
+
+      if(ret > 0) {
+        for(idx = 0; idx < conn_cnt; idx++) {
+          if(FD_ISSET(conn_list[idx], &rd_fd)) {
+            /*Read response from radiusS*/
+            uint8_t *in_ptr = NULL;
+            uint32_t max_size = 1500;
+            uint32_t in_len = 0;
+
+            in_ptr = (uint8_t *)malloc(sizeof(uint8_t) * 1500);
+            assert(in_ptr != NULL);
+            memset((void *)in_ptr, 0, sizeof(uint8_t) * 1500);
+            eapol_radius_recv(conn_list[idx], in_ptr, max_size, &in_len);
+
+            if(in_len) {
+              eapol_process_radius_response(conn_list[idx], in_ptr, in_len);
+              free(in_ptr);
+            } else {
+              /*connection is being closed*/
+              eapol_del_session(&pEapolCtx->session_ptr, conn_list[idx]); 
+            }
+          }
+        }
+      }
+      free(conn_list);
+    }
+  } 
+
+  return(0);
+}/*eapol_recv_main*/
+
 struct session_t *eapol_get_session(uint8_t *mac_ptr) {
   eapol_ctx_t *pEapolCtx = &eapol_ctx_g;
   struct session_t *tmp_session = pEapolCtx->session_ptr;
@@ -38,7 +166,7 @@ struct session_t *eapol_get_session(uint8_t *mac_ptr) {
 }/*eapol_get_session*/
 
 int32_t eapol_del_session(struct session_t **session_ptr, 
-                          uint8_t *in_ptr) {
+                          int32_t conn_id) {
 
   struct session_t *prev_session = NULL;
   struct session_t *curr_session = *session_ptr;
@@ -51,9 +179,7 @@ int32_t eapol_del_session(struct session_t **session_ptr,
   /*match found at head with only one node*/
   if(curr_session && !curr_session->next) {
 
-    if(!memcmp((void *)curr_session->calling_mac, 
-               in_ptr, 
-               ETH_ALEN)) {
+    if(conn_id == curr_session->conn_id) {
       (*session_ptr) = NULL;
       free(curr_session);
       return(0);
@@ -63,10 +189,7 @@ int32_t eapol_del_session(struct session_t **session_ptr,
   /*Is calling mac exists?*/
   while(curr_session && curr_session->next) {
 
-    if(!memcmp((void *)curr_session->calling_mac, 
-               in_ptr, 
-               ETH_ALEN)) {
-
+    if(conn_id == curr_session->conn_id) {
       /*found at head*/
       if(curr_session == *session_ptr) {
         *session_ptr = curr_session->next;
@@ -101,6 +224,21 @@ uint32_t eapol_get_session_count(void) {
   return(count);
 }/*eapol_get_session_count*/
 
+int32_t eapol_get_session_list(int32_t *conn_list) {
+   
+  struct session_t *tmp_session = NULL;
+  eapol_ctx_t *pEapolCtx = &eapol_ctx_g;
+  uint32_t idx = 0;
+
+  for(tmp_session = pEapolCtx->session_ptr; 
+      tmp_session; 
+      tmp_session = tmp_session->next, idx++) {
+    conn_list[idx] = tmp_session->conn_id;
+  }
+
+  return(0);
+}/*eapol_get_session_list*/
+
 int32_t eapol_get_mac(int32_t conn_id, uint8_t *mac) {
   struct session_t *tmp_session = NULL;
   eapol_ctx_t *pEapolCtx = &eapol_ctx_g;
@@ -118,7 +256,8 @@ int32_t eapol_get_mac(int32_t conn_id, uint8_t *mac) {
   return(1);
 }/*eapol_get_mac*/
 
-int32_t eapol_insert_session(struct session_t **session_ptr, 
+int32_t eapol_insert_session(int32_t fd,
+                             struct session_t **session_ptr, 
                              uint8_t *in_ptr) {
 
   struct session_t *tmp_session = *session_ptr;
@@ -130,6 +269,7 @@ int32_t eapol_insert_session(struct session_t **session_ptr,
   memset((void *)new_session, 0, sizeof(struct session_t));
   memcpy((void *)new_session->calling_mac, &in_ptr[ETH_ALEN], ETH_ALEN);
   memcpy((void *)new_session->self_mac, in_ptr, ETH_ALEN);
+  new_session->fd = fd;
   new_session->next = NULL;
 
   if(!tmp_session) {
@@ -313,14 +453,29 @@ int32_t eapol_build_access_req(int32_t fd,
   struct eapol *eapol_ptr;
   uint8_t user_id[255];
   uint32_t user_id_len = 0;
+  struct session_t *session = NULL;
 
-  eapol_ptr = (struct eapol *)&in_ptr[sizeof(struct eth) + sizeof(struct ieee802dot1x)];
+  session = eapol_get_session(&in_ptr[ETH_ALEN]);
+  assert(session != NULL);
+
+  eapol_ptr = (struct eapol *)&in_ptr[sizeof(struct eth) + 
+              sizeof(struct ieee802dot1x)];
 
   if(EAP_TYPE_IDENTITY == eapol_ptr->type) {
     /*copying the user id*/
     memset((void *)user_id, 0, sizeof(user_id));
     user_id_len = ntohs(eapol_ptr->length) - 5;
     memcpy((void *)user_id, eapol_ptr->payload, user_id_len);
+
+    /*copying into session for later use*/
+    memset((void *)session->user_id, 0, sizeof(session->user_id));
+    strncpy(session->user_id, eapol_ptr->payload, user_id_len);
+  } else {
+
+    /*copying the user id*/
+    memset((void *)user_id, 0, sizeof(user_id));
+    user_id_len = strlen(session->user_id);
+    memcpy((void *)user_id, session->user_id, user_id_len);
   }
 
   access_request_t *access_req_ptr = 
@@ -354,6 +509,12 @@ int32_t eapol_build_access_req(int32_t fd,
                                                in_ptr[ETH_ALEN + 4],
                                                in_ptr[ETH_ALEN + 5]);
   access_req_ptr->password_len = 0;
+
+  if(session && session->state_len) {
+    access_req_ptr->state_len = session->state_len;
+    memcpy((void *)access_req_ptr->state, session->state, session->state_len);
+  }
+
   return(0);
 }/*eapol_build_access_req*/
 
@@ -368,6 +529,7 @@ int32_t eapol_process_rsp(int32_t fd, uint8_t *in_ptr, uint32_t in_len) {
   switch(eapol_ptr->type) {
 
     case EAP_TYPE_IDENTITY:
+    case EAP_TYPE_NAK:
 
       req_ptr = (uint8_t *)malloc(sizeof(uint8_t) * 256);
       assert(req_ptr != NULL);
@@ -378,10 +540,8 @@ int32_t eapol_process_rsp(int32_t fd, uint8_t *in_ptr, uint32_t in_len) {
       free(req_ptr);
       break;
 
-    case EAP_TYPE_NAK:
-      break;
-
     default:
+      fprintf(stderr, "\n%s:%d not supported\n", __FILE__, __LINE__);
       break; 
 
   }
@@ -420,8 +580,8 @@ uint8_t *eapol_build_md5_challenge_req(int32_t fd,
   assert(session_ptr != NULL);
 
   /*Populating Ethernet Header*/
-  memcpy((void *)eth_ptr->h_source, session_ptr->calling_mac, ETH_ALEN);
-  memcpy((void *)eth_ptr->h_dest, session_ptr->self_mac, ETH_ALEN);
+  memcpy((void *)eth_ptr->h_dest, session_ptr->calling_mac, ETH_ALEN);
+  memcpy((void *)eth_ptr->h_source, session_ptr->self_mac, ETH_ALEN);
   eth_ptr->h_proto = htons(0x888e);
 
   /*Populating 802.1x header*/
@@ -434,12 +594,13 @@ uint8_t *eapol_build_md5_challenge_req(int32_t fd,
   /*Populating EAP Request*/
   eapol_ptr->code = eap_req_ptr->code;
   /*ip to be copied from Access-Challenge*/
-  eapol_ptr->id = eap_req_ptr->code;
+  eapol_ptr->id = eap_req_ptr->id;
   eapol_ptr->length = eap_req_ptr->length;
+  eapol_ptr->type = eap_req_ptr->type;
   /*copy eap payload*/
   memcpy((void *)eapol_ptr->payload, 
          eap_req_ptr->payload, 
-         ntohs(eap_req_ptr->length));
+         ntohs(eap_req_ptr->length) - 5);
  
   *rsp_len = sizeof(struct eth) + 
              sizeof(struct ieee802dot1x) + 
@@ -601,7 +762,7 @@ int32_t eapol_main(int32_t fd, uint8_t *in_ptr, uint32_t inlen) {
 
     case EAPOL_TYPE_START:
       /*Create a session for calling suplicant*/
-      eapol_insert_session(&pEapolCtx->session_ptr, in_ptr);
+      eapol_insert_session(fd, &pEapolCtx->session_ptr, in_ptr);
       rsp_ptr = eapol_build_identity_req(fd, in_ptr, &rsp_len);
 
       if(rsp_len) {
