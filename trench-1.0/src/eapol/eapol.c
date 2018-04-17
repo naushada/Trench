@@ -6,6 +6,7 @@
 #include <type.h>
 #include <radiusC.h>
 #include "eapol.h"
+#include "peap.h"
 
 /*
  * https://www.ietf.org/rfc/rfc2104.txt
@@ -37,8 +38,6 @@ int32_t eapol_process_radius_response(int32_t conn_id,
       eapol_get_mac(conn_id, mac);
       session = eapol_get_session(mac);
       assert(session != NULL);
-      /**/
-      fprintf(stderr, "\n%s:%d challenge length %X\n", __FILE__, __LINE__, challenge->state_len);
       utility_hex_dump(in_ptr, in_len);
       session->state_len = challenge->state_len;
       memcpy((void *)session->state, challenge->state, session->state_len); 
@@ -529,7 +528,6 @@ int32_t eapol_process_rsp(int32_t fd, uint8_t *in_ptr, uint32_t in_len) {
   switch(eapol_ptr->type) {
 
     case EAP_TYPE_IDENTITY:
-    case EAP_TYPE_NAK:
 
       req_ptr = (uint8_t *)malloc(sizeof(uint8_t) * 256);
       assert(req_ptr != NULL);
@@ -540,6 +538,34 @@ int32_t eapol_process_rsp(int32_t fd, uint8_t *in_ptr, uint32_t in_len) {
       free(req_ptr);
       break;
 
+    case EAP_TYPE_NAK: {
+      /*What does supplicant support*/
+      uint32_t eap_body_len = ntohs(eapol_ptr->length) - 5;
+      uint32_t idx = 0;
+
+      for(idx = 0; idx < eap_body_len; idx++) {
+
+        if(EAP_TYPE_PEAP == eapol_ptr->payload[idx]) {
+          /*https://tools.ietf.org/html/draft-josefsson-pppext-eap-tls-eap-10*/
+          /*Process PEAP Handling*/
+          req_ptr = peap_build_peap_req(in_ptr, in_len, &req_len);
+          eapol_sendto(fd, &in_ptr[ETH_ALEN], req_ptr, req_len);
+          free(req_ptr);
+ 
+        } else if(EAP_TYPE_TTLS == eapol_ptr->payload[idx]) {
+          /*Process the TTLS Handling*/
+        } else if(EAP_TYPE_FAST == eapol_ptr->payload[idx]) {
+          /*Process The FAST Handling*/
+        }
+      }
+      break;
+    }
+
+    case EAP_TYPE_PEAP: {
+      /*Process PEAP Response*/
+      peap_process_peap_rsp(fd, in_ptr, in_len);
+      break;
+    }
     default:
       fprintf(stderr, "\n%s:%d not supported\n", __FILE__, __LINE__);
       break; 

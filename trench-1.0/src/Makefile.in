@@ -107,7 +107,8 @@ am__objects_1 = uidai/Trench-util.$(OBJEXT) \
 am__objects_2 = uam/Trench-http.$(OBJEXT)
 am__objects_3 = oauth20/Trench-sslc.$(OBJEXT) \
 	oauth20/Trench-oauth20.$(OBJEXT)
-am__objects_4 = eapol/Trench-eapol.$(OBJEXT)
+am__objects_4 = eapol/Trench-eapol.$(OBJEXT) \
+	eapol/Trench-peap.$(OBJEXT)
 am__objects_5 = acc/Trench-utility.$(OBJEXT) acc/Trench-net.$(OBJEXT) \
 	acc/Trench-tun.$(OBJEXT) acc/Trench-db.$(OBJEXT) \
 	acc/Trench-nat.$(OBJEXT) acc/Trench-redir.$(OBJEXT) \
@@ -339,8 +340,12 @@ OAUTH20_SRC = oauth20/sslc.c \
 OAUTH20_INC = oauth20/sslc.h \
               oauth20/oauth20.h
 
-EAPOL_SRC = eapol/eapol.c
-EAPOL_INC = eapol/eapol.h
+EAPOL_SRC = eapol/eapol.c \
+            eapol/peap.c
+
+EAPOL_INC = eapol/eapol.h \
+            eapol/peap.h
+
 ACC_SRC = acc/utility.c \
           acc/net.c \
           acc/tun.c \
@@ -510,6 +515,8 @@ eapol/$(DEPDIR)/$(am__dirstamp):
 	@: > eapol/$(DEPDIR)/$(am__dirstamp)
 eapol/Trench-eapol.$(OBJEXT): eapol/$(am__dirstamp) \
 	eapol/$(DEPDIR)/$(am__dirstamp)
+eapol/Trench-peap.$(OBJEXT): eapol/$(am__dirstamp) \
+	eapol/$(DEPDIR)/$(am__dirstamp)
 acc/$(am__dirstamp):
 	@$(MKDIR_P) acc
 	@: > acc/$(am__dirstamp)
@@ -581,6 +588,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-tun.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@acc/$(DEPDIR)/Trench-utility.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@eapol/$(DEPDIR)/Trench-eapol.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@eapol/$(DEPDIR)/Trench-peap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@oauth20/$(DEPDIR)/Trench-oauth20.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@oauth20/$(DEPDIR)/Trench-sslc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@uam/$(DEPDIR)/Trench-http.Po@am__quote@
@@ -716,6 +724,20 @@ eapol/Trench-eapol.obj: eapol/eapol.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='eapol/eapol.c' object='eapol/Trench-eapol.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o eapol/Trench-eapol.obj `if test -f 'eapol/eapol.c'; then $(CYGPATH_W) 'eapol/eapol.c'; else $(CYGPATH_W) '$(srcdir)/eapol/eapol.c'; fi`
+
+eapol/Trench-peap.o: eapol/peap.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT eapol/Trench-peap.o -MD -MP -MF eapol/$(DEPDIR)/Trench-peap.Tpo -c -o eapol/Trench-peap.o `test -f 'eapol/peap.c' || echo '$(srcdir)/'`eapol/peap.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) eapol/$(DEPDIR)/Trench-peap.Tpo eapol/$(DEPDIR)/Trench-peap.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='eapol/peap.c' object='eapol/Trench-peap.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o eapol/Trench-peap.o `test -f 'eapol/peap.c' || echo '$(srcdir)/'`eapol/peap.c
+
+eapol/Trench-peap.obj: eapol/peap.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT eapol/Trench-peap.obj -MD -MP -MF eapol/$(DEPDIR)/Trench-peap.Tpo -c -o eapol/Trench-peap.obj `if test -f 'eapol/peap.c'; then $(CYGPATH_W) 'eapol/peap.c'; else $(CYGPATH_W) '$(srcdir)/eapol/peap.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) eapol/$(DEPDIR)/Trench-peap.Tpo eapol/$(DEPDIR)/Trench-peap.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='eapol/peap.c' object='eapol/Trench-peap.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -c -o eapol/Trench-peap.obj `if test -f 'eapol/peap.c'; then $(CYGPATH_W) 'eapol/peap.c'; else $(CYGPATH_W) '$(srcdir)/eapol/peap.c'; fi`
 
 acc/Trench-utility.o: acc/utility.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(Trench_CPPFLAGS) $(CPPFLAGS) $(Trench_CFLAGS) $(CFLAGS) -MT acc/Trench-utility.o -MD -MP -MF acc/$(DEPDIR)/Trench-utility.Tpo -c -o acc/Trench-utility.o `test -f 'acc/utility.c' || echo '$(srcdir)/'`acc/utility.c

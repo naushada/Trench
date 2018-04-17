@@ -47,9 +47,11 @@ OAUTH20_SRC = oauth20/sslc.c \
 OAUTH20_INC = oauth20/sslc.h \
               oauth20/oauth20.h
 
-EAPOL_SRC = eapol/eapol.c
+EAPOL_SRC = eapol/eapol.c \
+            eapol/peap.c
 
-EAPOL_INC = eapol/eapol.h
+EAPOL_INC = eapol/eapol.h \
+            eapol/peap.h
 
 ACC_SRC = acc/utility.c \
           acc/net.c \

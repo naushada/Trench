@@ -14,6 +14,11 @@ typedef enum {
   EAP_TYPE_OTP,
   /*Generic Token Card*/
   EAP_TYPE_GTC,
+  /*https://tools.ietf.org/html/rfc5216#page-4*/
+  EAP_TYPE_TLS = 13,
+  EAP_TYPE_TTLS = 21,
+  EAP_TYPE_PEAP = 25,
+  EAP_TYPE_FAST = 43,
   EAP_TYPE_EXPANDED = 254,
   EAP_TYPE_EXPERIMENTAL = 255
 }eapol_type_t;
@@ -32,7 +37,8 @@ typedef enum {
   EAPOL_TYPE_LOGOFF,
   EAPOL_TYPE_KEY, 
   /*SNMP Alert*/
-  EAPOL_TYPE_ENCAPSULATED
+  EAPOL_TYPE_ENCAPSULATED,
+
 }eapol_eapol_t;
 
 
