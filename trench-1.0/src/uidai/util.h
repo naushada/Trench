@@ -55,4 +55,7 @@ int32_t util_base64_decode_ex(uint8_t *input,
                     uint16_t length, 
                     uint8_t *out_b64, 
                     uint32_t *b64_len);
+
+uint32_t util_calc_decode_length(uint8_t *b64input, uint32_t length);
+
 #endif /* __UTIL_H__ */

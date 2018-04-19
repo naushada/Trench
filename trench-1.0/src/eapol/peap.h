@@ -135,4 +135,13 @@ int32_t peap_build_peap_header(struct peap_session_t *session,
 
 uint32_t peap_get_prf(uint8_t *prf);
 
+uint32_t peap_get_cert_size(uint8_t *certificate_name);
+
+int32_t peap_build_certificate(struct peap_session_t *session, 
+                               uint8_t *req_ptr, 
+                               uint32_t *tmp_len);
+
+int32_t peap_build_hello_done_req(struct peap_session_t *session, 
+                                  uint8_t *req_ptr, 
+                                  uint32_t *req_len);
 #endif /*__PEAP_H__*/

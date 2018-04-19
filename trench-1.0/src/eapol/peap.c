@@ -2,13 +2,151 @@
 #define __PEAP_C__
 
 #include <time.h>
+#include <sys/stat.h>
 #include <type.h>
 #include <common.h>
 #include <transport.h>
+#include <uidai/util.h>
 #include "eapol.h"
 #include "peap.h"
 
 peap_ctx_t peap_ctx_g;
+
+int32_t peap_build_hello_done_req(struct peap_session_t *session, 
+                                  uint8_t *req_ptr, 
+                                  uint32_t *req_len) {
+
+  uint32_t offset = 0;
+
+  /*Populating the CERTIFICATE REQ*/ 
+  req_ptr[offset++] = TLS_LEN_BIT;
+  /*Length to be encoded later*/
+  offset += 4;
+  req_ptr[offset++] = PEAP_TLS_TYPE_HANDSHAKE;
+  /*TLS Version*/
+  req_ptr[offset++] = session->major_ver;
+  req_ptr[offset++] = session->minor_ver;
+  /*Length of 2 bytes*/
+  offset += 2;
+  /*TLS Message type*/ 
+  req_ptr[offset++] = PEAP_SERVER_HELLO_DONE;
+  /*Length of 3 Bytes to be encoded later*/
+  req_ptr[offset++] = 0x00;
+  req_ptr[offset++] = 0x00;
+  req_ptr[offset++] = 0x00;
+
+  /*TLS Record Length*/
+  *((uint32_t *)&req_ptr[1]) = htonl(offset - (1 + 4));
+  /*TLS Handhsake Record Length*/
+  *((uint16_t *)&req_ptr[8]) = htons(offset - 10);
+
+  *req_len = offset;
+  return(0);
+}/*peap_build_hello_done_req*/
+
+int32_t peap_build_certificate(struct peap_session_t *session, 
+                               uint8_t *req_ptr, 
+                               uint32_t *req_len) {
+  uint32_t f_size = 0;
+  uint8_t *tmp_ptr = NULL;
+  uint8_t *b64_ptr = NULL;
+  uint32_t tmp_size;
+  uint32_t tmp_len = 0;
+  FILE *fp;
+  int32_t ret = -1;
+  uint8_t *f_name = "../keys/trench.crt";
+  uint32_t offset = 0;
+  uint8_t *line_ptr = NULL;
+  char *save_ptr;
+
+  f_size = peap_get_cert_size(f_name);
+  tmp_size = f_size;
+
+  fp = fopen(f_name, "r");
+  assert(fp != NULL);
+
+  b64_ptr = (uint8_t *)malloc(tmp_size);
+  assert(b64_ptr != NULL);
+  memset((void *)b64_ptr, 0, tmp_size);
+
+  ret = fread(b64_ptr, 1, f_size, fp);
+  fclose(fp);
+
+  tmp_ptr = (uint8_t *)malloc(tmp_size);
+  assert(tmp_ptr != NULL);
+  memset((void *)tmp_ptr, 0, tmp_size);
+
+  /*Remove the \n from base64 encoded buffer*/
+  for(line_ptr = strtok_r(b64_ptr, "\n", &save_ptr); 
+      line_ptr; 
+      line_ptr = strtok_r(NULL, "\n", &save_ptr)) {
+    offset += sprintf(&tmp_ptr[offset], "%s", line_ptr);
+  }
+
+  free(b64_ptr); 
+  b64_ptr = (uint8_t *)malloc(tmp_size);
+  assert(b64_ptr != NULL);
+  memset((void *)b64_ptr, 0, tmp_size);
+
+  sscanf(tmp_ptr, "-----BEGIN CERTIFICATE-----%[^-]-", b64_ptr);
+ 
+  /*Decode from base64 into binary*/
+  memset((void *)tmp_ptr, 0, tmp_size);
+  util_base64_decode(b64_ptr, strlen(b64_ptr), tmp_ptr, &tmp_len);
+  offset = 0;
+
+  /*Populating the CERTIFICATE REQ*/ 
+  req_ptr[offset++] = TLS_LEN_BIT;
+  /*Length to be encoded later*/
+  offset += 4;
+  req_ptr[offset++] = PEAP_TLS_TYPE_HANDSHAKE;
+  /*TLS Version*/
+  req_ptr[offset++] = session->major_ver;
+  req_ptr[offset++] = session->minor_ver;
+  /*Length of 2 bytes*/
+  offset += 2;
+  /*TLS Message type*/ 
+  req_ptr[offset++] = PEAP_CERTIFICATE;
+  /*Length of 3 Bytes to be encoded later*/
+  req_ptr[offset++] = (tmp_len >> 16) & 0xFF;
+  req_ptr[offset++] = (tmp_len >>  8) & 0xFF;
+  req_ptr[offset++] = (tmp_len >>  0) & 0xFF;
+
+  /*Chain Length of 3 bytes -3*/
+  req_ptr[offset++] = ((tmp_len - 3) >> 16) & 0xFF;
+  req_ptr[offset++] = ((tmp_len - 3) >>  8) & 0xFF;
+  req_ptr[offset++] = ((tmp_len - 3) >>  0) & 0xFF;
+
+  /*Certificate Length of 3 bytes -3*/
+  req_ptr[offset++] = ((tmp_len - 6) >> 16) & 0xFF;
+  req_ptr[offset++] = ((tmp_len - 6) >>  8) & 0xFF;
+  req_ptr[offset++] = ((tmp_len - 6) >>  0) & 0xFF;
+  
+  memcpy((void *)&req_ptr[offset], tmp_ptr, tmp_len);
+  offset += tmp_len; 
+  
+  /*TLS Record Length*/
+  *((uint32_t *)&req_ptr[1]) = htonl(offset - 5);
+  /*TLS Handhsake Record Length*/
+  *((uint16_t *)&req_ptr[8]) = htons(offset - 10);
+  
+  *req_len = offset;
+  free(tmp_ptr);
+  free(b64_ptr); 
+  return(0);
+}/*peap_build_certificate*/
+
+uint32_t peap_get_cert_size(uint8_t *certificate_name) {
+
+  struct stat st;
+  memset((void *)&st, 0, sizeof(st));
+  if(stat(certificate_name, &st)) {
+    fprintf(stderr, "\n%s:%d stat system call failed\n", __FILE__, __LINE__);
+    return(1);
+  }
+
+  return(st.st_size);
+}/*peap_get_cert_size*/
 
 int32_t peap_build_peap_header(struct peap_session_t *session,
                                uint8_t *req_ptr, 
@@ -24,8 +162,8 @@ int32_t peap_build_peap_header(struct peap_session_t *session,
                                        sizeof(struct ieee802dot1x)];
 
   /*Populating Ethernet Header*/
-  memcpy((void *)eth_ptr->h_source, session->calling_mac, ETH_ALEN);
-  memcpy((void *)eth_ptr->h_dest, session->self_mac, ETH_ALEN);
+  memcpy((void *)eth_ptr->h_source, session->self_mac, ETH_ALEN);
+  memcpy((void *)eth_ptr->h_dest, session->calling_mac, ETH_ALEN);
   eth_ptr->h_proto = htons(0x888E);
 
   /*Populating 802.1x header*/
@@ -46,7 +184,7 @@ int32_t peap_build_peap_header(struct peap_session_t *session,
   *req_len = sizeof(struct eth) + sizeof(struct ieee802dot1x) + 5;
 
   return(0); 
-}/*eapol_build_identity_req*/
+}/*peap_build_peap_header*/
 
 struct peap_session_t *peap_get_session(uint8_t *mac_ptr) {
   peap_ctx_t *pPeapCtx = &peap_ctx_g;
@@ -207,7 +345,7 @@ int32_t peap_build_server_hello(struct peap_session_t *session,
   uint8_t prf[32];
   uint32_t tmp_len = 0;
 
-  /*Encoding Length Bit*/
+  /*Encoding Length Bit flags*/
   req_ptr[offset++] = TLS_LEN_BIT; 
 
   /*4 Bytes length of PEAP-TL, Updated at Bottom*/
@@ -218,6 +356,7 @@ int32_t peap_build_server_hello(struct peap_session_t *session,
   /*TLS Version field*/
   req_ptr[offset++] = session->major_ver;
   req_ptr[offset++] = session->minor_ver;
+
   /*Length of 2 bytes of Handshake Protocol*/
   offset += 2;
   /*SERVER HELLO*/
@@ -232,6 +371,8 @@ int32_t peap_build_server_hello(struct peap_session_t *session,
   memset((void *)prf, 0, sizeof(prf));
   peap_get_prf(prf);
   memcpy((void *)&req_ptr[offset], prf, sizeof(prf));
+  /*copying into session*/
+  memcpy((void *)&session->self, prf, sizeof(prf));
   offset += sizeof(prf);
 
   /*Session Id len*/
@@ -259,12 +400,12 @@ int32_t peap_build_server_hello(struct peap_session_t *session,
   /*RSA(1)*/
   req_ptr[offset++] = 0x01;
   
-  /*peap-tls len*/
-  *((uint32_t *)&req_ptr[1]) = htonl(offset);
-  /*TLS-Record Length*/
-  *((uint16_t *)&req_ptr[8]) = htons((offset - 5));
-  /*Handshake Record Length*/ 
-  tmp_len = offset - (5 + 4);
+  /*peap-tls message len*/
+  *((uint32_t *)&req_ptr[1]) = htonl(offset - 1);
+  /*TLS-Record Length - subtract preceiding bytes to length field*/
+  *((uint16_t *)&req_ptr[8]) = htons((offset - (7 + 1)));
+  /*Handshake Record Length - subtract the preceding bytes to length*/ 
+  tmp_len = offset - (3 + 7 + 1);
   req_ptr[11] = (tmp_len >> 16 & 0xFF);
   req_ptr[12] = (tmp_len >>  8 & 0xFF);
   req_ptr[13] = (tmp_len >>  0 & 0xFF);
@@ -302,7 +443,8 @@ int32_t peap_process_tls_record_handshake(int32_t fd,
 
       rsp_ptr = (uint8_t *)malloc(sizeof(uint8_t) * rsp_size);
       assert(rsp_ptr != NULL);
-      memset((void *)rsp_ptr, 0, rsp_size);     
+      memset((void *)rsp_ptr, 0, rsp_size);
+
       peap_build_peap_header(session, rsp_ptr, &rsp_len);
       peap_build_server_hello(session, &rsp_ptr[rsp_len], &tmp_len);
       /*Length to be updated in the PEAP Header*/
@@ -312,18 +454,75 @@ int32_t peap_process_tls_record_handshake(int32_t fd,
 
       eapol_sendto(fd, &in_ptr[ETH_ALEN], rsp_ptr, rsp_len);
       free(rsp_ptr);
+      *tls_data_ptr = PEAP_CERTIFICATE;
+      peap_process_tls_record_handshake(fd, in_ptr, tls_data_ptr, tls_len); 
       break;
     }
-    case PEAP_SERVER_HELLO:
+
+    case PEAP_CERTIFICATE: {
+      /*Prepare Server's Certificate Request*/
+      uint8_t *req_ptr = NULL;
+      uint32_t req_len = 0;
+      uint32_t tmp_len = 0;
+      uint32_t req_size = 256;
+      tmp_len = peap_get_cert_size("../keys/trench.crt");
+      req_ptr = (uint8_t *)malloc(tmp_len + req_size);
+      assert(req_ptr != NULL);
+      memset((void *)req_ptr, 0, (tmp_len + req_size));
+
+      /*Get the session context based on calling mac address*/
+      session = peap_get_session(&in_ptr[ETH_ALEN]);
+      assert(session != NULL);
+
+      peap_build_peap_header(session, req_ptr, &req_len);
+      tmp_len = 0;
+      peap_build_certificate(session, &req_ptr[req_len], &tmp_len);
+      /*Length to be updated in the PEAP Header*/
+      req_len += tmp_len;
+      *((uint16_t *)&req_ptr[16]) = htons(tmp_len + 5);
+      *((uint16_t *)&req_ptr[20]) = htons(tmp_len + 5);
+
+      eapol_sendto(fd, &in_ptr[ETH_ALEN], req_ptr, req_len);
+      free(req_ptr);
+
+      *tls_data_ptr = PEAP_SERVER_HELLO_DONE;
+      peap_process_tls_record_handshake(fd, in_ptr, tls_data_ptr, tls_len); 
       break;
-    case PEAP_CERTIFICATE:
-      break;
+    }
+
     case PEAP_SERVER_KEY_EXCHANGE:
+
       break;
     case PEAP_CERTIFICATE_REQ:
       break;
-    case PEAP_SERVER_HELLO_DONE:
+
+    case PEAP_SERVER_HELLO_DONE: {
+
+      uint8_t *req_ptr = NULL;
+      uint32_t req_len = 0;
+      uint32_t req_size = 256;
+      uint32_t tmp_len = 0;
+
+      req_ptr = (uint8_t *)malloc(req_size);
+      assert(req_ptr != NULL);
+      memset((void *)req_ptr, 0, (req_size));
+
+      /*Get the session context based on calling mac address*/
+      session = peap_get_session(&in_ptr[ETH_ALEN]);
+      assert(session != NULL);
+
+      peap_build_peap_header(session, req_ptr, &req_len);
+      peap_build_hello_done_req(session, &req_ptr[req_len], &tmp_len);
+      /*Length to be updated in the PEAP Header*/
+      req_len += tmp_len;
+      fprintf(stderr, "\n%s:%d offset %d\n", __FILE__, __LINE__, tmp_len);
+      *((uint16_t *)&req_ptr[16]) = htons(tmp_len + 5);
+      *((uint16_t *)&req_ptr[20]) = htons(tmp_len + 5);
+
+      eapol_sendto(fd, &in_ptr[ETH_ALEN], req_ptr, req_len);
+      free(req_ptr);
       break;
+    }
     case PEAP_CERTIFICATE_VERIFY:
       break;
     case PEAP_CLIENT_KEY_EXCHANGE:

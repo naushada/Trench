@@ -7,6 +7,41 @@
 
 util_ctx_t util_ctx_g;
 
+uint32_t util_calc_decode_length(uint8_t *b64input, uint32_t length) {
+  uint32_t padding = 0;
+
+  // Check for trailing '=''s as padding
+  if(b64input[length-1] == '=' && b64input[length-2] == '=')
+    padding = 2;
+  else if (b64input[length-1] == '=')
+    padding = 1;
+
+  return (uint32_t)length*0.75 - padding;
+}/*util_calc_decode_length*/
+
+int32_t util_base64_decode(uint8_t *b64message, 
+                            uint32_t length, 
+                            uint8_t *buffer, 
+                            uint32_t *olen) {
+  BIO *bio;
+  BIO *b64;
+  uint32_t decoded_length = util_calc_decode_length(b64message, length);
+
+  FILE* stream = fmemopen((char*)b64message, length, "r");
+
+  b64 = BIO_new(BIO_f_base64());
+  bio = BIO_new_fp(stream, BIO_NOCLOSE);
+  bio = BIO_push(b64, bio);
+  BIO_set_flags(bio, BIO_FLAGS_BASE64_NO_NL);
+  decoded_length = BIO_read(bio, buffer, length);
+  buffer[decoded_length] = '\0';
+
+  BIO_free_all(bio);
+  fclose(stream);
+
+  *olen = decoded_length;
+}/*util_base64_decode*/
+
 int32_t util_init(uint8_t *public_key, uint8_t *private_key) {
 
   util_ctx_t *pUtilCtx = &util_ctx_g;
@@ -71,7 +106,7 @@ int32_t util_insert_newline(uint8_t *in,
   *outl = idx;
   return(0);
 }/*util_insert_newline*/
-
+#if 0
 int32_t util_base64_decode(uint8_t *data,
                            uint32_t data_len,
                            uint8_t *out,
@@ -155,6 +190,7 @@ int32_t util_base64_decode(uint8_t *data,
 
   return(0);
 }/*util_base64_decode*/
+#endif
 
 int32_t util_base64(uint8_t *data,
                     uint16_t data_len,
