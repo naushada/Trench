@@ -144,4 +144,7 @@ int32_t peap_build_certificate(struct peap_session_t *session,
 int32_t peap_build_hello_done_req(struct peap_session_t *session, 
                                   uint8_t *req_ptr, 
                                   uint32_t *req_len);
+
+int32_t peap_display_cipher_suites(uint16_t *cipher_suites, uint32_t len);
+
 #endif /*__PEAP_H__*/

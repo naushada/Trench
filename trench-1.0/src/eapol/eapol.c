@@ -792,12 +792,9 @@ int32_t eapol_main(int32_t fd, uint8_t *in_ptr, uint32_t inlen) {
       rsp_ptr = eapol_build_identity_req(fd, in_ptr, &rsp_len);
 
       if(rsp_len) {
-        uint8_t dst_mac[ETH_ALEN];
-        memcpy(dst_mac, rsp_ptr, ETH_ALEN);
-        eapol_sendto(fd, dst_mac, rsp_ptr, rsp_len);
+        eapol_sendto(fd, &in_ptr[ETH_ALEN], rsp_ptr, rsp_len);
         free(rsp_ptr);
       }
-
       break;
 
     case EAPOL_TYPE_LOGOFF:

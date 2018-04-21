@@ -12,6 +12,18 @@
 
 peap_ctx_t peap_ctx_g;
 
+int32_t peap_display_cipher_suites(uint16_t *cipher_suites, uint32_t len) {
+  
+  uint32_t idx;
+  for(idx = 0; idx < len; idx++) {
+    fprintf(stderr, "%x ", ntohs(cipher_suites[idx]));
+  }
+
+  fprintf(stderr, "\n");
+  return(0);
+
+}/*peap_display_cipher_suites*/
+
 int32_t peap_build_hello_done_req(struct peap_session_t *session, 
                                   uint8_t *req_ptr, 
                                   uint32_t *req_len) {
@@ -36,7 +48,7 @@ int32_t peap_build_hello_done_req(struct peap_session_t *session,
   req_ptr[offset++] = 0x00;
 
   /*TLS Record Length*/
-  *((uint32_t *)&req_ptr[1]) = htonl(offset - (1 + 4));
+  *((uint32_t *)&req_ptr[1]) = htonl(offset - (1/*Flags of 1 byte*/ + 4/*length of 4 bytes*/));
   /*TLS Handhsake Record Length*/
   *((uint16_t *)&req_ptr[8]) = htons(offset - 10);
 
@@ -379,7 +391,8 @@ int32_t peap_build_server_hello(struct peap_session_t *session,
   req_ptr[offset++] = 0x00;
 
   /*TLS_RSA_WITH_AES_256_CBC_SHA256 = { 0x00,0x3D };*/ 
-  *((uint16_t *)&req_ptr[offset]) = htons(0x003D);
+  //*((uint16_t *)&req_ptr[offset]) = htons(0x003D);
+  *((uint16_t *)&req_ptr[offset]) = htons(0x0035);
   offset += 2;
   /*Compression Method Value (null compression Method)*/
   req_ptr[offset++] = 0x00;
@@ -396,16 +409,19 @@ int32_t peap_build_server_hello(struct peap_session_t *session,
   *((uint16_t *)&req_ptr[offset]) = htons(0x0002);
   offset += 2;
   /*SHA256 (4)*/
-  req_ptr[offset++] = 0x04;
+  //req_ptr[offset++] = 0x04;
+  /*SHA1*/
+  req_ptr[offset++] = 0x02;
   /*RSA(1)*/
   req_ptr[offset++] = 0x01;
   
   /*peap-tls message len*/
-  *((uint32_t *)&req_ptr[1]) = htonl(offset - 1);
+  *((uint32_t *)&req_ptr[1]) = htonl(offset - 5);
   /*TLS-Record Length - subtract preceiding bytes to length field*/
-  *((uint16_t *)&req_ptr[8]) = htons((offset - (7 + 1)));
+  *((uint16_t *)&req_ptr[8]) = htons((offset - (10)));
   /*Handshake Record Length - subtract the preceding bytes to length*/ 
-  tmp_len = offset - (3 + 7 + 1);
+  //tmp_len = offset - (3 + 7 + 1);
+  tmp_len = offset - (14);
   req_ptr[11] = (tmp_len >> 16 & 0xFF);
   req_ptr[12] = (tmp_len >>  8 & 0xFF);
   req_ptr[13] = (tmp_len >>  0 & 0xFF);
@@ -444,13 +460,13 @@ int32_t peap_process_tls_record_handshake(int32_t fd,
       rsp_ptr = (uint8_t *)malloc(sizeof(uint8_t) * rsp_size);
       assert(rsp_ptr != NULL);
       memset((void *)rsp_ptr, 0, rsp_size);
-
+      peap_display_cipher_suites(session->cipher_suites, session->cipher_suites_len);
       peap_build_peap_header(session, rsp_ptr, &rsp_len);
       peap_build_server_hello(session, &rsp_ptr[rsp_len], &tmp_len);
       /*Length to be updated in the PEAP Header*/
       rsp_len += tmp_len;
-      *((uint16_t *)&rsp_ptr[16]) = htons(tmp_len + 10);
-      *((uint16_t *)&rsp_ptr[20]) = htons(tmp_len + 10);
+      *((uint16_t *)&rsp_ptr[16]) = htons(tmp_len + 5);
+      *((uint16_t *)&rsp_ptr[20]) = htons(tmp_len + 5);
 
       eapol_sendto(fd, &in_ptr[ETH_ALEN], rsp_ptr, rsp_len);
       free(rsp_ptr);
