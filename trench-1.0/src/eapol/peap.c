@@ -31,7 +31,7 @@ int32_t peap_build_hello_done_req(struct peap_session_t *session,
   uint32_t offset = 0;
 
   /*Populating the CERTIFICATE REQ*/ 
-  req_ptr[offset++] = TLS_LEN_BIT;
+  req_ptr[offset++] = TLS_LEN_BIT | TLS_VER_BIT;
   /*Length to be encoded later*/
   offset += 4;
   req_ptr[offset++] = PEAP_TLS_TYPE_HANDSHAKE;
@@ -48,7 +48,8 @@ int32_t peap_build_hello_done_req(struct peap_session_t *session,
   req_ptr[offset++] = 0x00;
 
   /*TLS Record Length*/
-  *((uint32_t *)&req_ptr[1]) = htonl(offset - (1/*Flags of 1 byte*/ + 4/*length of 4 bytes*/));
+  *((uint32_t *)&req_ptr[1]) = htonl(offset - (1/*Flags of 1 byte*/ + 
+                                               4/*length of 4 bytes*/));
   /*TLS Handhsake Record Length*/
   *((uint16_t *)&req_ptr[8]) = htons(offset - 10);
 
@@ -108,7 +109,7 @@ int32_t peap_build_certificate(struct peap_session_t *session,
   offset = 0;
 
   /*Populating the CERTIFICATE REQ*/ 
-  req_ptr[offset++] = TLS_LEN_BIT;
+  req_ptr[offset++] = TLS_LEN_BIT | TLS_VER_BIT;
   /*Length to be encoded later*/
   offset += 4;
   req_ptr[offset++] = PEAP_TLS_TYPE_HANDSHAKE;
@@ -358,7 +359,7 @@ int32_t peap_build_server_hello(struct peap_session_t *session,
   uint32_t tmp_len = 0;
 
   /*Encoding Length Bit flags*/
-  req_ptr[offset++] = TLS_LEN_BIT; 
+  req_ptr[offset++] = TLS_LEN_BIT | TLS_VER_BIT; 
 
   /*4 Bytes length of PEAP-TL, Updated at Bottom*/
   offset += 4;
@@ -552,6 +553,43 @@ int32_t peap_process_tls_record_handshake(int32_t fd,
   return(0);
 }/*peap_process_tls_record_handshake*/
 
+int32_t peap_process_peap(int32_t fd, 
+                          uint8_t *in_ptr, 
+                          uint32_t in_len) {
+
+  struct eth *eth_ptr = NULL;
+  struct ieee802dot1x *dot1x_ptr = NULL;
+  struct eapol *eapol_ptr = NULL;
+  uint32_t offset = 0;
+  uint8_t *rsp_ptr = NULL;
+  uint32_t rsp_len = 0;
+
+  offset = sizeof(struct eth) +
+           sizeof(struct ieee802dot1x);
+
+  eth_ptr = (struct eth *)in_ptr;
+  dot1x_ptr = (struct ieee802dot1x *)&in_ptr[sizeof(struct eth)];
+
+  eapol_ptr = (struct eapol *)&in_ptr[offset];
+
+  switch(eapol_ptr->type) {
+    case EAP_TYPE_PEAP:
+      rsp_ptr = eapol_build_identity_req(fd, in_ptr, &rsp_len);
+
+      if(rsp_len) {
+        eapol_sendto(fd, &in_ptr[ETH_ALEN], rsp_ptr, rsp_len);
+        free(rsp_ptr);
+      }
+      break;
+
+    default:
+      fprintf(stderr, "\n%s:%d Unsupported type\n", __FILE__, __LINE__);
+      break; 
+  }  
+  return(0);
+
+}/*peap_process_peap*/
+
 int32_t peap_process_peap_rsp(int32_t fd,
                               uint8_t *in_ptr,
                               uint32_t in_len) {
@@ -637,6 +675,9 @@ int32_t peap_process_peap_rsp(int32_t fd,
     }
   } else if((flags >> 6) & 1) {
     /*Process More Bits*/    
+  } else {
+
+    peap_process_peap(fd, in_ptr, in_len);
   }
 
   return(0);

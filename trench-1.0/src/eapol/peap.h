@@ -4,6 +4,7 @@
 #define TLS_START_BIT (1 << 5)
 #define TLS_MORE_BIT  (1 << 6)
 #define TLS_LEN_BIT   (1 << 7)
+#define TLS_VER_BIT   (1 << 1)
 
 #define TLS_VER_10    0x0301
 #define TLS_VER_11    0x0302
