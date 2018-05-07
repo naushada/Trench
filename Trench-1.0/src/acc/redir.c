@@ -1276,6 +1276,24 @@ int32_t redir_remove_session(uint32_t conn_id) {
   return(0); 
 }/*redir_remove_session*/
 
+int32_t redir_get_protocol(uint8_t *in_ptr, uint8_t *protocol) {
+
+  uint8_t *line_ptr;
+  char *save_ptr;
+  uint8_t *tmp_ptr;
+
+  tmp_ptr = (uint8_t *)malloc(strlen(in_ptr));
+  assert(tmp_ptr != NULL);
+  memset((void *)tmp_ptr, 0, strlen(in_ptr));
+  memcpy((void *)tmp_ptr, in_ptr, strlen(in_ptr));
+  line_ptr = strtok_r(tmp_ptr, " ", &save_ptr);
+  line_ptr = strtok_r(NULL, " ", &save_ptr);
+  line_ptr = strtok_r(NULL, " ", &save_ptr);
+
+  memcpy((void *)protocol, line_ptr, strlen(line_ptr));
+
+  return(0);
+}/*redir_get_protocol*/
 
 uint32_t redir_get_max_fd(redir_session_t *session) {
   uint32_t max_fd = 0;
@@ -1298,7 +1316,7 @@ int32_t redir_parse_req(uint32_t conn_id,
   uint8_t method[8];
   uint8_t *uri_ptr;
   uint16_t uri_len;
-  uint8_t protocol[8];
+  uint8_t protocol[16];
   char *save_ptr;
   uint16_t tmp_len = 0;
   uint16_t line_len = 0;
@@ -1318,10 +1336,15 @@ int32_t redir_parse_req(uint32_t conn_id,
 
   line_ptr = strtok_r(tmp_ptr, "\r\n", &save_ptr);
 
+
+  /*Init to zero*/
+  memset((void *)protocol, 0, sizeof(protocol));
+  redir_get_protocol(line_ptr, protocol);
+  fprintf(stderr, "\n%s:%d protocol is %s\n", __FILE__, __LINE__, protocol);
+
   sscanf((const char *)line_ptr, 
-         "%s %*s %s", 
-         method, 
-         protocol);
+         "%s %*s %*s", 
+         method);
 
   uri_len = strlen((const char *)line_ptr) - 
             (strlen((const char *)method) + 
@@ -1351,12 +1374,10 @@ int32_t redir_parse_req(uint32_t conn_id,
 
   free(uri_ptr);
   uri_ptr = NULL;
-
   memset((void *)session->mime_header, 0, sizeof(session->mime_header));
 
   mime_idx = 0;
   while((line_ptr = strtok_r(NULL, "\r\n", &save_ptr))) { 
-    //fprintf(stderr, "\n%s:%d line_ptr %s\n", __FILE__, __LINE__, line_ptr);
     sscanf((const char *)line_ptr, 
            "%[^:]:%*s",
            session->mime_header[mime_idx][0]);
@@ -1455,14 +1476,15 @@ int32_t redir_process_redirect_req(uint32_t conn_id,
 
   memset((void *)(*response_ptr), 0, 2048);
 
-  *response_len_ptr = sprintf((char *)(*response_ptr), 
+  if(!strncmp(session->protocol, "HTTP/1.0", 8)) { 
+
+    *response_len_ptr = sprintf((char *)(*response_ptr), 
                             "%s%s%s%s%s"
                             "%s%s%s%s%s"
                             "%s%s%s",
-                            "HTTP/1.1 302 Moved Temporarily\r\n",
+                            "HTTP/1.0 302 Moved Temporarily\r\n",
                             referer_ptr,
                             "\r\n",
-                            /*"Connection: Keep-Alive\r\n",*/
                             "Connection: close\r\n",
                             "Location: ",
                             location_buff,
@@ -1474,9 +1496,31 @@ int32_t redir_process_redirect_req(uint32_t conn_id,
                             "Content-Length: 0",
                             /*Delimiter B/W Header and Body*/
                             "\r\n\r\n");
+  } else {
+
+    *response_len_ptr = sprintf((char *)(*response_ptr), 
+                            "%s%s%s%s%s"
+                            "%s%s%s%s%s"
+                            "%s%s%s",
+                            "HTTP/1.1 302 Moved Temporarily\r\n",
+                            referer_ptr,
+                            "\r\n",
+                            "Connection: Keep-Alive\r\n",
+                            "Location: ",
+                            location_buff,
+                            "\r\n",
+                            "Content-Type: text/html\r\n",
+                            "Accept-Language: en-US,en;q=0.5\r\n",
+                            "Accept: text/*;q=0.3, text/html;q=0.7, text/html;level=1,",
+                            "text/html;level=2;q=0.4, */*;q=0.5\r\n",
+                            "Content-Length: 0",
+                            /*Delimiter B/W Header and Body*/
+                            "\r\n\r\n");
+  }
 
   free(referer_ptr);
   referer_ptr = NULL;
+
   return(0);
 }/*redir_process_redirect_req*/
 
@@ -1525,22 +1569,10 @@ int32_t redir_process_req(uint32_t conn_id,
                           uint8_t *packet_ptr, 
                           uint16_t packet_length) {
 
-  /*Build temporary HTTP Response*/
   uint8_t *redir_ptr = NULL;
   uint16_t redir_len = 0;
 
-  //fprintf(stderr, "\n%s:%d REQ(%d) %s\n", __FILE__, __LINE__, conn_id, packet_ptr);
   redir_parse_req(conn_id, packet_ptr, packet_length);
-#if 0
-  if(redir_is_connection_close(conn_id)) {
-    /*Connection is being closed*/
-    return(1);
- 
-  } else {
-    redir_process_uri(conn_id, &redir_ptr, &redir_len);
-  }
-#endif
-
   redir_process_uri(conn_id, &redir_ptr, &redir_len);
 
   if(redir_len) {
@@ -1827,7 +1859,12 @@ void *redir_main(void *argv) {
           /*Either connection is closed or data has been received.*/
           memset((void *)packet_buffer, 0, sizeof(packet_buffer));
           packet_length = 0;
-          redir_recv(session->conn, packet_buffer, &packet_length);
+
+          if(redir_recv(session->conn, packet_buffer, &packet_length) < 0) {
+            fprintf(stderr, "\n%s:%d Received From subscriber encountered an error\n", 
+                             __FILE__, 
+                             __LINE__);
+          }
 
           if((!packet_length) || 
             redir_process_req(session->conn, 

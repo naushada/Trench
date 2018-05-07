@@ -20,7 +20,7 @@ struct redir_session_t {
   uint8_t ip_str[32];
   struct sockaddr_in peer_addr;
   uint8_t method[8];
-  uint8_t protocol[8];
+  uint8_t protocol[16];
   uint8_t uri[2048];
   uint8_t url[2048];
   uint16_t mime_header_count;

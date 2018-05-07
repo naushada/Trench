@@ -1701,21 +1701,32 @@ int32_t http_process_ui_req(uint32_t conn_id,
                            "%s%s%s%s%s"
                            "%s%s%s%s%s"
                            "%s%s%s%s%s"
-                           "%s%s%s%s%s",
+                           "%s%s%s%s%s"
+                           "%s",
                            "<html>"
                            "<head>"
                            "<title>"
                            "</title>"
                            "<style>",
-                           ".box2 { position:absolute; top: 30%; left: 30%; height:14em; margin-top: -9em;", 
-                           "margin-left: 1em;", 
+                           ".box2 { position:absolute; top: 10%; left: 40%; height:14em; margin-top: 3em;", 
+                           "margin-left: 5em;", 
                            "border: none;",
                            "background-color: white;",
                            "border-left-style: solid;}",
                            ".box1 {",
-                           "position:absolute;top: 30%;left: 20%;height:14em;margin-top: -9em;",
+                           "position:absolute;top: 10%;left: 30%;height:14em;margin-top: 3em;",
                            "margin-left:1em ;border: none;background-color: #ffffff;}",
                            "</style></head><body>",
+                           "<div id=form_in class=\"box1\">",
+                           "<form method=GET action=/sign_in.html>",
+                           "<table height=100px><tr>",
+                           "<td style=\"width:120px\"><input type=text name=id placeholder=\"Provide the user ID\"></td>",
+                           "</tr><tr>",
+                           "<td style=\"width:120px\"><input type=password name=password placeholder=\"Provide the password\"></td>",
+                           "</tr><tr>",
+                           "<td><input type=submit name=sign_in value=SignIn style=\"height:30px; width:90px\">",
+                           "<input type=button name=register value=Register style=\"height:30px; width:90px\"></td>",
+                           "</tr></table></form></div>",
                            "<div class=\"box2\">",
                            "<table><tr>",
                            "<td cellpadding=\"2px\"><a href=/aadhaar_ui.html><img src=../img/aadhaar-logo_en-GB.jpg></a></td>",
@@ -1726,16 +1737,7 @@ int32_t http_process_ui_req(uint32_t conn_id,
                            "</tr><tr>",
                            "<td cellpadding=2px><a href=/google_ui.html><img src=../img/1x/btn_google_signin_light_focus_web.png></a></td>",
                            "</tr></table>",
-                           "</div><div id=form_in class=\"box1\">",
-                           "<form method=GET action=/sign_in.html>",
-                           "<table height=100px><tr>",
-                           "<td style=\"width:120px\"><input type=text name=id placeholder=\"Provide the user ID\"></td>",
-                           "</tr><tr>",
-                           "<td style=\"width:120px\"><input type=password name=password placeholder=\"Provide the password\"></td>",
-                           "</tr><tr>",
-                           "<td><input type=submit name=sign_in value=SignIn style=\"height:30px; width:60px\">",
-                           "<input type=button name=register value=Register style=\"height:30px; width:60px\"></td>",
-                           "</tr></table></form></div></body></html>");
+                           "</div></body></html>");
 
   (*response_ptr) = (uint8_t *)malloc(html_body_len + 255/*For Http Header*/);
 
@@ -1904,13 +1906,13 @@ int32_t http_process_req(uint32_t conn_id,
   uint8_t *http_ptr = NULL;
   uint32_t http_len = 0;
   int32_t ret = -1;
-#if 0
+
   fprintf(stderr, "\n%s:%d (conn_id %d) %s", 
                   __FILE__,
                   __LINE__,
                   conn_id,
                   packet_ptr);
-#endif
+
   ret = http_parse_req(conn_id, packet_ptr, packet_length);
 
   if(ret) {
